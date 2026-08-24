@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Apto 708 Torre 2 • Finanças</title>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Ícones Phosphor -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: #151d30;
+      --card-border: #232f48;
+      --primary: #3b82f6;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --santander: #ec0000;
+      --nubank: #8a05be;
+      --mercadopago: #00aae4;
+      --green: #10b981;
+      --red: #ef4444;
+      --orange: #f59e0b;
+      --pix: #00bdae;
+      --invest: #8b5cf6;
+      --grooth: #f59e0b;
+      --gamora: #10b981;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); padding-bottom: 90px; }
+    
+    .container { width: 100%; max-width: 600px; margin: 0 auto; padding: 14px; display: flex; flex-direction: column; gap: 14px; }
+
+    /* Top Bar & Pets Header */
+    header { display: flex; flex-direction: column; gap: 10px; padding-bottom: 12px; border-bottom: 1px solid var(--card-border); }
+    .header-top { display: flex; justify-content: space-between; align-items: center; }
+    .header-title h1 { font-size: 1.15rem; font-weight: 800; letter-spacing: -0.3px; color: #fff; }
+    .header-title p { font-size: 0.72rem; color: var(--text-muted); }
+    
+    .pets-badge-container { display: flex; gap: 8px; align-items: center; }
+    .pet-chip { display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.04); border: 1px solid var(--card-border); padding: 4px 10px; border-radius: 999px; font-size: 0.72rem; }
+    .pet-avatar { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+
+    /* Banner de Avisos */
+    .alert-banner { display: none; padding: 12px; border-radius: 10px; font-size: 0.8rem; line-height: 1.35; }
+    .alert-danger { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--red); color: #fca5a5; }
+    .alert-warning { background: rgba(245, 158, 11, 0.15); border: 1px solid var(--orange); color: #fcd34d; }
+
+    /* Cards */
+    .card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+    .card-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; font-weight: 600; }
+
+    /* Patrimônio Geral */
+    .patrimonio-card { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 1px solid var(--card-border); border-radius: 14px; padding: 16px; }
+    .patrimonio-val { font-size: 1.8rem; font-weight: 800; margin-top: 4px; }
+    
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .kpi-mini { background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); padding: 10px; border-radius: 10px; }
+    .kpi-mini span { display: block; font-size: 0.7rem; color: var(--text-muted); }
+    .kpi-mini strong { font-size: 1rem; }
+
+    /* Cartão de Limite & Consumo */
+    .card-limit-box { background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+    .card-limit-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; font-weight: 700; }
+    .progress-bar-bg { width: 100%; height: 8px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; position: relative; }
+    .progress-bar-fill { height: 100%; border-radius: 999px; transition: width 0.3s ease; }
+    .limit-info-row { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted); }
+
+    /* Abas / Views */
+    .view-panel { display: none; flex-direction: column; gap: 14px; }
+    .view-panel.active { display: flex; }
+
+    /* Formulários Mobile */
+    .form-group { display: flex; flex-direction: column; gap: 5px; }
+    label { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
+    input, select { background: #0b0f19; border: 1px solid var(--card-border); color: var(--text); padding: 12px; border-radius: 10px; font-size: 0.9rem; outline: none; }
+    input:focus, select:focus { border-color: var(--primary); }
+    .btn-main { background: var(--primary); color: white; border: none; padding: 14px; border-radius: 10px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; }
+    .btn-main:active { transform: scale(0.98); }
+
+    /* Badges de Modalidade & Categoria */
+    .badge-pix { background: rgba(0, 189, 174, 0.2); color: var(--pix); padding: 2px 6px; border-radius: 4px; font-size: 0.68rem; }
+    .badge-debito { background: rgba(59, 130, 246, 0.2); color: var(--primary); padding: 2px 6px; border-radius: 4px; font-size: 0.68rem; }
+    .badge-santander { background: var(--santander); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.68rem; }
+    .badge-nubank { background: var(--nubank); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.68rem; }
+    .badge-mercadopago { background: var(--mercadopago); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.68rem; }
+    .badge-cat { background: rgba(255,255,255,0.08); color: #cbd5e1; padding: 2px 6px; border-radius: 4px; font-size: 0.68rem; }
+
+    /* Lista de Itens */
+    .tx-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 10px; background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--card-border); border-radius: 8px; cursor: pointer; transition: background 0.15s; }
+    .tx-item:hover { background: rgba(255,255,255,0.05); }
+    .tx-item:last-child { border-bottom: none; }
+    .tx-desc { font-size: 0.85rem; font-weight: 600; }
+    .tx-sub { font-size: 0.7rem; color: var(--text-muted); margin-top: 3px; display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
+    .tx-amount { font-size: 0.9rem; font-weight: 700; }
+    .tx-amount.pos { color: var(--green); }
+    .tx-amount.neg { color: var(--red); }
+
+    /* Stock Ticker Item */
+    .stock-card { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 10px; }
+
+    /* Modal de Detalhes */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 200; justify-content: center; align-items: flex-end; }
+    .modal-overlay.open { display: flex; }
+    .modal-content { background: var(--card-bg); width: 100%; max-width: 600px; border-radius: 20px 20px 0 0; padding: 24px 20px 30px; border-top: 1px solid var(--card-border); display: flex; flex-direction: column; gap: 16px; animation: slideUp 0.25s ease-out; }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    .modal-row { display: flex; justify-content: space-between; font-size: 0.85rem; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .modal-row span { color: var(--text-muted); }
+    .modal-row strong { color: var(--text); }
+
+    /* Bottom Navigation Bar */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #111827; border-top: 1px solid var(--card-border); display: flex; justify-content: space-around; padding: 8px 0 calc(env(safe-area-inset-bottom, 0px) + 8px); z-index: 100; }
+    .nav-btn { background: none; border: none; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.65rem; cursor: pointer; width: 20%; }
+    .nav-btn i { font-size: 1.3rem; }
+    .nav-btn.active { color: var(--primary); font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Header Customizado Apto 708 Torre 2 + Grooth & Gamora -->
+  <header>
+    <div class="header-top">
+      <div class="header-title">
+        <h1>Apto 708 • Torre 2</h1>
+        <p id="current-date">Hoje: --/--/----</p>
+      </div>
+      <div id="status-badge" class="badge" style="background: rgba(16,185,129,0.2); color: var(--green); padding: 4px 8px; border-radius: 999px; font-size: 0.7rem; font-weight: 600; display:flex; align-items:center; gap:4px;">
+        <i class="ph ph-check-circle"></i> Equilibrado
+      </div>
+    </div>
+    
+    <div class="pets-badge-container">
+      <div class="pet-chip">
+        <div class="pet-avatar" style="background: rgba(245, 158, 11, 0.2); color: var(--grooth);">🐱</div>
+        <span>Grooth</span>
+      </div>
+      <div class="pet-chip">
+        <div class="pet-avatar" style="background: rgba(16, 185, 129, 0.2); color: var(--gamora);">🐱</div>
+        <span>Gamora</span>
+      </div>
+      <span style="font-size: 0.68rem; color: var(--text-muted); margin-left: auto;">Painel do Lar</span>
+    </div>
+  </header>
+
+  <!-- Banner de Aviso de Limites -->
+  <div id="alert-banner" class="alert-banner"></div>
+
+  <!-- VIEW 1: PAINEL GERAL (HOME) -->
+  <div id="view-home" class="view-panel active">
+    <!-- Patrimônio Consolidado -->
+    <div class="patrimonio-card">
+      <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Patrimônio Líquido do Apto</span>
+      <div class="patrimonio-val" id="kpi-patrimonio-total">R$ 0,00</div>
+      <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">Saldo em conta + Guardado + Ações B3</p>
+    </div>
+
+    <!-- Saldos e Reservas -->
+    <div class="grid-2">
+      <div class="kpi-mini">
+        <span><i class="ph ph-wallet"></i> Saldo em Conta</span>
+        <strong id="kpi-saldo-conta" style="color: #60a5fa;">R$ 0,00</strong>
+      </div>
+      <div class="kpi-mini">
+        <span><i class="ph ph-vault"></i> Dinheiro Guardado</span>
+        <strong id="kpi-guardado" style="color: var(--invest);">R$ 0,00</strong>
+      </div>
+    </div>
+
+    <!-- SEÇÃO: CONSUMO DE LIMITES DOS CARTÕES (Fecha dia 18) -->
+    <div class="card">
+      <div class="card-header">
+        <span>Limites & Consumo dos Cartões</span>
+        <span style="font-size: 0.7rem; color: var(--text-muted);">Fecha todo dia 18</span>
+      </div>
+
+      <!-- Santander -->
+      <div class="card-limit-box" style="border-left: 3px solid var(--santander);">
+        <div class="card-limit-header">
+          <span style="color: #fca5a5;">Santander (Vence dia 25)</span>
+          <span id="limit-santander-pct" style="font-size:0.75rem;">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div id="bar-santander" class="progress-bar-fill" style="background: var(--santander); width: 0%;"></div>
+        </div>
+        <div class="limit-info-row">
+          <span>Gasto na fatura: <strong id="val-santander" style="color:#fff;">R$ 0,00</strong></span>
+          <span>Disponível: <strong id="disp-santander" style="color:var(--green);">R$ 0,00</strong></span>
+        </div>
+      </div>
+
+      <!-- Nubank -->
+      <div class="card-limit-box" style="border-left: 3px solid var(--nubank);">
+        <div class="card-limit-header">
+          <span style="color: #d8b4fe;">Nubank (Vence dia 25)</span>
+          <span id="limit-nubank-pct" style="font-size:0.75rem;">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div id="bar-nubank" class="progress-bar-fill" style="background: var(--nubank); width: 0%;"></div>
+        </div>
+        <div class="limit-info-row">
+          <span>Gasto na fatura: <strong id="val-nubank" style="color:#fff;">R$ 0,00</strong></span>
+          <span>Disponível: <strong id="disp-nubank" style="color:var(--green);">R$ 0,00</strong></span>
+        </div>
+      </div>
+
+      <!-- Mercado Pago -->
+      <div class="card-limit-box" style="border-left: 3px solid var(--mercadopago);">
+        <div class="card-limit-header">
+          <span style="color: #7dd3fc;">Mercado Pago (Vence dia 20)</span>
+          <span id="limit-mp-pct" style="font-size:0.75rem;">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div id="bar-mp" class="progress-bar-fill" style="background: var(--mercadopago); width: 0%;"></div>
+        </div>
+        <div class="limit-info-row">
+          <span>Gasto na fatura: <strong id="val-mp" style="color:#fff;">R$ 0,00</strong></span>
+          <span>Disponível: <strong id="disp-mp" style="color:var(--green);">R$ 0,00</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gastos em Débito e PIX do Mês -->
+    <div class="grid-2">
+      <div class="kpi-mini">
+        <span><i class="ph ph-arrows-down-up"></i> Gasto em PIX (Mês)</span>
+        <strong id="kpi-pix-mes" style="color: var(--pix);">R$ 0,00</strong>
+      </div>
+      <div class="kpi-mini">
+        <span><i class="ph ph-credit-card"></i> Débito em Conta (Mês)</span>
+        <strong id="kpi-debito-mes" style="color: #93c5fd;">R$ 0,00</strong>
+      </div>
+    </div>
+
+    <!-- Gráfico 1: Gastos por Modalidade -->
+    <div class="card">
+      <div class="card-header">
+        <span>1. Divisão por Modalidade (Mês)</span>
+      </div>
+      <div style="position: relative; height: 180px;">
+        <canvas id="chartDespesas"></canvas>
+      </div>
+    </div>
+
+    <!-- Gráfico 2: NOVO - Divisão por Categoria de Gasto -->
+    <div class="card">
+      <div class="card-header">
+        <span>2. Despesas por Categoria (Apto 708)</span>
+      </div>
+      <div style="position: relative; height: 200px;">
+        <canvas id="chartCategorias"></canvas>
+      </div>
+    </div>
+
+    <!-- Gráfico 3: Evolução Diária -->
+    <div class="card">
+      <div class="card-header">
+        <span>3. Fluxo e Volume Diário</span>
+      </div>
+      <div style="position: relative; height: 180px;">
+        <canvas id="chartEvolucao"></canvas>
+      </div>
+    </div>
+
+    <!-- Gráfico 4: Top Maiores Gastos Individuais -->
+    <div class="card">
+      <div class="card-header">
+        <span>4. Top Maiores Gastos do Mês</span>
+      </div>
+      <p style="font-size: 0.72rem; color: var(--text-muted);">As maiores compras detalhadas com suas categorias.</p>
+      <div style="position: relative; height: 210px;">
+        <canvas id="chartTopGastos"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW 2: LANÇAR GASTO NA RUA -->
+  <div id="view-lancar" class="view-panel">
+    <div class="card">
+      <div class="card-header">Novo Lançamento Rápido</div>
+      <form id="form-tx">
+        <div class="form-group">
+          <label>Descrição do Gasto / Receita</label>
+          <input type="text" id="tx-desc" placeholder="Ex: Mercado Atacadão, Sachê Grooth/Gamora, Conta Luz" required>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Valor (R$)</label>
+            <input type="number" step="0.01" id="tx-valor" placeholder="0,00" required>
+          </div>
+          <div class="form-group">
+            <label>Data</label>
+            <input type="date" id="tx-data" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Categoria do Gasto</label>
+          <select id="tx-categoria" required>
+            <option value="Mercado">🛒 Mercado & Alimentação</option>
+            <option value="Pets">🐱 Pets (Grooth & Gamora)</option>
+            <option value="Moradia">🏠 Contas Fixas / Moradia (Apto 708)</option>
+            <option value="Transporte">🚗 Transporte & Combustível</option>
+            <option value="Utilidades">💡 Utilidades (Luz, Água, Net)</option>
+            <option value="Lazer">🍿 Lazer & Delivery</option>
+            <option value="Saude">💊 Saúde & Farmácia</option>
+            <option value="Variavel">💎 Outros Variáveis</option>
+            <option value="Patrimonio">💰 Poupança / Reserva</option>
+            <option value="Receita">💵 Salário / Recebível</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Modalidade de Pagamento / Entrada</label>
+          <select id="tx-modalidade" onchange="checkParcelas()">
+            <option value="pix">PIX (Abate saldo da conta)</option>
+            <option value="debito">Cartão Débito (Abate saldo)</option>
+            <option value="santander">Crédito Santander (Fatura - Fecha 18 / Vence 25)</option>
+            <option value="nubank">Crédito Nubank (Fatura - Fecha 18 / Vence 25)</option>
+            <option value="mercadopago">Crédito Mercado Pago (Fatura - Fecha 18 / Vence 20)</option>
+            <option value="guardar">Guardar / Poupança (Reserva)</option>
+            <option value="receita_junior">Recebimento: Junior</option>
+            <option value="receita_luana">Recebimento: Luana</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="group-parcelas" style="display:none;">
+          <label>Parcelamento</label>
+          <select id="tx-parcelas">
+            <option value="1">1x (À vista)</option>
+            <option value="2">2x</option>
+            <option value="3">3x</option>
+            <option value="4">4x</option>
+            <option value="5">5x</option>
+            <option value="6">6x</option>
+            <option value="10">10x</option>
+            <option value="12">12x</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-main">
+          <i class="ph ph-floppy-disk"></i> Salvar Lançamento
+        </button>
+      </form>
+    </div>
+
+    <!-- Ajustar Limites Totais dos Cartões -->
+    <div class="card">
+      <div class="card-header">Configurar Limite dos Cartões</div>
+      <form id="form-limits">
+        <div class="form-group">
+          <label>Limite Total Santander (R$)</label>
+          <input type="number" step="100" id="lim-santander-input" required>
+        </div>
+        <div class="form-group">
+          <label>Limite Total Nubank (R$)</label>
+          <input type="number" step="100" id="lim-nubank-input" required>
+        </div>
+        <div class="form-group">
+          <label>Limite Total Mercado Pago (R$)</label>
+          <input type="number" step="100" id="lim-mp-input" required>
+        </div>
+        <button type="submit" class="btn-main" style="background:#475569; padding:10px; font-size:0.85rem;">
+          <i class="ph ph-sliders"></i> Atualizar Limites dos Cartões
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- VIEW 3: INVESTIMENTOS & BOLSA (B3) EM TEMPO REAL -->
+  <div id="view-invest" class="view-panel">
+    <div class="card">
+      <div class="card-header">
+        <span>Carteira de Ações / FIIs (B3)</span>
+        <button onclick="atualizarCotacoes()" style="background:none; border:none; color:var(--primary); cursor:pointer; font-size:0.8rem; display:flex; align-items:center; gap:4px;">
+          <i class="ph ph-arrows-clockwise" id="icon-refresh"></i> Atualizar
+        </button>
+      </div>
+      <p style="font-size: 0.75rem; color: var(--text-muted);">Cotações sincronizadas via API pública da B3 em tempo real.</p>
+      
+      <div class="kpi-mini" style="background: rgba(139,92,246,0.1); border-color: var(--invest);">
+        <span>Total Investido em Ações</span>
+        <strong id="kpi-total-acoes" style="color: #c4b5fd; font-size:1.2rem;">R$ 0,00</strong>
+      </div>
+
+      <!-- Adicionar Ativo -->
+      <form id="form-stock" style="margin-top: 6px; display:flex; flex-direction:column; gap:8px;">
+        <div class="grid-2">
+          <input type="text" id="stock-ticker" placeholder="Código (Ex: PETR4, VALE3, ITUB4)" style="text-transform:uppercase;" required>
+          <input type="number" id="stock-qtd" placeholder="Qtd. Ações" min="1" required>
+        </div>
+        <div class="grid-2">
+          <input type="number" step="0.01" id="stock-pm" placeholder="Preço Médio Pago (R$)" required>
+          <button type="submit" class="btn-main" style="padding:10px; font-size:0.85rem;">Adicionar Ativo</button>
+        </div>
+      </form>
+
+      <!-- Lista de Ativos Monitorados -->
+      <div id="stock-list" style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;"></div>
+    </div>
+  </div>
+
+  <!-- VIEW 4: HISTÓRICO & EXTRATO -->
+  <div id="view-extrato" class="view-panel">
+    <div class="card">
+      <div class="card-header">
+        <span>Histórico Completo (Toque para ver detalhes)</span>
+        <button onclick="limparTudo()" style="background:none; border:none; color:var(--red); font-size:0.75rem; cursor:pointer;">Limpar</button>
+      </div>
+      <div id="extrato-list" style="display:flex; flex-direction:column; gap:6px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Detalhes do Item -->
+<div id="itemModal" class="modal-overlay" onclick="closeModal(event)">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h3 id="modal-desc" style="font-size:1.1rem; font-weight:700;">Detalhes do Lançamento</h3>
+      <button onclick="fecharModalDireto()" style="background:none; border:none; color:var(--text-muted); font-size:1.2rem; cursor:pointer;">✕</button>
+    </div>
+    
+    <div>
+      <div class="modal-row"><span>Valor:</span> <strong id="modal-val" style="font-size:1rem;"></strong></div>
+      <div class="modal-row"><span>Categoria:</span> <strong id="modal-cat" style="color:var(--primary);"></strong></div>
+      <div class="modal-row"><span>Data do Registro:</span> <strong id="modal-data"></strong></div>
+      <div class="modal-row"><span>Modalidade:</span> <strong id="modal-mod"></strong></div>
+      <div class="modal-row"><span>Impacto no Caixa / Limite:</span> <strong id="modal-impacto"></strong></div>
+      <div class="modal-row"><span>Ciclo de Fatura:</span> <strong id="modal-fatura"></strong></div>
+    </div>
+
+    <button id="modal-btn-del" class="btn-main" style="background:var(--red); padding:10px; font-size:0.85rem;">
+      <i class="ph ph-trash"></i> Excluir Este Lançamento
+    </button>
+  </div>
+</div>
+
+<!-- Mobile Bottom Bar -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" onclick="switchTab('home', this)">
+    <i class="ph ph-house"></i>
+    <span>Painel</span>
+  </button>
+  <button class="nav-btn" onclick="switchTab('lancar', this)">
+    <i class="ph ph-plus-circle"></i>
+    <span>Lançar</span>
+  </button>
+  <button class="nav-btn" onclick="switchTab('invest', this)">
+    <i class="ph ph-chart-line-up"></i>
+    <span>Bolsa</span>
+  </button>
+  <button class="nav-btn" onclick="switchTab('extrato', this)">
+    <i class="ph ph-receipt"></i>
+    <span>Extrato</span>
+  </button>
+</nav>
+
+<script>
+  let state = {
+    transacoes: JSON.parse(localStorage.getItem('fin_v5_tx')) || [],
+    limites: JSON.parse(localStorage.getItem('fin_v5_limits')) || {
+      santander: 5000,
+      nubank: 4000,
+      mercadopago: 2500
+    },
+    carteira: JSON.parse(localStorage.getItem('fin_v5_stocks')) || [
+      { ticker: 'PETR4', qtd: 50, pm: 35.00, cotacao: 38.20 },
+      { ticker: 'ITUB4', qtd: 80, pm: 30.50, cotacao: 34.10 }
+    ]
+  };
+
+  let chartInstance = null;
+  let chartCategoriasInstance = null;
+  let chartEvolucaoInstance = null;
+  let chartTopGastosInstance = null;
+  let selectedTxId = null;
+
+  const categoryLabels = {
+    'Mercado': '🛒 Mercado',
+    'Pets': '🐱 Pets (Grooth & Gamora)',
+    'Moradia': '🏠 Moradia / Fixa',
+    'Transporte': '🚗 Transporte',
+    'Utilidades': '💡 Utilidades',
+    'Lazer': '🍿 Lazer',
+    'Saude': '💊 Saúde',
+    'Variavel': '💎 Variável',
+    'Patrimonio': '💰 Poupança',
+    'Receita': '💵 Receita'
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('tx-data').valueAsDate = new Date();
+    document.getElementById('current-date').innerText = `Hoje: ${new Date().toLocaleDateString('pt-BR')}`;
+    
+    // Carregar limites nos inputs
+    document.getElementById('lim-santander-input').value = state.limites.santander;
+    document.getElementById('lim-nubank-input').value = state.limites.nubank;
+    document.getElementById('lim-mp-input').value = state.limites.mercadopago;
+
+    initCharts();
+    renderAll();
+    atualizarCotacoes();
+  });
+
+  function switchTab(tab, btn) {
+    document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(`view-${tab}`).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function checkParcelas() {
+    const mod = document.getElementById('tx-modalidade').value;
+    const pGroup = document.getElementById('group-parcelas');
+    pGroup.style.display = (mod === 'santander' || mod === 'nubank' || mod === 'mercadopago') ? 'flex' : 'none';
+  }
+
+  // Atualizar Limites
+  document.getElementById('form-limits').addEventListener('submit', (e) => {
+    e.preventDefault();
+    state.limites.santander = parseFloat(document.getElementById('lim-santander-input').value) || 0;
+    state.limites.nubank = parseFloat(document.getElementById('lim-nubank-input').value) || 0;
+    state.limites.mercadopago = parseFloat(document.getElementById('lim-mp-input').value) || 0;
+    localStorage.setItem('fin_v5_limits', JSON.stringify(state.limites));
+    alert('Limites dos cartões atualizados!');
+    renderAll();
+    switchTab('home', document.querySelectorAll('.nav-btn')[0]);
+  });
+
+  // Cadastro de Transações
+  document.getElementById('form-tx').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const desc = document.getElementById('tx-desc').value;
+    const valor = parseFloat(document.getElementById('tx-valor').value);
+    const data = document.getElementById('tx-data').value;
+    const mod = document.getElementById('tx-modalidade').value;
+    const cat = document.getElementById('tx-categoria').value;
+    const parcelas = parseInt(document.getElementById('tx-parcelas').value) || 1;
+
+    const isCartao = (mod === 'santander' || mod === 'nubank' || mod === 'mercadopago');
+
+    if (parcelas > 1 && isCartao) {
+      const vParcela = valor / parcelas;
+      const baseDate = new Date(data + 'T00:00:00');
+      for (let i = 0; i < parcelas; i++) {
+        const d = new Date(baseDate);
+        d.setMonth(d.getMonth() + i);
+        state.transacoes.push({
+          id: Date.now() + i,
+          desc: `${desc} (${i+1}/${parcelas})`,
+          valor: vParcela,
+          data: d.toISOString().split('T')[0],
+          mod,
+          cat,
+          parcelaInfo: `${i+1} de ${parcelas}`
+        });
+      }
+    } else {
+      state.transacoes.push({ id: Date.now(), desc, valor, data, mod, cat, parcelaInfo: 'À vista' });
+    }
+
+    localStorage.setItem('fin_v5_tx', JSON.stringify(state.transacoes));
+    document.getElementById('form-tx').reset();
+    document.getElementById('tx-data').valueAsDate = new Date();
+    checkParcelas();
+    renderAll();
+    switchTab('home', document.querySelectorAll('.nav-btn')[0]);
+  });
+
+  // Modal de Detalhes
+  function abrirDetalhes(id) {
+    const t = state.transacoes.find(item => item.id === id);
+    if (!t) return;
+
+    selectedTxId = id;
+    const isPos = t.mod.startsWith('receita');
+    const d = new Date(t.data + 'T00:00:00');
+    const dia = d.getDate();
+
+    document.getElementById('modal-desc').innerText = t.desc;
+    document.getElementById('modal-val').innerText = `${isPos ? '+' : '-'} ${formatBRL(t.valor)}`;
+    document.getElementById('modal-val').style.color = isPos ? 'var(--green)' : 'var(--red)';
+    document.getElementById('modal-cat').innerText = categoryLabels[t.cat] || t.cat;
+    document.getElementById('modal-data').innerText = d.toLocaleDateString('pt-BR');
+    document.getElementById('modal-mod').innerText = t.mod.toUpperCase();
+
+    if (t.mod === 'santander' || t.mod === 'nubank' || t.mod === 'mercadopago') {
+      const venc = t.mod === 'mercadopago' ? '20' : '25';
+      let mesFat = d.getMonth() + 1;
+      if (dia > 18) mesFat++;
+      document.getElementById('modal-impacto').innerText = `Consome limite do cartão (${t.mod.toUpperCase()})`;
+      document.getElementById('modal-fatura').innerText = `Fecha dia 18 | Vence ${venc} (Ref. Mês ${mesFat})`;
+    } else if (t.mod === 'pix' || t.mod === 'debito') {
+      document.getElementById('modal-impacto').innerText = 'Debitado na hora do Saldo em Conta';
+      document.getElementById('modal-fatura').innerText = 'Não se aplica (À vista no Caixa)';
+    } else if (t.mod === 'guardar') {
+      document.getElementById('modal-impacto').innerText = 'Transferido para Dinheiro Guardado / Reserva';
+      document.getElementById('modal-fatura').innerText = 'Não se aplica';
+    } else {
+      document.getElementById('modal-impacto').innerText = 'Crédito direto no Saldo';
+      document.getElementById('modal-fatura').innerText = 'Recebível';
+    }
+
+    document.getElementById('modal-btn-del').onclick = () => {
+      excluirTx(id);
+      fecharModalDireto();
+    };
+
+    document.getElementById('itemModal').classList.add('open');
+  }
+
+  function closeModal(e) {
+    if (e.target.id === 'itemModal') fecharModalDireto();
+  }
+
+  function fecharModalDireto() {
+    document.getElementById('itemModal').classList.remove('open');
+  }
+
+  // Ações B3
+  document.getElementById('form-stock').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const ticker = document.getElementById('stock-ticker').value.toUpperCase().trim();
+    const qtd = parseInt(document.getElementById('stock-qtd').value);
+    const pm = parseFloat(document.getElementById('stock-pm').value);
+
+    state.carteira.push({ ticker, qtd, pm, cotacao: pm });
+    localStorage.setItem('fin_v5_stocks', JSON.stringify(state.carteira));
+    document.getElementById('form-stock').reset();
+    renderAll();
+    atualizarCotacoes();
+  });
+
+  function excluirStock(index) {
+    state.carteira.splice(index, 1);
+    localStorage.setItem('fin_v5_stocks', JSON.stringify(state.carteira));
+    renderAll();
+  }
+
+  function excluirTx(id) {
+    state.transacoes = state.transacoes.filter(t => t.id !== id);
+    localStorage.setItem('fin_v5_tx', JSON.stringify(state.transacoes));
+    renderAll();
+  }
+
+  function limparTudo() {
+    if (confirm("Limpar todo o extrato do Apto 708?")) {
+      state.transacoes = [];
+      localStorage.removeItem('fin_v5_tx');
+      renderAll();
+    }
+  }
+
+  async function atualizarCotacoes() {
+    const icon = document.getElementById('icon-refresh');
+    if (icon) icon.classList.add('ph-spin');
+
+    const tickers = state.carteira.map(s => s.ticker).join(',');
+    if (!tickers) {
+      if (icon) icon.classList.remove('ph-spin');
+      return;
+    }
+
+    try {
+      const res = await fetch(`https://brapi.dev/api/quote/${tickers}`);
+      const data = await res.json();
+      if (data.results) {
+        data.results.forEach(resTicker => {
+          state.carteira.forEach(item => {
+            if (item.ticker === resTicker.symbol) {
+              item.cotacao = resTicker.regularMarketPrice || item.cotacao;
+            }
+          });
+        });
+        localStorage.setItem('fin_v5_stocks', JSON.stringify(state.carteira));
+        renderAll();
+      }
+    } catch (err) {
+      console.warn('Cotação offline.', err);
+    } finally {
+      if (icon) icon.classList.remove('ph-spin');
+    }
+  }
+
+  function renderAll() {
+    const hoje = new Date();
+    const mesAtual = hoje.getMonth();
+    const anoAtual = hoje.getFullYear();
+
+    let saldoConta = 0;
+    let guardado = 0;
+    let faturaSantander = 0;
+    let faturaNubank = 0;
+    let faturaMP = 0;
+    let totalPixMes = 0;
+    let totalDebitoMes = 0;
+    let totalReceitasMes = 0;
+    let totalGastosGeraisMes = 0;
+
+    const dailyMap = {};
+    const catMap = {};
+    const topExpensesList = [];
+
+    state.transacoes.forEach(t => {
+      const d = new Date(t.data + 'T00:00:00');
+      const isMesAtual = d.getMonth() === mesAtual && d.getFullYear() === anoAtual;
+      const dia = d.getDate();
+
+      if (t.mod.startsWith('receita')) {
+        saldoConta += t.valor;
+        if (isMesAtual) totalReceitasMes += t.valor;
+      } else if (t.mod === 'guardar') {
+        saldoConta -= t.valor;
+        guardado += t.valor;
+      } else if (t.mod === 'pix') {
+        saldoConta -= t.valor;
+        if (isMesAtual) {
+          totalPixMes += t.valor;
+          totalGastosGeraisMes += t.valor;
+          dailyMap[dia] = (dailyMap[dia] || 0) + t.valor;
+          catMap[t.cat] = (catMap[t.cat] || 0) + t.valor;
+          topExpensesList.push({ desc: t.desc, valor: t.valor, cat: t.cat });
+        }
+      } else if (t.mod === 'debito') {
+        saldoConta -= t.valor;
+        if (isMesAtual) {
+          totalDebitoMes += t.valor;
+          totalGastosGeraisMes += t.valor;
+          dailyMap[dia] = (dailyMap[dia] || 0) + t.valor;
+          catMap[t.cat] = (catMap[t.cat] || 0) + t.valor;
+          topExpensesList.push({ desc: t.desc, valor: t.valor, cat: t.cat });
+        }
+      } else if (t.mod === 'santander' || t.mod === 'nubank' || t.mod === 'mercadopago') {
+        // Fechamento dia 18
+        let fMes = d.getMonth();
+        let fAno = d.getFullYear();
+        if (dia > 18) {
+          fMes++;
+          if (fMes > 11) { fMes = 0; fAno++; }
+        }
+
+        if (fMes === mesAtual && fAno === anoAtual) {
+          if (t.mod === 'santander') faturaSantander += t.valor;
+          if (t.mod === 'nubank') faturaNubank += t.valor;
+          if (t.mod === 'mercadopago') faturaMP += t.valor;
+          totalGastosGeraisMes += t.valor;
+          dailyMap[dia] = (dailyMap[dia] || 0) + t.valor;
+          catMap[t.cat] = (catMap[t.cat] || 0) + t.valor;
+          topExpensesList.push({ desc: t.desc, valor: t.valor, cat: t.cat });
+        }
+      }
+    });
+
+    let totalAcoes = 0;
+    state.carteira.forEach(s => { totalAcoes += s.qtd * (s.cotacao || s.pm); });
+    const patrimonioTotal = saldoConta + guardado + totalAcoes;
+
+    // Atualização de Saldo e KPIs
+    document.getElementById('kpi-patrimonio-total').innerText = formatBRL(patrimonioTotal);
+    document.getElementById('kpi-saldo-conta').innerText = formatBRL(saldoConta);
+    document.getElementById('kpi-guardado').innerText = formatBRL(guardado);
+    document.getElementById('kpi-pix-mes').innerText = formatBRL(totalPixMes);
+    document.getElementById('kpi-debito-mes').innerText = formatBRL(totalDebitoMes);
+    document.getElementById('kpi-total-acoes').innerText = formatBRL(totalAcoes);
+
+    // CÁLCULO DE LIMITES
+    // Santander
+    const limSan = state.limites.santander || 1;
+    const dispSan = Math.max(0, limSan - faturaSantander);
+    const pctSan = Math.min(100, (faturaSantander / limSan) * 100).toFixed(0);
+    document.getElementById('val-santander').innerText = formatBRL(faturaSantander);
+    document.getElementById('disp-santander').innerText = formatBRL(dispSan);
+    document.getElementById('limit-santander-pct').innerText = `${pctSan}% consumido`;
+    document.getElementById('bar-santander').style.width = `${pctSan}%`;
+
+    // Nubank
+    const limNu = state.limites.nubank || 1;
+    const dispNu = Math.max(0, limNu - faturaNubank);
+    const pctNu = Math.min(100, (faturaNubank / limNu) * 100).toFixed(0);
+    document.getElementById('val-nubank').innerText = formatBRL(faturaNubank);
+    document.getElementById('disp-nubank').innerText = formatBRL(dispNu);
+    document.getElementById('limit-nubank-pct').innerText = `${pctNu}% consumido`;
+    document.getElementById('bar-nubank').style.width = `${pctNu}%`;
+
+    // Mercado Pago
+    const limMP = state.limites.mercadopago || 1;
+    const dispMP = Math.max(0, limMP - faturaMP);
+    const pctMP = Math.min(100, (faturaMP / limMP) * 100).toFixed(0);
+    document.getElementById('val-mp').innerText = formatBRL(faturaMP);
+    document.getElementById('disp-mp').innerText = formatBRL(dispMP);
+    document.getElementById('limit-mp-pct').innerText = `${pctMP}% consumido`;
+    document.getElementById('bar-mp').style.width = `${pctMP}%`;
+
+    // Alertas Gerais de Limite
+    const banner = document.getElementById('alert-banner');
+    const badge = document.getElementById('status-badge');
+    if (totalReceitasMes > 0 && totalGastosGeraisMes >= totalReceitasMes) {
+      banner.className = 'alert-banner alert-danger';
+      banner.style.display = 'block';
+      banner.innerHTML = `⚠️ <b>Atenção:</b> Os gastos do Apto 708 superaram os recebíveis em <b>${formatBRL(totalGastosGeraisMes - totalReceitasMes)}</b>. Reserva em uso.`;
+      badge.style.background = 'rgba(239, 68, 68, 0.2)';
+      badge.style.color = 'var(--red)';
+      badge.innerHTML = '<i class="ph ph-warning-octagon"></i> Déficit no Mês';
+    } else if (pctSan >= 90 || pctNu >= 90 || pctMP >= 90) {
+      banner.className = 'alert-banner alert-warning';
+      banner.style.display = 'block';
+      banner.innerHTML = `⚠️ <b>Aviso de Cartão:</b> Um ou mais cartões estão com mais de 90% do limite consumido antes do dia 18!`;
+      badge.style.background = 'rgba(245, 158, 11, 0.2)';
+      badge.style.color = 'var(--orange)';
+      badge.innerHTML = '<i class="ph ph-warning"></i> Limite Cartão Alto';
+    } else if (totalReceitasMes > 0 && totalGastosGeraisMes >= totalReceitasMes * 0.8) {
+      banner.className = 'alert-banner alert-warning';
+      banner.style.display = 'block';
+      banner.innerHTML = `⚠️ <b>Alerta Geral:</b> Atingiu ${(totalGastosGeraisMes / totalReceitasMes * 100).toFixed(0)}% da renda. Restam ${formatBRL(totalReceitasMes - totalGastosGeraisMes)}.`;
+      badge.style.background = 'rgba(245, 158, 11, 0.2)';
+      badge.style.color = 'var(--orange)';
+      badge.innerHTML = '<i class="ph ph-warning"></i> 80% do Limite';
+    } else {
+      banner.style.display = 'none';
+      badge.style.background = 'rgba(16, 185, 129, 0.2)';
+      badge.style.color = 'var(--green)';
+      badge.innerHTML = '<i class="ph ph-check-circle"></i> Equilibrado';
+    }
+
+    renderExtrato();
+    renderStocks();
+    updateCharts(totalPixMes, totalDebitoMes, faturaSantander, faturaNubank, faturaMP, dailyMap, catMap, topExpensesList);
+  }
+
+  function renderStocks() {
+    const list = document.getElementById('stock-list');
+    list.innerHTML = '';
+
+    if (state.carteira.length === 0) {
+      list.innerHTML = `<div style="text-align:center; color:var(--text-muted); font-size:0.75rem; padding:10px;">Nenhuma ação cadastrada.</div>`;
+      return;
+    }
+
+    state.carteira.forEach((s, idx) => {
+      const valorTotal = s.qtd * (s.cotacao || s.pm);
+      const lucro = (s.cotacao - s.pm) * s.qtd;
+      const rentabilidade = ((s.cotacao / s.pm - 1) * 100).toFixed(2);
+      const isPos = lucro >= 0;
+
+      const card = document.createElement('div');
+      card.className = 'stock-card';
+      card.innerHTML = `
+        <div>
+          <div style="font-weight:700; font-size:0.9rem;">${s.ticker} <span style="font-size:0.7rem; color:var(--text-muted); font-weight:normal;">(${s.qtd} un)</span></div>
+          <div style="font-size:0.75rem; color:var(--text-muted);">PM: ${formatBRL(s.pm)} | Atual: <b style="color:var(--text);">${formatBRL(s.cotacao)}</b></div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-weight:700; font-size:0.9rem;">${formatBRL(valorTotal)}</div>
+          <div style="font-size:0.75rem; color:${isPos ? 'var(--green)' : 'var(--red)'}; font-weight:600;">
+            ${isPos ? '+' : ''}${rentabilidade}% (${formatBRL(lucro)})
+          </div>
+        </div>
+        <button onclick="excluirStock(${idx})" style="background:none; border:none; color:var(--text-muted); margin-left:8px; cursor:pointer;">✕</button>
+      `;
+      list.appendChild(card);
+    });
+  }
+
+  function renderExtrato() {
+    const list = document.getElementById('extrato-list');
+    list.innerHTML = '';
+    const sorted = [...state.transacoes].reverse();
+
+    if (sorted.length === 0) {
+      list.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding:20px; font-size:0.8rem;">Nenhum lançamento no extrato.</div>`;
+      return;
+    }
+
+    sorted.slice(0, 20).forEach(t => {
+      let badge = `<span class="badge-debito">DÉBITO</span>`;
+      if (t.mod === 'pix') badge = `<span class="badge-pix">PIX</span>`;
+      if (t.mod === 'santander') badge = `<span class="badge-santander">Santander</span>`;
+      if (t.mod === 'nubank') badge = `<span class="badge-nubank">Nubank</span>`;
+      if (t.mod === 'mercadopago') badge = `<span class="badge-mercadopago">Mercado Pago</span>`;
+      if (t.mod === 'guardar') badge = `<span class="badge-guardado">GUARDADO</span>`;
+      if (t.mod.startsWith('receita')) badge = `<span style="background:rgba(16,185,129,0.2); color:var(--green); padding:2px 6px; border-radius:4px; font-size:0.68rem;">RECEITA</span>`;
+
+      const catBadge = `<span class="badge-cat">${categoryLabels[t.cat] || t.cat}</span>`;
+      const isPos = t.mod.startsWith('receita');
+      const item = document.createElement('div');
+      item.className = 'tx-item';
+      item.onclick = () => abrirDetalhes(t.id);
+      item.innerHTML = `
+        <div>
+          <div class="tx-desc">${t.desc}</div>
+          <div class="tx-sub">
+            ${new Date(t.data + 'T00:00:00').toLocaleDateString('pt-BR')} • ${badge} • ${catBadge}
+          </div>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="tx-amount ${isPos ? 'pos' : 'neg'}">${isPos ? '+' : '-'} ${formatBRL(t.valor)}</span>
+        </div>
+      `;
+      list.appendChild(item);
+    });
+  }
+
+  function initCharts() {
+    // Gráfico 1 (Modalidade)
+    const ctx1 = document.getElementById('chartDespesas').getContext('2d');
+    chartInstance = new Chart(ctx1, {
+      type: 'doughnut',
+      data: {
+        labels: ['PIX', 'Débito', 'Santander', 'Nubank', 'Mercado Pago'],
+        datasets: [{
+          data: [0, 0, 0, 0, 0],
+          backgroundColor: ['#00bdae', '#3b82f6', '#ec0000', '#8a05be', '#00aae4'],
+          borderColor: '#151d30',
+          borderWidth: 3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 10 } } } }
+      }
+    });
+
+    // Gráfico 2 (Categorias)
+    const ctxCat = document.getElementById('chartCategorias').getContext('2d');
+    chartCategoriasInstance = new Chart(ctxCat, {
+      type: 'pie',
+      data: {
+        labels: [],
+        datasets: [{
+          data: [],
+          backgroundColor: ['#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ef4444', '#ec4899', '#06b6d4', '#64748b'],
+          borderColor: '#151d30',
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { position: 'right', labels: { color: '#94a3b8', font: { size: 9 }, boxWidth: 10 } } }
+      }
+    });
+
+    // Gráfico 3 (Barras Diárias)
+    const ctx2 = document.getElementById('chartEvolucao').getContext('2d');
+    chartEvolucaoInstance = new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: [],
+        datasets: [{
+          label: 'Gastos por Dia (R$)',
+          data: [],
+          backgroundColor: '#3b82f6',
+          borderRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: { ticks: { color: '#94a3b8', font: { size: 9 } }, grid: { display: false } },
+          y: { ticks: { color: '#94a3b8', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.05)' } }
+        },
+        plugins: { legend: { display: false } }
+      }
+    });
+
+    // Gráfico 4 (Top Gastos)
+    const ctx3 = document.getElementById('chartTopGastos').getContext('2d');
+    chartTopGastosInstance = new Chart(ctx3, {
+      type: 'bar',
+      data: {
+        labels: [],
+        datasets: [{
+          label: 'Valor (R$)',
+          data: [],
+          backgroundColor: ['#ef4444', '#f59e0b', '#3b82f6', '#8b5cf6', '#10b981'],
+          borderRadius: 4
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: { ticks: { color: '#94a3b8', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+          y: { ticks: { color: '#f8fafc', font: { size: 9 } }, grid: { display: false } }
+        },
+        plugins: { legend: { display: false } }
+      }
+    });
+  }
+
+  function updateCharts(pix, debito, santander, nubank, mp, dailyMap, catMap, topExpensesList) {
+    if (chartInstance) {
+      chartInstance.data.datasets[0].data = [pix, debito, santander, nubank, mp];
+      chartInstance.update();
+    }
+
+    if (chartCategoriasInstance) {
+      const cats = Object.keys(catMap).filter(c => c !== 'Receita' && c !== 'Patrimonio');
+      chartCategoriasInstance.data.labels = cats.map(c => categoryLabels[c] || c);
+      chartCategoriasInstance.data.datasets[0].data = cats.map(c => catMap[c]);
+      chartCategoriasInstance.update();
+    }
+
+    if (chartEvolucaoInstance) {
+      const sortedDays = Object.keys(dailyMap).sort((a, b) => parseInt(a) - parseInt(b));
+      chartEvolucaoInstance.data.labels = sortedDays.map(d => `Dia ${d}`);
+      chartEvolucaoInstance.data.datasets[0].data = sortedDays.map(d => dailyMap[d]);
+      chartEvolucaoInstance.update();
+    }
+
+    if (chartTopGastosInstance) {
+      const sortedTop = [...topExpensesList].sort((a, b) => b.valor - a.valor).slice(0, 5);
+      chartTopGastosInstance.data.labels = sortedTop.map(item => {
+        const catName = categoryLabels[item.cat] || item.cat;
+        return `${item.desc.substring(0, 14)} (${catName})`;
+      });
+      chartTopGastosInstance.data.datasets[0].data = sortedTop.map(item => item.valor);
+      chartTopGastosInstance.update();
+    }
+  }
+
+  function formatBRL(v) {
+    return Number(v).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
+</script>
+</body>
+</html>
