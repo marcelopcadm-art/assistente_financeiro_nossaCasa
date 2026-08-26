@@ -10,174 +10,314 @@
   <!-- Ícones Phosphor -->
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   
-  <!-- Firebase SDKs (Cloud Firestore em Tempo Real) -->
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
   <style>
     :root {
-      --bg: #0b0f19;
-      --card-bg: #151d30;
-      --card-border: #232f48;
+      --bg: #090d16;
+      --card-bg: #111726;
+      --card-hover: #161e31;
+      --border: #1e293b;
       --primary: #3b82f6;
-      --text: #f8fafc;
+      --primary-dim: rgba(59, 130, 246, 0.12);
+      --text: #f1f5f9;
       --text-muted: #94a3b8;
-      --santander: #ec0000;
-      --nubank: #8a05be;
-      --mercadopago: #00aae4;
+      --text-dim: #64748b;
+      --santander: #ef4444;
+      --nubank: #a855f7;
+      --mercadopago: #0ea5e9;
       --green: #10b981;
-      --red: #ef4444;
+      --red: #f43f5e;
       --orange: #f59e0b;
-      --pix: #00bdae;
+      --pix: #06b6d4;
       --invest: #8b5cf6;
-      --security: #06b6d4;
-      --grooth: #f59e0b;
-      --gamora: #10b981;
+      --security: #059669;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif; }
     body { background-color: var(--bg); color: var(--text); padding-bottom: 90px; }
     
-    .container { width: 100%; max-width: 650px; margin: 0 auto; padding: 14px; display: flex; flex-direction: column; gap: 14px; }
+    .container { width: 100%; max-width: 1440px; margin: 0 auto; padding: 12px; }
 
-    /* Top Bar & Pets Header */
-    header { display: flex; flex-direction: column; gap: 10px; padding-bottom: 12px; border-bottom: 1px solid var(--card-border); }
+    /* Top Bar */
+    header { 
+      background: var(--card-bg); 
+      border: 1px solid var(--border); 
+      border-radius: 12px; 
+      padding: 16px 20px; 
+      display: flex; 
+      flex-direction: column; 
+      gap: 12px; 
+      margin-bottom: 12px;
+    }
     .header-top { display: flex; justify-content: space-between; align-items: center; }
-    .header-title h1 { font-size: 1.15rem; font-weight: 800; letter-spacing: -0.3px; color: #fff; }
-    .header-title p { font-size: 0.72rem; color: var(--text-muted); }
+    .header-title h1 { font-size: 1.1rem; font-weight: 700; letter-spacing: -0.3px; color: #fff; }
+    .header-title p { font-size: 0.72rem; color: var(--text-dim); margin-top: 2px; }
     
-    .sync-status { display: flex; align-items: center; gap: 5px; font-size: 0.68rem; color: var(--green); }
-    .sync-dot { width: 7px; height: 7px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
-    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+    .sync-status { display: flex; align-items: center; gap: 6px; font-size: 0.7rem; color: var(--green); font-weight: 500; }
+    .sync-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.85); } 100% { opacity: 1; transform: scale(1); } }
 
     .pets-badge-container { display: flex; gap: 8px; align-items: center; }
-    .pet-chip { display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.04); border: 1px solid var(--card-border); padding: 4px 10px; border-radius: 999px; font-size: 0.72rem; }
-    .pet-avatar { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+    .pet-chip { display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 4px 10px; border-radius: 20px; font-size: 0.72rem; color: var(--text-muted); }
+    .pet-avatar { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; }
 
-    /* Barra de Seleção de Mês / Ano Global */
-    .period-selector { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); border-radius: 12px; padding: 8px 12px; }
-    .period-nav-btn { background: var(--card-border); border: none; color: #fff; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
-    .period-title { font-size: 0.9rem; font-weight: 700; color: #60a5fa; display: flex; align-items: center; gap: 6px; }
+    /* Seletor de Mês */
+    .period-selector { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      background: var(--card-bg); 
+      border: 1px solid var(--border); 
+      border-radius: 12px; 
+      padding: 10px 16px; 
+      margin-bottom: 12px; 
+    }
+    .period-nav-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: #fff; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+    .period-nav-btn:hover { background: var(--card-hover); }
+    .period-title { font-size: 0.88rem; font-weight: 600; color: #93c5fd; display: flex; align-items: center; gap: 8px; }
 
     /* Banner de Avisos */
-    .alert-banner { display: none; padding: 12px; border-radius: 10px; font-size: 0.8rem; line-height: 1.35; }
-    .alert-danger { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--red); color: #fca5a5; }
-    .alert-warning { background: rgba(245, 158, 11, 0.15); border: 1px solid var(--orange); color: #fcd34d; }
+    .alert-banner { display: none; padding: 12px 16px; border-radius: 10px; font-size: 0.8rem; line-height: 1.4; margin-bottom: 12px; }
+    .alert-danger { background: rgba(244, 63, 94, 0.1); border: 1px solid var(--red); color: #fda4af; }
+    .alert-warning { background: rgba(245, 158, 11, 0.1); border: 1px solid var(--orange); color: #fde68a; }
 
-    /* Cards */
-    .card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
-    .card-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; font-weight: 600; }
+    /* Grid Bento Coeso (Mobile First) */
+    .view-panel { display: none; }
+    .view-panel.active { display: flex; flex-direction: column; gap: 10px; }
 
-    /* Patrimônio & Total Faturas Cards */
-    .patrimonio-card { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 1px solid var(--card-border); border-radius: 14px; padding: 16px; }
-    .patrimonio-val { font-size: 1.8rem; font-weight: 800; margin-top: 4px; }
-    
-    .faturas-total-card { background: linear-gradient(135deg, #2b1126 0%, #151d30 100%); border: 1px solid rgba(236, 0, 0, 0.3); border-radius: 14px; padding: 16px; display: flex; justify-content: space-between; align-items: center; }
-    .faturas-total-val { font-size: 1.5rem; font-weight: 800; color: #f87171; }
+    /* Cards Gerais */
+    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 12px; position: relative; }
+    .card-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; }
 
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .kpi-mini { background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); padding: 10px; border-radius: 10px; }
-    .kpi-mini span { display: block; font-size: 0.7rem; color: var(--text-muted); }
-    .kpi-mini strong { font-size: 1rem; }
+    .kpi-title { font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+    .kpi-val { font-size: 1.45rem; font-weight: 700; margin-top: 4px; letter-spacing: -0.5px; color: #fff; }
+    .kpi-sub { font-size: 0.7rem; color: var(--text-dim); margin-top: 4px; }
 
-    /* Cartão de Limite & Consumo */
-    .card-limit-box { background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
-    .card-limit-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; font-weight: 700; }
-    .progress-bar-bg { width: 100%; height: 8px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; position: relative; }
-    .progress-bar-fill { height: 100%; border-radius: 999px; transition: width 0.3s ease; }
-    .limit-info-row { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted); }
+    .patrimonio-card { background: linear-gradient(180deg, #131d31 0%, #0d1424 100%); }
+    .patrimonio-card .kpi-val { font-size: 1.7rem; color: #60a5fa; }
+    .faturas-total-card { background: linear-gradient(180deg, #1c1524 0%, #111422 100%); }
+    .faturas-total-card .kpi-val { color: #f87171; }
 
-    /* Abas / Views */
-    .view-panel { display: none; flex-direction: column; gap: 14px; }
-    .view-panel.active { display: flex; }
+    .kpi-mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .kpi-mini { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 14px; border-radius: 10px; }
+    .kpi-mini span { display: flex; align-items: center; gap: 6px; font-size: 0.72rem; color: var(--text-muted); }
+    .kpi-mini strong { font-size: 1.05rem; font-weight: 700; display: block; margin-top: 4px; }
 
-    /* Formulários Mobile */
-    .form-group { display: flex; flex-direction: column; gap: 5px; }
-    label { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
-    input, select { background: #0b0f19; border: 1px solid var(--card-border); color: var(--text); padding: 12px; border-radius: 10px; font-size: 0.9rem; outline: none; }
+    /* Cartão de Limite */
+    .card-limit-box { background: rgba(255,255,255,0.015); border: 1px solid var(--border); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 6px; }
+    .card-limit-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: 600; }
+    .progress-bar-bg { width: 100%; height: 6px; background: rgba(255,255,255,0.06); border-radius: 99px; overflow: hidden; }
+    .progress-bar-fill { height: 100%; border-radius: 99px; transition: width 0.4s ease; }
+    .limit-info-row { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-dim); }
+
+    /* Formulários */
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    label { font-size: 0.72rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
+    input, select { background: #070a11; border: 1px solid var(--border); color: var(--text); padding: 11px 14px; border-radius: 8px; font-size: 0.85rem; outline: none; transition: border-color 0.2s; }
     input:focus, select:focus { border-color: var(--primary); }
-    .btn-main { background: var(--primary); color: white; border: none; padding: 14px; border-radius: 10px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; }
-    .btn-main:active { transform: scale(0.98); }
+    .btn-main { background: var(--primary); color: white; border: none; padding: 13px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.88rem; transition: opacity 0.2s; }
+    .btn-main:hover { opacity: 0.92; }
 
     /* Lançamento em Lote */
     .batch-row { display: grid; grid-template-columns: 2fr 1.2fr 1.4fr 1.4fr 34px; gap: 6px; align-items: center; margin-bottom: 8px; }
-    .batch-row input, .batch-row select { padding: 9px 6px; font-size: 0.8rem; }
-    .btn-remove-row { background: rgba(239, 68, 68, 0.2); color: var(--red); border: none; border-radius: 8px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
-    .btn-add-row { background: rgba(59, 130, 246, 0.15); color: var(--primary); border: 1px dashed var(--primary); padding: 10px; border-radius: 10px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.85rem; }
+    .batch-row input, .batch-row select { padding: 8px; font-size: 0.8rem; }
+    .btn-remove-row { background: rgba(244, 63, 94, 0.1); color: var(--red); border: 1px solid rgba(244, 63, 94, 0.2); border-radius: 6px; height: 34px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .btn-add-row { background: var(--primary-dim); color: var(--primary); border: 1px dashed var(--primary); padding: 10px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.82rem; }
 
-    /* Badges de Modalidade & Categoria */
-    .badge-pix { background: rgba(0, 189, 174, 0.2); color: var(--pix); padding: 2px 6px; border-radius: 4px; font-size: 0.68rem; }
-    .badge-debito { background: rgba(59, 130, 246, 0.2); color: var(--primary); padding: 2px 6px; border-radius: 4px; font-size: 0.68rem; }
-    .badge-santander { background: var(--santander); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.68rem; }
-    .badge-nubank { background: var(--nubank); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.68rem; }
-    .badge-mercadopago { background: var(--mercadopago); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.68rem; }
-    .badge-transf { background: rgba(139, 92, 246, 0.2); color: var(--invest); padding: 2px 6px; border-radius: 4px; font-size: 0.68rem; }
-    .badge-cat { background: rgba(255,255,255,0.08); color: #cbd5e1; padding: 2px 6px; border-radius: 4px; font-size: 0.68rem; }
+    /* Badges & Itens */
+    .badge-pix { background: rgba(6, 182, 212, 0.1); color: var(--pix); padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: 600; }
+    .badge-debito { background: rgba(59, 130, 246, 0.1); color: var(--primary); padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: 600; }
+    .badge-santander { background: rgba(239, 68, 68, 0.15); color: #fca5a5; padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: 600; }
+    .badge-nubank { background: rgba(168, 85, 247, 0.15); color: #d8b4fe; padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: 600; }
+    .badge-mercadopago { background: rgba(14, 165, 233, 0.15); color: #7dd3fc; padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: 600; }
+    .badge-transf { background: rgba(139, 92, 246, 0.15); color: #c4b5fd; padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: 600; }
+    .badge-cat { background: rgba(255,255,255,0.05); color: var(--text-muted); padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; }
 
-    /* Lista de Itens */
-    .tx-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 10px; background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--card-border); border-radius: 8px; cursor: pointer; transition: background 0.15s; }
-    .tx-item:hover { background: rgba(255,255,255,0.05); }
-    .tx-item:last-child { border-bottom: none; }
-    .tx-desc { font-size: 0.85rem; font-weight: 600; }
-    .tx-sub { font-size: 0.7rem; color: var(--text-muted); margin-top: 3px; display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
-    .tx-amount { font-size: 0.9rem; font-weight: 700; }
+    .tx-item { display: flex; justify-content: space-between; align-items: center; padding: 11px 12px; background: rgba(255,255,255,0.015); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.15s; }
+    .tx-item:hover { background: var(--card-hover); border-color: #334155; }
+    .tx-desc { font-size: 0.82rem; font-weight: 600; }
+    .tx-sub { font-size: 0.68rem; color: var(--text-dim); margin-top: 3px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+    .tx-amount { font-size: 0.88rem; font-weight: 700; font-variant-numeric: tabular-nums; }
     .tx-amount.pos { color: var(--green); }
-    .tx-amount.neg { color: var(--red); }
-    .tx-amount.neutral { color: #cbd5e1; }
+    .tx-amount.neg { color: var(--text); }
+    .tx-amount.neutral { color: var(--text-muted); }
 
-    /* Filtro de Extrato */
-    .filter-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 6px; }
-    .filter-controls select { padding: 8px 10px; font-size: 0.8rem; }
+    .filter-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+    .filter-controls select, .filter-controls input { padding: 9px; font-size: 0.8rem; }
 
-    /* Stock Ticker Item */
-    .stock-card { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 10px; }
+    .stock-card { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(255,255,255,0.015); border: 1px solid var(--border); border-radius: 8px; }
 
-    /* Modal de Detalhes */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 200; justify-content: center; align-items: flex-end; }
+    /* Modal */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(5px); z-index: 200; justify-content: center; align-items: flex-end; }
     .modal-overlay.open { display: flex; }
-    .modal-content { background: var(--card-bg); width: 100%; max-width: 600px; border-radius: 20px 20px 0 0; padding: 24px 20px 30px; border-top: 1px solid var(--card-border); display: flex; flex-direction: column; gap: 16px; animation: slideUp 0.25s ease-out; }
-    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-    .modal-row { display: flex; justify-content: space-between; font-size: 0.85rem; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-    .modal-row span { color: var(--text-muted); }
-    .modal-row strong { color: var(--text); }
+    .modal-content { background: var(--card-bg); width: 100%; max-width: 520px; border-radius: 16px 16px 0 0; padding: 24px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 14px; }
+    .modal-row { display: flex; justify-content: space-between; font-size: 0.82rem; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .modal-row span { color: var(--text-dim); }
 
-    /* Bottom Navigation Bar (6 Botões) */
-    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #111827; border-top: 1px solid var(--card-border); display: flex; justify-content: space-around; padding: 8px 0 calc(env(safe-area-inset-bottom, 0px) + 8px); z-index: 100; }
-    .nav-btn { background: none; border: none; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.58rem; cursor: pointer; width: 16%; }
-    .nav-btn i { font-size: 1.2rem; }
+    /* Navigation */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #0c111d; border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 8px 0 calc(env(safe-area-inset-bottom, 0px) + 8px); z-index: 100; }
+    .nav-btn { background: none; border: none; color: var(--text-dim); display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.62rem; cursor: pointer; width: 16%; transition: color 0.15s; }
+    .nav-btn i { font-size: 1.25rem; }
     .nav-btn.active { color: var(--primary); font-weight: 600; }
+
+    /* ========================================================
+       DESKTOP - BENTO GRID COMPACTO E ENCOSTADO
+       ======================================================== */
+    @media (min-width: 900px) {
+      body { padding-bottom: 24px; }
+      .container { padding: 20px; }
+
+      header { 
+        flex-direction: row; 
+        justify-content: space-between; 
+        align-items: center; 
+        border-radius: 10px;
+        margin-bottom: 1px;
+      }
+      .pets-badge-container { margin-left: auto; margin-right: 24px; }
+
+      .period-selector { 
+        border-radius: 10px; 
+        margin-bottom: 12px;
+        justify-content: center;
+        gap: 24px;
+      }
+      .period-title { font-size: 1rem; }
+
+      /* Malha Contínua Encostada (Bento Grid) */
+      #view-home.active {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1px;
+        background-color: var(--border);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      #view-home .card,
+      #view-home .patrimonio-card,
+      #view-home .faturas-total-card {
+        border-radius: 0;
+        border: none;
+        height: 100%;
+      }
+
+      /* Posicionamento dos Quadros */
+      .card-span-2 { grid-column: span 2; }
+      .card-span-4 { grid-column: span 4; }
+
+      /* Formulários Desktop */
+      #view-lancar.active,
+      #view-transfer.active,
+      #view-invest.active,
+      #view-batch.active,
+      #view-extrato.active {
+        display: flex;
+        justify-content: center;
+      }
+
+      #view-lancar .card,
+      #view-transfer .card,
+      #view-invest .card,
+      #view-batch .card,
+      #view-extrato .card {
+        width: 100%;
+        max-width: 980px;
+      }
+
+      /* Barra de Navegação Superior Integrada no PC */
+      .bottom-nav {
+        position: static;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        max-width: 1440px;
+        margin: 0 auto 12px auto;
+        padding: 6px 12px;
+        justify-content: flex-start;
+        gap: 8px;
+      }
+      .nav-btn {
+        flex-direction: row;
+        width: auto;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 0.82rem;
+        gap: 8px;
+      }
+      .nav-btn.active {
+        background: var(--primary-dim);
+      }
+      .nav-btn i { font-size: 1.05rem; }
+
+      .modal-overlay { align-items: center; }
+      .modal-content { border-radius: 12px; }
+    }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <!-- Header Customizado Apto 708 Torre 2 + Nuvem Sincronizada -->
+  
+  <!-- Navegação Superior Desktop / Inferior Mobile -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" onclick="switchTab('home', this)">
+      <i class="ph ph-squares-four"></i>
+      <span>Painel</span>
+    </button>
+    <button class="nav-btn" onclick="switchTab('lancar', this)">
+      <i class="ph ph-plus-circle"></i>
+      <span>Lançamento</span>
+    </button>
+    <button class="nav-btn" onclick="switchTab('transfer', this)">
+      <i class="ph ph-arrows-left-right"></i>
+      <span>Transferência</span>
+    </button>
+    <button class="nav-btn" onclick="switchTab('batch', this)">
+      <i class="ph ph-stack"></i>
+      <span>Lote</span>
+    </button>
+    <button class="nav-btn" onclick="switchTab('invest', this)">
+      <i class="ph ph-chart-line-up"></i>
+      <span>Bolsa</span>
+    </button>
+    <button class="nav-btn" onclick="switchTab('extrato', this)">
+      <i class="ph ph-receipt"></i>
+      <span>Extrato</span>
+    </button>
+  </nav>
+
+  <!-- Header -->
   <header>
     <div class="header-top">
       <div class="header-title">
         <h1>Apto 708 • Torre 2</h1>
         <p id="current-date">Hoje: --/--/----</p>
       </div>
-      <div class="sync-status">
-        <div class="sync-dot"></div>
-        <span id="sync-text">Sincronizado na Nuvem</span>
-      </div>
     </div>
     
     <div class="pets-badge-container">
       <div class="pet-chip">
-        <div class="pet-avatar" style="background: rgba(245, 158, 11, 0.2); color: var(--grooth);">🐱</div>
+        <div class="pet-avatar" style="background: rgba(245, 158, 11, 0.2); color: var(--orange);">🐱</div>
         <span>Grooth</span>
       </div>
       <div class="pet-chip">
-        <div class="pet-avatar" style="background: rgba(16, 185, 129, 0.2); color: var(--gamora);">🐱</div>
+        <div class="pet-avatar" style="background: rgba(16, 185, 129, 0.2); color: var(--green);">🐱</div>
         <span>Gamora</span>
       </div>
-      <span style="font-size: 0.68rem; color: var(--text-muted); margin-left: auto;">Painel do Lar</span>
+    </div>
+
+    <div class="sync-status">
+      <div class="sync-dot"></div>
+      <span id="sync-text">Sincronizado na Nuvem</span>
     </div>
   </header>
 
-  <!-- SELETOR DE MÊS E FATURA GLOBAL -->
+  <!-- SELETOR DE MÊS -->
   <div class="period-selector">
     <button class="period-nav-btn" onclick="changeSelectedMonth(-1)"><i class="ph ph-caret-left"></i></button>
     <div class="period-title">
@@ -187,164 +327,150 @@
     <button class="period-nav-btn" onclick="changeSelectedMonth(1)"><i class="ph ph-caret-right"></i></button>
   </div>
 
-  <!-- Banner de Aviso de Limites -->
   <div id="alert-banner" class="alert-banner"></div>
 
-  <!-- VIEW 1: PAINEL GERAL (HOME) -->
+  <!-- VIEW 1: PAINEL GERAL (BENTO GRID) -->
   <div id="view-home" class="view-panel active">
-    <!-- Patrimônio Consolidado -->
-    <div class="patrimonio-card">
-      <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Patrimônio Líquido Total</span>
-      <div class="patrimonio-val" id="kpi-patrimonio-total">R$ 0,00</div>
-      <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">Conta + Guardado + Reserva Segurança + Bolsa B3</p>
+    
+    <!-- Linha 1: Indicadores Principais -->
+    <div class="card patrimonio-card">
+      <span class="kpi-title">Patrimônio Líquido</span>
+      <div class="kpi-val" id="kpi-patrimonio-total">R$ 0,00</div>
+      <p class="kpi-sub">Conta + Guardado + Reserva + B3</p>
     </div>
 
-    <!-- Total Consolidado em Faturas de Cartão -->
-    <div class="faturas-total-card">
-      <div>
-        <span style="font-size: 0.75rem; color: #cbd5e1; text-transform: uppercase; font-weight: 600;">Total Faturas do Ciclo Selecionado</span>
-        <p style="font-size: 0.7rem; color: var(--text-muted);">Santander + Nubank + Mercado Pago</p>
-      </div>
-      <div class="faturas-total-val" id="kpi-total-faturas">R$ 0,00</div>
+    <div class="card faturas-total-card">
+      <span class="kpi-title">Faturas do Ciclo</span>
+      <div class="kpi-val" id="kpi-total-faturas">R$ 0,00</div>
+      <p class="kpi-sub">Santander + Nubank + Mercado Pago</p>
     </div>
 
-    <!-- Saldos e Reservas -->
-    <div class="grid-2">
-      <div class="kpi-mini">
-        <span><i class="ph ph-wallet"></i> Saldo em Conta</span>
-        <strong id="kpi-saldo-conta" style="color: #60a5fa;">R$ 0,00</strong>
-      </div>
-      <div class="kpi-mini">
-        <span><i class="ph ph-vault"></i> Dinheiro Guardado</span>
-        <strong id="kpi-guardado" style="color: var(--invest);">R$ 0,00</strong>
-      </div>
-    </div>
-
-    <!-- Reserva de Segurança & Bolsa B3 -->
-    <div class="grid-2">
-      <div class="kpi-mini" style="border-left: 3px solid var(--security);">
-        <span><i class="ph ph-shield-check"></i> Reserva de Segurança</span>
-        <strong id="kpi-reserva" style="color: var(--security);">R$ 0,00</strong>
-      </div>
-      <div class="kpi-mini" style="border-left: 3px solid var(--invest);">
-        <span><i class="ph ph-chart-line-up"></i> Investimentos (Bolsa)</span>
-        <strong id="kpi-total-acoes" style="color: #c4b5fd;">R$ 0,00</strong>
-      </div>
-    </div>
-
-    <!-- SEÇÃO: CONSUMO DE LIMITES DOS CARTÕES (Fatura Aberta) -->
     <div class="card">
-      <div class="card-header">
-        <span>Faturas & Limites do Período</span>
-        <span style="font-size: 0.7rem; color: var(--text-muted);" id="fatura-ciclo-label">Fecha todo dia 18</span>
-      </div>
-
-      <!-- Santander -->
-      <div class="card-limit-box" style="border-left: 3px solid var(--santander);">
-        <div class="card-limit-header">
-          <span style="color: #fca5a5;">Santander (Vence dia 25)</span>
-          <span id="limit-santander-pct" style="font-size:0.75rem;">0%</span>
+      <span class="kpi-title">Disponibilidade</span>
+      <div class="kpi-mini-grid" style="margin-top: 6px;">
+        <div class="kpi-mini">
+          <span><i class="ph ph-wallet"></i> Em Conta</span>
+          <strong id="kpi-saldo-conta" style="color: #60a5fa;">R$ 0,00</strong>
         </div>
-        <div class="progress-bar-bg">
-          <div id="bar-santander" class="progress-bar-fill" style="background: var(--santander); width: 0%;"></div>
-        </div>
-        <div class="limit-info-row">
-          <span>Gasto na fatura: <strong id="val-santander" style="color:#fff;">R$ 0,00</strong></span>
-          <span>Disponível: <strong id="disp-santander" style="color:var(--green);">R$ 0,00</strong></span>
-        </div>
-      </div>
-
-      <!-- Nubank -->
-      <div class="card-limit-box" style="border-left: 3px solid var(--nubank);">
-        <div class="card-limit-header">
-          <span style="color: #d8b4fe;">Nubank (Vence dia 25)</span>
-          <span id="limit-nubank-pct" style="font-size:0.75rem;">0%</span>
-        </div>
-        <div class="progress-bar-bg">
-          <div id="bar-nubank" class="progress-bar-fill" style="background: var(--nubank); width: 0%;"></div>
-        </div>
-        <div class="limit-info-row">
-          <span>Gasto na fatura: <strong id="val-nubank" style="color:#fff;">R$ 0,00</strong></span>
-          <span>Disponível: <strong id="disp-nubank" style="color:var(--green);">R$ 0,00</strong></span>
-        </div>
-      </div>
-
-      <!-- Mercado Pago -->
-      <div class="card-limit-box" style="border-left: 3px solid var(--mercadopago);">
-        <div class="card-limit-header">
-          <span style="color: #7dd3fc;">Mercado Pago (Vence dia 20)</span>
-          <span id="limit-mp-pct" style="font-size:0.75rem;">0%</span>
-        </div>
-        <div class="progress-bar-bg">
-          <div id="bar-mp" class="progress-bar-fill" style="background: var(--mercadopago); width: 0%;"></div>
-        </div>
-        <div class="limit-info-row">
-          <span>Gasto na fatura: <strong id="val-mp" style="color:#fff;">R$ 0,00</strong></span>
-          <span>Disponível: <strong id="disp-mp" style="color:var(--green);">R$ 0,00</strong></span>
+        <div class="kpi-mini">
+          <span><i class="ph ph-vault"></i> Guardado</span>
+          <strong id="kpi-guardado" style="color: var(--invest);">R$ 0,00</strong>
         </div>
       </div>
     </div>
 
-    <!-- Gastos em Débito e PIX do Mês -->
-    <div class="grid-2">
-      <div class="kpi-mini">
-        <span><i class="ph ph-arrows-down-up"></i> Gasto em PIX (Período)</span>
-        <strong id="kpi-pix-mes" style="color: var(--pix);">R$ 0,00</strong>
-      </div>
-      <div class="kpi-mini">
-        <span><i class="ph ph-credit-card"></i> Débito em Conta (Período)</span>
-        <strong id="kpi-debito-mes" style="color: #93c5fd;">R$ 0,00</strong>
-      </div>
-    </div>
-
-    <!-- Gráficos -->
     <div class="card">
-      <div class="card-header">
-        <span>1. Divisão por Modalidade (Período)</span>
+      <span class="kpi-title">Reservas & Bolsa</span>
+      <div class="kpi-mini-grid" style="margin-top: 6px;">
+        <div class="kpi-mini">
+          <span><i class="ph ph-shield-check"></i> Segurança</span>
+          <strong id="kpi-reserva" style="color: var(--security);">R$ 0,00</strong>
+        </div>
+        <div class="kpi-mini">
+          <span><i class="ph ph-trend-up"></i> Ações B3</span>
+          <strong id="kpi-total-acoes" style="color: #c4b5fd;">R$ 0,00</strong>
+        </div>
       </div>
-      <div style="position: relative; height: 180px;">
+    </div>
+
+    <!-- Linha 2: Faturas de Cartão e Saídas Rápidas -->
+    <div class="card card-span-2">
+      <div class="card-header">
+        <span>Cartões de Crédito</span>
+        <span style="font-size: 0.7rem; color: var(--text-dim);" id="fatura-ciclo-label">Ciclo</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div class="card-limit-box" style="border-left: 2px solid var(--santander);">
+          <div class="card-limit-header">
+            <span style="color: #fca5a5;">Santander (Vence 25)</span>
+            <span id="limit-santander-pct" style="color: var(--text-dim); font-size:0.75rem;">0%</span>
+          </div>
+          <div class="progress-bar-bg"><div id="bar-santander" class="progress-bar-fill" style="background: var(--santander); width: 0%;"></div></div>
+          <div class="limit-info-row">
+            <span>Fatura: <strong id="val-santander" style="color:#fff;">R$ 0,00</strong></span>
+            <span>Disponível: <strong id="disp-santander" style="color:var(--green);">R$ 0,00</strong></span>
+          </div>
+        </div>
+
+        <div class="card-limit-box" style="border-left: 2px solid var(--nubank);">
+          <div class="card-limit-header">
+            <span style="color: #d8b4fe;">Nubank (Vence 25)</span>
+            <span id="limit-nubank-pct" style="color: var(--text-dim); font-size:0.75rem;">0%</span>
+          </div>
+          <div class="progress-bar-bg"><div id="bar-nubank" class="progress-bar-fill" style="background: var(--nubank); width: 0%;"></div></div>
+          <div class="limit-info-row">
+            <span>Fatura: <strong id="val-nubank" style="color:#fff;">R$ 0,00</strong></span>
+            <span>Disponível: <strong id="disp-nubank" style="color:var(--green);">R$ 0,00</strong></span>
+          </div>
+        </div>
+
+        <div class="card-limit-box" style="border-left: 2px solid var(--mercadopago);">
+          <div class="card-limit-header">
+            <span style="color: #7dd3fc;">Mercado Pago (Vence 20)</span>
+            <span id="limit-mp-pct" style="color: var(--text-dim); font-size:0.75rem;">0%</span>
+          </div>
+          <div class="progress-bar-bg"><div id="bar-mp" class="progress-bar-fill" style="background: var(--mercadopago); width: 0%;"></div></div>
+          <div class="limit-info-row">
+            <span>Fatura: <strong id="val-mp" style="color:#fff;">R$ 0,00</strong></span>
+            <span>Disponível: <strong id="disp-mp" style="color:var(--green);">R$ 0,00</strong></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagamentos à Vista e Top Gastos -->
+    <div class="card">
+      <div class="card-header"><span>Saídas à Vista (Mês)</span></div>
+      <div class="kpi-mini-grid" style="margin-top: 6px;">
+        <div class="kpi-mini">
+          <span><i class="ph ph-arrows-down-up"></i> PIX</span>
+          <strong id="kpi-pix-mes" style="color: var(--pix);">R$ 0,00</strong>
+        </div>
+        <div class="kpi-mini">
+          <span><i class="ph ph-credit-card"></i> Débito</span>
+          <strong id="kpi-debito-mes" style="color: #93c5fd;">R$ 0,00</strong>
+        </div>
+      </div>
+      <div style="position: relative; height: 140px; margin-top: 10px;">
         <canvas id="chartDespesas"></canvas>
       </div>
     </div>
 
     <div class="card">
-      <div class="card-header">
-        <span>2. Despesas por Categoria (Apto 708)</span>
-      </div>
-      <div style="position: relative; height: 210px;">
-        <canvas id="chartCategorias"></canvas>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header">
-        <span>3. Fluxo e Volume Diário</span>
-      </div>
-      <div style="position: relative; height: 180px;">
-        <canvas id="chartEvolucao"></canvas>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header">
-        <span>4. Top Maiores Gastos do Período</span>
-      </div>
+      <div class="card-header"><span>Top 5 Maiores Gastos</span></div>
       <div style="position: relative; height: 210px;">
         <canvas id="chartTopGastos"></canvas>
       </div>
     </div>
+
+    <!-- Linha 3: Gráficos de Categorias e Evolução Temporal -->
+    <div class="card card-span-2">
+      <div class="card-header"><span>Despesas por Categoria</span></div>
+      <div style="position: relative; height: 220px;">
+        <canvas id="chartCategorias"></canvas>
+      </div>
+    </div>
+
+    <div class="card card-span-2">
+      <div class="card-header"><span>Volume e Fluxo Diário</span></div>
+      <div style="position: relative; height: 220px;">
+        <canvas id="chartEvolucao"></canvas>
+      </div>
+    </div>
+
   </div>
 
   <!-- VIEW 2: LANÇAR GASTO INDIVIDUAL -->
   <div id="view-lancar" class="view-panel">
     <div class="card">
-      <div class="card-header">Lançamento Rápido</div>
+      <div class="card-header"><span>Novo Lançamento</span></div>
       <form id="form-tx">
         <div class="form-group">
-          <label>Descrição do Gasto / Receita</label>
-          <input type="text" id="tx-desc" placeholder="Ex: Mercado Atacadão, Sachê Pets, Uber, Salário" required>
+          <label>Descrição</label>
+          <input type="text" id="tx-desc" placeholder="Ex: Mercado, Combustível, Assinatura" required>
         </div>
-        <div class="grid-2">
+        <div class="filter-controls" style="margin-top: 8px;">
           <div class="form-group">
             <label>Valor (R$)</label>
             <input type="number" step="0.01" id="tx-valor" placeholder="0,00" required>
@@ -355,42 +481,42 @@
           </div>
         </div>
 
-        <div class="form-group">
-          <label>Categoria do Gasto</label>
+        <div class="form-group" style="margin-top: 8px;">
+          <label>Categoria</label>
           <select id="tx-categoria" required>
             <option value="Mercado">🛒 Mercado & Supermercado</option>
             <option value="Pets">🐱 Pets (Grooth & Gamora)</option>
             <option value="Moradia">🏠 Moradia (Aluguel, Condomínio, IPTU)</option>
             <option value="Utilidades">💡 Utilidades (Luz, Água, Gás, Internet)</option>
             <option value="Transporte">🚗 Transporte, Combustível & Estacionamento</option>
-            <option value="Aplicativos">📱 Assinaturas & Apps (Streaming, Celular)</option>
+            <option value="Aplicativos">📱 Assinaturas & Apps</option>
             <option value="Lazer">🍿 Lazer, Restaurantes & Delivery</option>
-            <option value="Farmacia">💊 Farmácia & Cuidados de Saúde</option>
-            <option value="Cuidados">💈 Cuidados Pessoais & Barbearia</option>
+            <option value="Farmacia">💊 Farmácia & Saúde</option>
+            <option value="Cuidados">💈 Cuidados Pessoais</option>
             <option value="Vestuario">👕 Roupas & Calçados</option>
             <option value="Educacao">📚 Cursos & Educação</option>
-            <option value="Manutencao">🛠️ Manutenção & Reparos do Lar</option>
+            <option value="Manutencao">🛠️ Manutenção do Lar</option>
             <option value="Viagem">✈️ Viagens & Passeios</option>
-            <option value="Variavel">💎 Outros Gastos Variáveis</option>
+            <option value="Variavel">💎 Outros Gastos</option>
             <option value="Patrimonio">💰 Poupança / Reserva</option>
             <option value="Receita">💵 Salário / Recebível</option>
           </select>
         </div>
 
-        <div class="form-group">
-          <label>Modalidade de Pagamento / Entrada</label>
+        <div class="form-group" style="margin-top: 8px;">
+          <label>Modalidade</label>
           <select id="tx-modalidade" onchange="checkParcelas()">
-            <option value="pix">PIX (Abate saldo da conta)</option>
+            <option value="pix">PIX (Abate saldo)</option>
             <option value="debito">Cartão Débito (Abate saldo)</option>
-            <option value="santander">Crédito Santander (Fatura - Fecha 18 / Vence 25)</option>
-            <option value="nubank">Crédito Nubank (Fatura - Fecha 18 / Vence 25)</option>
-            <option value="mercadopago">Crédito Mercado Pago (Fatura - Fecha 18 / Vence 20)</option>
-            <option value="receita_junior">Recebimento: Junior (Fim do Mês / Dia 15)</option>
-            <option value="receita_luana">Recebimento: Luana (Dia 5 / Dia 20)</option>
+            <option value="santander">Crédito Santander (Fecha 18 / Vence 25)</option>
+            <option value="nubank">Crédito Nubank (Fecha 18 / Vence 25)</option>
+            <option value="mercadopago">Crédito Mercado Pago (Fecha 18 / Vence 20)</option>
+            <option value="receita_junior">Recebimento: Junior</option>
+            <option value="receita_luana">Recebimento: Luana</option>
           </select>
         </div>
 
-        <div class="form-group" id="group-parcelas" style="display:none;">
+        <div class="form-group" id="group-parcelas" style="display:none; margin-top: 8px;">
           <label>Parcelamento</label>
           <select id="tx-parcelas">
             <option value="1">1x (À vista)</option>
@@ -404,164 +530,150 @@
           </select>
         </div>
 
-        <button type="submit" class="btn-main">
-          <i class="ph ph-cloud-arrow-up"></i> Salvar Lançamento
+        <button type="submit" class="btn-main" style="margin-top: 14px;">
+          <i class="ph ph-check"></i> Salvar Lançamento
         </button>
       </form>
-    </div>
 
-    <!-- Ajustar Limites Totais -->
-    <div class="card">
-      <div class="card-header">Configurar Limite dos Cartões</div>
-      <form id="form-limits">
-        <div class="form-group">
-          <label>Limite Total Santander (R$)</label>
-          <input type="number" step="100" id="lim-santander-input" required>
-        </div>
-        <div class="form-group">
-          <label>Limite Total Nubank (R$)</label>
-          <input type="number" step="100" id="lim-nubank-input" required>
-        </div>
-        <div class="form-group">
-          <label>Limite Total Mercado Pago (R$)</label>
-          <input type="number" step="100" id="lim-mp-input" required>
-        </div>
-        <button type="submit" class="btn-main" style="background:#475569; padding:10px; font-size:0.85rem;">
-          <i class="ph ph-sliders"></i> Sincronizar Novos Limites
-        </button>
-      </form>
+      <div style="border-top: 1px solid var(--border); padding-top: 16px; margin-top: 12px;">
+        <div class="card-header"><span>Limites dos Cartões</span></div>
+        <form id="form-limits" style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+          <div class="filter-controls">
+            <input type="number" step="100" id="lim-santander-input" placeholder="Santander R$" required>
+            <input type="number" step="100" id="lim-nubank-input" placeholder="Nubank R$" required>
+          </div>
+          <input type="number" step="100" id="lim-mp-input" placeholder="Mercado Pago R$" required>
+          <button type="submit" class="btn-main" style="background: rgba(255,255,255,0.06); font-size: 0.8rem;">
+            Atualizar Limites
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 
-  <!-- VIEW 3: MOVIMENTAR / TRANSFERIR SALDOS & RESERVAS -->
+  <!-- VIEW 3: TRANSFERÊNCIA -->
   <div id="view-transfer" class="view-panel">
     <div class="card">
-      <div class="card-header">
-        <span>Movimentação entre Saldos & Reservas</span>
-      </div>
-      <p style="font-size:0.75rem; color:var(--text-muted);">Transfira valores entre Conta Corrente, Dinheiro Guardado e Reserva de Segurança sem afetar as despesas do mês.</p>
+      <div class="card-header"><span>Movimentação entre Contas</span></div>
+      <p style="font-size:0.75rem; color:var(--text-dim);">Transfira valores entre Caixas e Reservas sem registrar como despesa.</p>
 
-      <form id="form-transfer">
-        <div class="form-group">
-          <label>Origem (De onde sai o dinheiro?)</label>
-          <select id="transf-origem" required>
-            <option value="conta">Saldo em Conta Corrente</option>
-            <option value="guardado">Dinheiro Guardado</option>
-            <option value="reserva">Reserva de Segurança</option>
-          </select>
+      <form id="form-transfer" style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+        <div class="filter-controls">
+          <div class="form-group">
+            <label>Origem</label>
+            <select id="transf-origem" required>
+              <option value="conta">Conta Corrente</option>
+              <option value="guardado">Dinheiro Guardado</option>
+              <option value="reserva">Reserva de Segurança</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Destino</label>
+            <select id="transf-destino" required>
+              <option value="reserva">Reserva de Segurança</option>
+              <option value="guardado">Dinheiro Guardado</option>
+              <option value="conta">Conta Corrente</option>
+            </select>
+          </div>
         </div>
 
         <div class="form-group">
-          <label>Destino (Para onde vai o dinheiro?)</label>
-          <select id="transf-destino" required>
-            <option value="reserva">Reserva de Segurança</option>
-            <option value="guardado">Dinheiro Guardado</option>
-            <option value="conta">Saldo em Conta Corrente</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Valor da Transferência (R$)</label>
+          <label>Valor (R$)</label>
           <input type="number" step="0.01" id="transf-valor" placeholder="0,00" required>
         </div>
 
         <div class="form-group">
-          <label>Descrição Opcional</label>
-          <input type="text" id="transf-desc" placeholder="Ex: Aporte mensal na Reserva, Resgate para compras">
+          <label>Descrição</label>
+          <input type="text" id="transf-desc" placeholder="Ex: Aporte Mensal">
         </div>
 
         <button type="submit" class="btn-main" style="background: var(--invest);">
-          <i class="ph ph-arrows-left-right"></i> Confirmar Movimentação
+          <i class="ph ph-arrows-left-right"></i> Confirmar Transferência
         </button>
       </form>
     </div>
   </div>
 
-  <!-- VIEW 4: LANÇAMENTO EM LOTE (MÚLTIPLOS ITENS) -->
+  <!-- VIEW 4: LANÇAMENTO EM LOTE -->
   <div id="view-batch" class="view-panel">
     <div class="card">
       <div class="card-header">
-        <span>Lançamento em Lote (Vários de uma vez)</span>
-        <span style="font-size:0.7rem; color:var(--text-muted);" id="batch-total-preview">Total: R$ 0,00</span>
+        <span>Lançamento em Lote</span>
+        <span style="font-size:0.75rem; color:var(--green);" id="batch-total-preview">Total: R$ 0,00</span>
       </div>
       
-      <div class="grid-2" style="margin-bottom: 6px;">
-        <div class="form-group">
-          <label>Data dos Lançamentos</label>
+      <div class="filter-controls" style="align-items: flex-end; margin-bottom: 12px;">
+        <div class="form-group" style="width: 100%;">
+          <label>Data Geral</label>
           <input type="date" id="batch-global-date" required>
         </div>
-        <div class="form-group" style="justify-content: flex-end;">
-          <button type="button" class="btn-add-row" onclick="addBatchRow()" style="height: 44px;">
-            <i class="ph ph-plus"></i> Nova Linha
-          </button>
-        </div>
+        <button type="button" class="btn-add-row" onclick="addBatchRow()" style="height: 38px; width: 100%;">
+          <i class="ph ph-plus"></i> Linha
+        </button>
       </div>
 
       <form id="form-batch">
-        <div id="batch-rows-container" style="display:flex; flex-direction:column; gap:8px;"></div>
-
-        <button type="submit" class="btn-main" style="margin-top:10px; background:var(--green);">
-          <i class="ph ph-check-square-offset"></i> Salvar Todos os Lançamentos
+        <div id="batch-rows-container" style="display:flex; flex-direction:column; gap:6px;"></div>
+        <button type="submit" class="btn-main" style="margin-top:14px; background:var(--green);">
+          <i class="ph ph-check"></i> Processar Lote
         </button>
       </form>
     </div>
   </div>
 
-  <!-- VIEW 5: INVESTIMENTOS & BOLSA (B3) EM TEMPO REAL -->
+  <!-- VIEW 5: BOLSA B3 -->
   <div id="view-invest" class="view-panel">
     <div class="card">
       <div class="card-header">
-        <span>Carteira de Ações / FIIs (B3)</span>
+        <span>Carteira B3</span>
         <button onclick="atualizarCotacoes()" style="background:none; border:none; color:var(--primary); cursor:pointer; font-size:0.8rem; display:flex; align-items:center; gap:4px;">
           <i class="ph ph-arrows-clockwise" id="icon-refresh"></i> Atualizar
         </button>
       </div>
-      <p style="font-size: 0.75rem; color: var(--text-muted);">Cotações sincronizadas via API pública da B3 em tempo real.</p>
       
-      <div class="kpi-mini" style="background: rgba(139,92,246,0.1); border-color: var(--invest);">
-        <span>Total Investido em Ações</span>
-        <strong id="kpi-total-acoes-view" style="color: #c4b5fd; font-size:1.2rem;">R$ 0,00</strong>
+      <div class="kpi-mini" style="background: rgba(139,92,246,0.06); border-color: rgba(139,92,246,0.2);">
+        <span style="color: #c4b5fd;">Total em Ações</span>
+        <strong id="kpi-total-acoes-view" style="color: #c4b5fd; font-size:1.3rem;">R$ 0,00</strong>
       </div>
 
-      <form id="form-stock" style="margin-top: 6px; display:flex; flex-direction:column; gap:8px;">
-        <div class="grid-2">
-          <input type="text" id="stock-ticker" placeholder="Código (Ex: PETR4, VALE3)" style="text-transform:uppercase;" required>
-          <input type="number" id="stock-qtd" placeholder="Qtd. Ações" min="1" required>
+      <form id="form-stock" style="display:flex; flex-direction:column; gap:8px; margin-top: 10px;">
+        <div class="filter-controls">
+          <input type="text" id="stock-ticker" placeholder="Ticker (PETR4)" style="text-transform:uppercase;" required>
+          <input type="number" id="stock-qtd" placeholder="Qtd" min="1" required>
         </div>
-        <div class="grid-2">
+        <div class="filter-controls">
           <input type="number" step="0.01" id="stock-pm" placeholder="Preço Médio (R$)" required>
-          <button type="submit" class="btn-main" style="padding:10px; font-size:0.85rem;">Adicionar Ativo</button>
+          <button type="submit" class="btn-main" style="padding: 9px; font-size:0.8rem;">Adicionar Ativo</button>
         </div>
       </form>
 
-      <div id="stock-list" style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;"></div>
+      <div id="stock-list" style="display: flex; flex-direction: column; gap: 6px; margin-top: 10px;"></div>
     </div>
   </div>
 
-  <!-- VIEW 6: HISTÓRICO & EXTRATO COM FILTROS AVANÇADOS -->
+  <!-- VIEW 6: EXTRATO -->
   <div id="view-extrato" class="view-panel">
     <div class="card">
       <div class="card-header">
-        <span>Histórico & Filtros</span>
-        <span style="font-size:0.75rem; color:var(--text-muted);" id="tx-count">0 registros</span>
+        <span>Histórico de Lançamentos</span>
+        <span style="font-size:0.75rem; color:var(--text-dim);" id="tx-count">0 itens</span>
       </div>
 
-      <!-- Controles de Filtro -->
       <div class="filter-controls">
         <select id="filter-periodo" onchange="renderExtrato()">
-          <option value="mes_selecionado">📅 Apenas no Mês Selecionado</option>
-          <option value="todos">🌍 Todo o Histórico Completo</option>
+          <option value="mes_selecionado">📅 Mês Selecionado</option>
+          <option value="todos">🌍 Todo o Histórico</option>
           <option value="ultimos_30">⚡ Últimos 30 Dias</option>
         </select>
         <select id="filter-modalidade" onchange="renderExtrato()">
           <option value="todas">💳 Todas Modalidades</option>
           <option value="pix">PIX</option>
-          <option value="debito">Débito em Conta</option>
-          <option value="santander">Fatura Santander</option>
-          <option value="nubank">Fatura Nubank</option>
-          <option value="mercadopago">Fatura Mercado Pago</option>
-          <option value="transferencia">Movimentações</option>
-          <option value="receita">Receitas / Salários</option>
+          <option value="debito">Débito</option>
+          <option value="santander">Santander</option>
+          <option value="nubank">Nubank</option>
+          <option value="mercadopago">Mercado Pago</option>
+          <option value="transferencia">Transferências</option>
+          <option value="receita">Receitas</option>
         </select>
       </div>
 
@@ -583,64 +695,37 @@
           <option value="Viagem">✈️ Viagem</option>
           <option value="Variavel">💎 Outros</option>
         </select>
-        <input type="text" id="filter-search" placeholder="🔍 Buscar por nome..." oninput="renderExtrato()" style="padding: 8px 10px; font-size: 0.8rem;">
+        <input type="text" id="filter-search" placeholder="🔍 Buscar por nome..." oninput="renderExtrato()">
       </div>
 
-      <div id="extrato-list" style="display:flex; flex-direction:column; gap:6px; margin-top: 4px;"></div>
+      <div id="extrato-list" style="display:flex; flex-direction:column; gap:6px; margin-top: 6px;"></div>
     </div>
   </div>
+
 </div>
 
-<!-- Modal Detalhes do Item -->
+<!-- Modal Detalhes -->
 <div id="itemModal" class="modal-overlay" onclick="closeModal(event)">
   <div class="modal-content" onclick="event.stopPropagation()">
     <div style="display:flex; justify-content:space-between; align-items:center;">
-      <h3 id="modal-desc" style="font-size:1.1rem; font-weight:700;">Detalhes do Lançamento</h3>
-      <button onclick="fecharModalDireto()" style="background:none; border:none; color:var(--text-muted); font-size:1.2rem; cursor:pointer;">✕</button>
+      <h3 id="modal-desc" style="font-size:1rem; font-weight:700;">Detalhes</h3>
+      <button onclick="fecharModalDireto()" style="background:none; border:none; color:var(--text-dim); font-size:1.2rem; cursor:pointer;">✕</button>
     </div>
     
     <div>
-      <div class="modal-row"><span>Valor:</span> <strong id="modal-val" style="font-size:1rem;"></strong></div>
+      <div class="modal-row"><span>Valor:</span> <strong id="modal-val"></strong></div>
       <div class="modal-row"><span>Categoria:</span> <strong id="modal-cat" style="color:var(--primary);"></strong></div>
-      <div class="modal-row"><span>Data do Registro:</span> <strong id="modal-data"></strong></div>
+      <div class="modal-row"><span>Data:</span> <strong id="modal-data"></strong></div>
       <div class="modal-row"><span>Modalidade:</span> <strong id="modal-mod"></strong></div>
-      <div class="modal-row"><span>Impacto no Caixa / Limite:</span> <strong id="modal-impacto"></strong></div>
-      <div class="modal-row"><span>Ciclo de Fatura:</span> <strong id="modal-fatura"></strong></div>
+      <div class="modal-row"><span>Impacto:</span> <strong id="modal-impacto"></strong></div>
+      <div class="modal-row"><span>Fatura:</span> <strong id="modal-fatura"></strong></div>
     </div>
 
-    <button id="modal-btn-del" class="btn-main" style="background:var(--red); padding:10px; font-size:0.85rem;">
+    <button id="modal-btn-del" class="btn-main" style="background:var(--red); padding:10px; font-size:0.8rem;">
       <i class="ph ph-trash"></i> Excluir Lançamento
     </button>
   </div>
 </div>
-
-<!-- Mobile Bottom Bar (6 Abas) -->
-<nav class="bottom-nav">
-  <button class="nav-btn active" onclick="switchTab('home', this)">
-    <i class="ph ph-house"></i>
-    <span>Painel</span>
-  </button>
-  <button class="nav-btn" onclick="switchTab('lancar', this)">
-    <i class="ph ph-plus-circle"></i>
-    <span>Individual</span>
-  </button>
-  <button class="nav-btn" onclick="switchTab('transfer', this)">
-    <i class="ph ph-arrows-left-right"></i>
-    <span>Mover</span>
-  </button>
-  <button class="nav-btn" onclick="switchTab('batch', this)">
-    <i class="ph ph-stack"></i>
-    <span>Em Lote</span>
-  </button>
-  <button class="nav-btn" onclick="switchTab('invest', this)">
-    <i class="ph ph-chart-line-up"></i>
-    <span>Bolsa</span>
-  </button>
-  <button class="nav-btn" onclick="switchTab('extrato', this)">
-    <i class="ph ph-receipt"></i>
-    <span>Extrato</span>
-  </button>
-</nav>
 
 <script>
   const firebaseConfig = {
@@ -661,10 +746,9 @@
     db = firebase.firestore();
     useCloud = true;
   } catch (e) {
-    console.warn("Modo local de contingência ativado.", e);
+    console.warn("Modo local de contingência.", e);
   }
 
-  // Estado Global com Navegação Temporal
   let now = new Date();
   let state = {
     selectedMonth: now.getMonth(),
@@ -685,26 +769,25 @@
   let chartCategoriasInstance = null;
   let chartEvolucaoInstance = null;
   let chartTopGastosInstance = null;
-  let selectedTxId = null;
 
   const categoryLabels = {
-    'Mercado': '🛒 Mercado & Supermercado',
-    'Pets': '🐱 Pets (Grooth & Gamora)',
-    'Moradia': '🏠 Moradia (Aluguel/Condomínio)',
-    'Utilidades': '💡 Utilidades (Luz/Água/Net)',
-    'Transporte': '🚗 Transporte & Combustível',
-    'Aplicativos': '📱 Assinaturas & Streaming',
-    'Lazer': '🍿 Lazer & Restaurantes',
-    'Farmacia': '💊 Farmácia & Saúde',
-    'Cuidados': '💈 Cuidados Pessoais',
-    'Vestuario': '👕 Vestuário & Roupas',
-    'Educacao': '📚 Cursos & Educação',
-    'Manutencao': '🛠️ Manutenção do Lar',
-    'Viagem': '✈️ Viagens & Passeios',
-    'Variavel': '💎 Outros Gastos',
-    'Patrimonio': '💰 Poupança / Reserva',
-    'Transferencia': '🔄 Movimentação de Saldos',
-    'Receita': '💵 Receita / Salário'
+    'Mercado': '🛒 Mercado',
+    'Pets': '🐱 Pets',
+    'Moradia': '🏠 Moradia',
+    'Utilidades': '💡 Utilidades',
+    'Transporte': '🚗 Transporte',
+    'Aplicativos': '📱 Assinaturas',
+    'Lazer': '🍿 Lazer',
+    'Farmacia': '💊 Farmácia',
+    'Cuidados': '💈 Cuidados',
+    'Vestuario': '👕 Roupas',
+    'Educacao': '📚 Educação',
+    'Manutencao': '🛠️ Manutenção',
+    'Viagem': '✈️ Viagem',
+    'Variavel': '💎 Outros',
+    'Patrimonio': '💰 Reserva',
+    'Transferencia': '🔄 Transferência',
+    'Receita': '💵 Receita'
   };
 
   const nomesMeses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
@@ -723,9 +806,7 @@
     document.getElementById('current-date').innerText = `Hoje: ${new Date().toLocaleDateString('pt-BR')}`;
     
     updatePeriodLabel();
-
-    for (let i = 0; i < 4; i++) addBatchRow();
-
+    for (let i = 0; i < 3; i++) addBatchRow();
     initCharts();
 
     if (useCloud) {
@@ -739,7 +820,6 @@
     }
   });
 
-  // NAVEGAÇÃO DE PERÍODO (MÊS / ANO)
   function changeSelectedMonth(delta) {
     state.selectedMonth += delta;
     if (state.selectedMonth > 11) {
@@ -760,16 +840,11 @@
   function setupRealtimeListeners() {
     db.collection("apto708_transacoes").onSnapshot((snapshot) => {
       const items = [];
-      snapshot.forEach(doc => {
-        items.push({ idDoc: doc.id, ...doc.data() });
-      });
+      snapshot.forEach(doc => { items.push({ idDoc: doc.id, ...doc.data() }); });
       state.transacoes = items;
       localStorage.setItem('fin_v11_tx', JSON.stringify(state.transacoes));
       renderAll();
-    }, (err) => {
-      console.warn("Aguardando permissões no Firestore...", err);
-      renderAll();
-    });
+    }, (err) => { renderAll(); });
 
     db.collection("apto708_config").doc("limites").onSnapshot((doc) => {
       if (doc.exists) {
@@ -803,7 +878,6 @@
     pGroup.style.display = (mod === 'santander' || mod === 'nubank' || mod === 'mercadopago') ? 'flex' : 'none';
   }
 
-  // --- MOVIMENTAÇÕES ENTRE SALDOS & RESERVAS ---
   document.getElementById('form-transfer').addEventListener('submit', async (e) => {
     e.preventDefault();
     const origem = document.getElementById('transf-origem').value;
@@ -816,8 +890,8 @@
       return;
     }
 
-    const nomes = { 'conta': 'Conta Corrente', 'guardado': 'Dinheiro Guardado', 'reserva': 'Reserva de Segurança' };
-    const desc = customDesc || `Movimentação: ${nomes[origem]} ➔ ${nomes[destino]}`;
+    const nomes = { 'conta': 'Conta', 'guardado': 'Guardado', 'reserva': 'Segurança' };
+    const desc = customDesc || `Mover: ${nomes[origem]} ➔ ${nomes[destino]}`;
     const today = getLocalDateStr();
 
     const item = {
@@ -841,12 +915,10 @@
       renderAll();
     }
 
-    alert("Movimentação registrada com sucesso!");
     document.getElementById('form-transfer').reset();
     switchTab('home', document.querySelectorAll('.nav-btn')[0]);
   });
 
-  // --- GESTÃO DE LANÇAMENTO EM LOTE ---
   function addBatchRow() {
     const container = document.getElementById('batch-rows-container');
     const rowId = Date.now() + Math.random().toString(36).substr(2, 4);
@@ -854,7 +926,7 @@
     row.className = 'batch-row';
     row.id = `row-${rowId}`;
     row.innerHTML = `
-      <input type="text" class="b-desc" placeholder="Descrição (Ex: Mercado, Uber)">
+      <input type="text" class="b-desc" placeholder="Item">
       <input type="number" step="0.01" class="b-val" placeholder="R$ 0,00" oninput="calcBatchTotal()">
       <select class="b-mod">
         <option value="pix">PIX</option>
@@ -866,22 +938,22 @@
         <option value="receita_luana">Rec. Luana</option>
       </select>
       <select class="b-cat">
-        <option value="Mercado">🛒 Mercado</option>
-        <option value="Pets">🐱 Pets</option>
-        <option value="Moradia">🏠 Moradia</option>
-        <option value="Utilidades">💡 Utilidades</option>
-        <option value="Transporte">🚗 Transporte</option>
-        <option value="Aplicativos">📱 Assinaturas</option>
-        <option value="Lazer">🍿 Lazer</option>
-        <option value="Farmacia">💊 Farmácia</option>
-        <option value="Cuidados">💈 Cuidados</option>
-        <option value="Vestuario">👕 Roupas</option>
-        <option value="Educacao">📚 Educação</option>
-        <option value="Manutencao">🛠️ Manutenção</option>
-        <option value="Viagem">✈️ Viagens</option>
-        <option value="Variavel">💎 Outros</option>
-        <option value="Patrimonio">💰 Poupança</option>
-        <option value="Receita">💵 Salário</option>
+        <option value="Mercado">Mercado</option>
+        <option value="Pets">Pets</option>
+        <option value="Moradia">Moradia</option>
+        <option value="Utilidades">Utilidades</option>
+        <option value="Transporte">Transporte</option>
+        <option value="Aplicativos">Assinaturas</option>
+        <option value="Lazer">Lazer</option>
+        <option value="Farmacia">Farmácia</option>
+        <option value="Cuidados">Cuidados</option>
+        <option value="Vestuario">Roupas</option>
+        <option value="Educacao">Educação</option>
+        <option value="Manutencao">Manutenção</option>
+        <option value="Viagem">Viagens</option>
+        <option value="Variavel">Outros</option>
+        <option value="Patrimonio">Poupança</option>
+        <option value="Receita">Salário</option>
       </select>
       <button type="button" class="btn-remove-row" onclick="removeBatchRow('${rowId}')">✕</button>
     `;
@@ -898,9 +970,7 @@
 
   function calcBatchTotal() {
     let tot = 0;
-    document.querySelectorAll('.b-val').forEach(input => {
-      tot += parseFloat(input.value) || 0;
-    });
+    document.querySelectorAll('.b-val').forEach(input => { tot += parseFloat(input.value) || 0; });
     document.getElementById('batch-total-preview').innerText = `Total: ${formatBRL(tot)}`;
   }
 
@@ -930,10 +1000,7 @@
       }
     });
 
-    if (itemsToAdd.length === 0) {
-      alert("Preencha ao menos uma linha com descrição e valor.");
-      return;
-    }
+    if (itemsToAdd.length === 0) return;
 
     if (useCloud) {
       const batch = db.batch();
@@ -948,15 +1015,12 @@
       renderAll();
     }
 
-    alert(`${itemsToAdd.length} lançamento(s) computado(s) com sucesso!`);
     document.getElementById('batch-rows-container').innerHTML = '';
-    for (let i = 0; i < 4; i++) addBatchRow();
+    for (let i = 0; i < 3; i++) addBatchRow();
     calcBatchTotal();
-    renderAll();
     switchTab('home', document.querySelectorAll('.nav-btn')[0]);
   });
 
-  // Atualizar Limites
   document.getElementById('form-limits').addEventListener('submit', async (e) => {
     e.preventDefault();
     const newLimits = {
@@ -972,12 +1036,9 @@
       localStorage.setItem('fin_v11_limits', JSON.stringify(state.limites));
       renderAll();
     }
-
-    alert('Limites dos cartões atualizados e sincronizados!');
-    switchTab('home', document.querySelectorAll('.nav-btn')[0]);
+    alert('Limites atualizados!');
   });
 
-  // Cadastro Individual
   document.getElementById('form-tx').addEventListener('submit', async (e) => {
     e.preventDefault();
     const desc = document.getElementById('tx-desc').value;
@@ -986,7 +1047,6 @@
     const mod = document.getElementById('tx-modalidade').value;
     const cat = document.getElementById('tx-categoria').value;
     const parcelas = parseInt(document.getElementById('tx-parcelas').value) || 1;
-
     const isCartao = (mod === 'santander' || mod === 'nubank' || mod === 'mercadopago');
 
     if (parcelas > 1 && isCartao) {
@@ -1005,12 +1065,8 @@
           parcelaInfo: `${i+1} de ${parcelas}`,
           timestamp: Date.now() + i
         };
-
-        if (useCloud) {
-          await db.collection("apto708_transacoes").add(item);
-        } else {
-          state.transacoes.push(item);
-        }
+        if (useCloud) await db.collection("apto708_transacoes").add(item);
+        else state.transacoes.push(item);
       }
     } else {
       const item = {
@@ -1023,12 +1079,8 @@
         parcelaInfo: 'À vista',
         timestamp: Date.now()
       };
-
-      if (useCloud) {
-        await db.collection("apto708_transacoes").add(item);
-      } else {
-        state.transacoes.push(item);
-      }
+      if (useCloud) await db.collection("apto708_transacoes").add(item);
+      else state.transacoes.push(item);
     }
 
     if (!useCloud) {
@@ -1042,12 +1094,10 @@
     switchTab('home', document.querySelectorAll('.nav-btn')[0]);
   });
 
-  // Modal de Detalhes
   function abrirDetalhes(id) {
     const t = state.transacoes.find(item => item.id === id || item.idDoc === id);
     if (!t) return;
 
-    selectedTxId = t.idDoc || t.id;
     const isPos = t.mod.startsWith('receita');
     const isTransf = t.mod === 'transferencia';
     const d = new Date(t.data + 'T00:00:00');
@@ -1055,7 +1105,7 @@
 
     document.getElementById('modal-desc').innerText = t.desc;
     document.getElementById('modal-val').innerText = isTransf ? formatBRL(t.valor) : `${isPos ? '+' : '-'} ${formatBRL(t.valor)}`;
-    document.getElementById('modal-val').style.color = isTransf ? '#cbd5e1' : (isPos ? 'var(--green)' : 'var(--red)');
+    document.getElementById('modal-val').style.color = isTransf ? '#cbd5e1' : (isPos ? 'var(--green)' : '#fff');
     document.getElementById('modal-cat').innerText = categoryLabels[t.cat] || t.cat;
     document.getElementById('modal-data').innerText = d.toLocaleDateString('pt-BR');
     document.getElementById('modal-mod').innerText = t.mod.toUpperCase();
@@ -1064,17 +1114,11 @@
       const venc = t.mod === 'mercadopago' ? '20' : '25';
       let mesFat = d.getMonth() + 1;
       if (dia > 18) mesFat++;
-      document.getElementById('modal-impacto').innerText = `Consome limite do cartão (${t.mod.toUpperCase()})`;
-      document.getElementById('modal-fatura').innerText = `Fecha dia 18 | Vence ${venc} (Ref. Mês ${mesFat})`;
-    } else if (t.mod === 'pix' || t.mod === 'debito') {
-      document.getElementById('modal-impacto').innerText = 'Debitado na hora do Saldo em Conta';
-      document.getElementById('modal-fatura').innerText = 'Não se aplica (À vista no Caixa)';
-    } else if (t.mod === 'transferencia') {
-      document.getElementById('modal-impacto').innerText = `Transferido de ${t.origem.toUpperCase()} para ${t.destino.toUpperCase()}`;
-      document.getElementById('modal-fatura').innerText = 'Movimentação Interna de Saldo';
+      document.getElementById('modal-impacto').innerText = `Consome Limite do Cartão`;
+      document.getElementById('modal-fatura').innerText = `Fecha 18 | Vence ${venc} (Mês ${mesFat})`;
     } else {
-      document.getElementById('modal-impacto').innerText = 'Crédito direto no Saldo';
-      document.getElementById('modal-fatura').innerText = 'Recebível';
+      document.getElementById('modal-impacto').innerText = isTransf ? 'Movimentação entre Caixas' : (isPos ? 'Entrada no Saldo' : 'Débito em Caixa');
+      document.getElementById('modal-fatura').innerText = 'À vista';
     }
 
     document.getElementById('modal-btn-del').onclick = async () => {
@@ -1094,7 +1138,6 @@
   function closeModal(e) { if (e.target.id === 'itemModal') fecharModalDireto(); }
   function fecharModalDireto() { document.getElementById('itemModal').classList.remove('open'); }
 
-  // Ações B3
   document.getElementById('form-stock').addEventListener('submit', async (e) => {
     e.preventDefault();
     const ticker = document.getElementById('stock-ticker').value.toUpperCase().trim();
@@ -1102,10 +1145,8 @@
     const pm = parseFloat(document.getElementById('stock-pm').value);
 
     state.carteira.push({ ticker, qtd, pm, cotacao: pm });
-    
-    if (useCloud) {
-      await db.collection("apto708_config").doc("carteira").set({ itens: state.carteira });
-    } else {
+    if (useCloud) await db.collection("apto708_config").doc("carteira").set({ itens: state.carteira });
+    else {
       localStorage.setItem('fin_v11_stocks', JSON.stringify(state.carteira));
       renderAll();
       atualizarCotacoes();
@@ -1115,9 +1156,8 @@
 
   async function excluirStock(index) {
     state.carteira.splice(index, 1);
-    if (useCloud) {
-      await db.collection("apto708_config").doc("carteira").set({ itens: state.carteira });
-    } else {
+    if (useCloud) await db.collection("apto708_config").doc("carteira").set({ itens: state.carteira });
+    else {
       localStorage.setItem('fin_v11_stocks', JSON.stringify(state.carteira));
       renderAll();
     }
@@ -1126,7 +1166,6 @@
   async function atualizarCotacoes() {
     const icon = document.getElementById('icon-refresh');
     if (icon) icon.classList.add('ph-spin');
-
     const tickers = state.carteira.map(s => s.ticker).join(',');
     if (!tickers) {
       if (icon) icon.classList.remove('ph-spin');
@@ -1139,9 +1178,7 @@
       if (data.results) {
         data.results.forEach(resTicker => {
           state.carteira.forEach(item => {
-            if (item.ticker === resTicker.symbol) {
-              item.cotacao = resTicker.regularMarketPrice || item.cotacao;
-            }
+            if (item.ticker === resTicker.symbol) item.cotacao = resTicker.regularMarketPrice || item.cotacao;
           });
         });
         renderAll();
@@ -1153,25 +1190,15 @@
     }
   }
 
-  // --- MOTOR DE CÁLCULO E RENDERIZAÇÃO ---
   function renderAll() {
     const selMes = state.selectedMonth;
     const selAno = state.selectedYear;
-
-    // Determina o ciclo da fatura do período selecionado
     const nomesMesesCurto = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
-    document.getElementById('fatura-ciclo-label').innerText = `Fatura: Vencimento ${nomesMesesCurto[selMes]} de ${selAno}`;
+    document.getElementById('fatura-ciclo-label').innerText = `Ref: ${nomesMesesCurto[selMes]}/${selAno}`;
 
-    let saldoConta = 0;
-    let guardado = 0;
-    let reserva = 0;
-    let faturaSantander = 0;
-    let faturaNubank = 0;
-    let faturaMP = 0;
-    let totalPixPeriodo = 0;
-    let totalDebitoPeriodo = 0;
-    let totalReceitasPeriodo = 0;
-    let totalGastosGeraisPeriodo = 0;
+    let saldoConta = 0, guardado = 0, reserva = 0;
+    let faturaSantander = 0, faturaNubank = 0, faturaMP = 0;
+    let totalPixPeriodo = 0, totalDebitoPeriodo = 0, totalReceitasPeriodo = 0, totalGastosGeraisPeriodo = 0;
 
     const dailyMap = {};
     const catMap = {};
@@ -1182,48 +1209,35 @@
       const tMes = d.getMonth();
       const tAno = d.getFullYear();
       const dia = d.getDate();
-
       const isMesSelecionado = (tMes === selMes && tAno === selAno);
 
       if (t.mod === 'transferencia') {
         if (t.origem === 'conta') saldoConta -= t.valor;
         if (t.origem === 'guardado') guardado -= t.valor;
         if (t.origem === 'reserva') reserva -= t.valor;
-
         if (t.destino === 'conta') saldoConta += t.valor;
         if (t.destino === 'guardado') guardado += t.valor;
         if (t.destino === 'reserva') reserva += t.valor;
       } else if (t.mod.startsWith('receita')) {
         saldoConta += t.valor;
         if (isMesSelecionado) totalReceitasPeriodo += t.valor;
-      } else if (t.mod === 'pix') {
+      } else if (t.mod === 'pix' || t.mod === 'debito') {
         saldoConta -= t.valor;
         if (isMesSelecionado) {
-          totalPixPeriodo += t.valor;
-          totalGastosGeraisPeriodo += t.valor;
-          dailyMap[dia] = (dailyMap[dia] || 0) + t.valor;
-          catMap[t.cat] = (catMap[t.cat] || 0) + t.valor;
-          topExpensesList.push({ desc: t.desc, valor: t.valor, cat: t.cat });
-        }
-      } else if (t.mod === 'debito') {
-        saldoConta -= t.valor;
-        if (isMesSelecionado) {
-          totalDebitoPeriodo += t.valor;
+          if (t.mod === 'pix') totalPixPeriodo += t.valor;
+          if (t.mod === 'debito') totalDebitoPeriodo += t.valor;
           totalGastosGeraisPeriodo += t.valor;
           dailyMap[dia] = (dailyMap[dia] || 0) + t.valor;
           catMap[t.cat] = (catMap[t.cat] || 0) + t.valor;
           topExpensesList.push({ desc: t.desc, valor: t.valor, cat: t.cat });
         }
       } else if (t.mod === 'santander' || t.mod === 'nubank' || t.mod === 'mercadopago') {
-        // Cálculo do ciclo de fatura: Compras pós-dia 18 pertencem ao vencimento do mês seguinte
         let fMes = tMes;
         let fAno = tAno;
         if (dia > 18) {
           fMes++;
           if (fMes > 11) { fMes = 0; fAno++; }
         }
-
-        // Computa se pertence à fatura do período selecionado
         if (fMes === selMes && fAno === selAno) {
           if (t.mod === 'santander') faturaSantander += t.valor;
           if (t.mod === 'nubank') faturaNubank += t.valor;
@@ -1241,7 +1255,6 @@
     const patrimonioTotal = saldoConta + guardado + reserva + totalAcoes;
     const totalFaturasConsolidado = faturaSantander + faturaNubank + faturaMP;
 
-    // Atualização dos KPIs
     document.getElementById('kpi-patrimonio-total').innerText = formatBRL(patrimonioTotal);
     document.getElementById('kpi-total-faturas').innerText = formatBRL(totalFaturasConsolidado);
     document.getElementById('kpi-saldo-conta').innerText = formatBRL(saldoConta);
@@ -1252,44 +1265,27 @@
     document.getElementById('kpi-total-acoes').innerText = formatBRL(totalAcoes);
     document.getElementById('kpi-total-acoes-view').innerText = formatBRL(totalAcoes);
 
-    // CÁLCULO DE LIMITES
+    // Limites
     const limSan = state.limites.santander || 1;
-    const dispSan = Math.max(0, limSan - faturaSantander);
     const pctSan = Math.min(100, (faturaSantander / limSan) * 100).toFixed(0);
     document.getElementById('val-santander').innerText = formatBRL(faturaSantander);
-    document.getElementById('disp-santander').innerText = formatBRL(dispSan);
-    document.getElementById('limit-santander-pct').innerText = `${pctSan}% consumido`;
+    document.getElementById('disp-santander').innerText = formatBRL(Math.max(0, limSan - faturaSantander));
+    document.getElementById('limit-santander-pct').innerText = `${pctSan}%`;
     document.getElementById('bar-santander').style.width = `${pctSan}%`;
 
     const limNu = state.limites.nubank || 1;
-    const dispNu = Math.max(0, limNu - faturaNubank);
     const pctNu = Math.min(100, (faturaNubank / limNu) * 100).toFixed(0);
     document.getElementById('val-nubank').innerText = formatBRL(faturaNubank);
-    document.getElementById('disp-nubank').innerText = formatBRL(dispNu);
-    document.getElementById('limit-nubank-pct').innerText = `${pctNu}% consumido`;
+    document.getElementById('disp-nubank').innerText = formatBRL(Math.max(0, limNu - faturaNubank));
+    document.getElementById('limit-nubank-pct').innerText = `${pctNu}%`;
     document.getElementById('bar-nubank').style.width = `${pctNu}%`;
 
     const limMP = state.limites.mercadopago || 1;
-    const dispMP = Math.max(0, limMP - faturaMP);
     const pctMP = Math.min(100, (faturaMP / limMP) * 100).toFixed(0);
     document.getElementById('val-mp').innerText = formatBRL(faturaMP);
-    document.getElementById('disp-mp').innerText = formatBRL(dispMP);
-    document.getElementById('limit-mp-pct').innerText = `${pctMP}% consumido`;
+    document.getElementById('disp-mp').innerText = formatBRL(Math.max(0, limMP - faturaMP));
+    document.getElementById('limit-mp-pct').innerText = `${pctMP}%`;
     document.getElementById('bar-mp').style.width = `${pctMP}%`;
-
-    // Alertas
-    const banner = document.getElementById('alert-banner');
-    if (totalReceitasPeriodo > 0 && totalGastosGeraisPeriodo >= totalReceitasPeriodo) {
-      banner.className = 'alert-banner alert-danger';
-      banner.style.display = 'block';
-      banner.innerHTML = `⚠️ <b>Atenção:</b> Os gastos do Apto 708 em ${nomesMeses[selMes]} superaram os recebíveis em <b>${formatBRL(totalGastosGeraisPeriodo - totalReceitasPeriodo)}</b>.`;
-    } else if (pctSan >= 90 || pctNu >= 90 || pctMP >= 90) {
-      banner.className = 'alert-banner alert-warning';
-      banner.style.display = 'block';
-      banner.innerHTML = `⚠️ <b>Aviso de Cartão:</b> Mais de 90% do limite consumido na fatura de ${nomesMeses[selMes]}!`;
-    } else {
-      banner.style.display = 'none';
-    }
 
     renderExtrato();
     renderStocks();
@@ -1299,38 +1295,36 @@
   function renderStocks() {
     const list = document.getElementById('stock-list');
     list.innerHTML = '';
-
     if (state.carteira.length === 0) {
-      list.innerHTML = `<div style="text-align:center; color:var(--text-muted); font-size:0.75rem; padding:10px;">Nenhuma ação cadastrada.</div>`;
+      list.innerHTML = `<div style="text-align:center; color:var(--text-dim); font-size:0.75rem; padding:8px;">Nenhum ativo.</div>`;
       return;
     }
 
     state.carteira.forEach((s, idx) => {
       const valorTotal = s.qtd * (s.cotacao || s.pm);
       const lucro = (s.cotacao - s.pm) * s.qtd;
-      const rentabilidade = ((s.cotacao / s.pm - 1) * 100).toFixed(2);
+      const rentabilidade = ((s.cotacao / s.pm - 1) * 100).toFixed(1);
       const isPos = lucro >= 0;
 
       const card = document.createElement('div');
       card.className = 'stock-card';
       card.innerHTML = `
         <div>
-          <div style="font-weight:700; font-size:0.9rem;">${s.ticker} <span style="font-size:0.7rem; color:var(--text-muted); font-weight:normal;">(${s.qtd} un)</span></div>
-          <div style="font-size:0.75rem; color:var(--text-muted);">PM: ${formatBRL(s.pm)} | Atual: <b style="color:var(--text);">${formatBRL(s.cotacao)}</b></div>
+          <div style="font-weight:700; font-size:0.85rem;">${s.ticker} <span style="font-size:0.7rem; color:var(--text-dim); font-weight:normal;">(${s.qtd} un)</span></div>
+          <div style="font-size:0.72rem; color:var(--text-dim);">PM: ${formatBRL(s.pm)} | Atual: <b style="color:#fff;">${formatBRL(s.cotacao)}</b></div>
         </div>
         <div style="text-align:right;">
-          <div style="font-weight:700; font-size:0.9rem;">${formatBRL(valorTotal)}</div>
-          <div style="font-size:0.75rem; color:${isPos ? 'var(--green)' : 'var(--red)'}; font-weight:600;">
+          <div style="font-weight:700; font-size:0.85rem;">${formatBRL(valorTotal)}</div>
+          <div style="font-size:0.72rem; color:${isPos ? 'var(--green)' : 'var(--red)'}; font-weight:600;">
             ${isPos ? '+' : ''}${rentabilidade}% (${formatBRL(lucro)})
           </div>
         </div>
-        <button onclick="excluirStock(${idx})" style="background:none; border:none; color:var(--text-muted); margin-left:8px; cursor:pointer;">✕</button>
+        <button onclick="excluirStock(${idx})" style="background:none; border:none; color:var(--text-dim); margin-left:8px; cursor:pointer;">✕</button>
       `;
       list.appendChild(card);
     });
   }
 
-  // EXTRATO COM FILTRAGEM DINÂMICA
   function renderExtrato() {
     const list = document.getElementById('extrato-list');
     list.innerHTML = '';
@@ -1350,15 +1344,11 @@
       const tAno = d.getFullYear();
       const dia = d.getDate();
 
-      // 1. Filtro de Período / Fatura
       if (filterPeriodo === 'mes_selecionado') {
         if (t.mod === 'santander' || t.mod === 'nubank' || t.mod === 'mercadopago') {
           let fMes = tMes;
           let fAno = tAno;
-          if (dia > 18) {
-            fMes++;
-            if (fMes > 11) { fMes = 0; fAno++; }
-          }
+          if (dia > 18) { fMes++; if (fMes > 11) { fMes = 0; fAno++; } }
           if (fMes !== selMes || fAno !== selAno) return false;
         } else {
           if (tMes !== selMes || tAno !== selAno) return false;
@@ -1368,29 +1358,23 @@
         if (diffDays < 0 || diffDays > 30) return false;
       }
 
-      // 2. Filtro de Modalidade
       if (filterMod !== 'todas') {
         if (filterMod === 'receita') {
           if (!t.mod.startsWith('receita')) return false;
-        } else if (t.mod !== filterMod) {
-          return false;
-        }
+        } else if (t.mod !== filterMod) return false;
       }
 
-      // 3. Filtro de Categoria
       if (filterCat !== 'todas' && t.cat !== filterCat) return false;
-
-      // 4. Busca por Texto
       if (filterSearch && !t.desc.toLowerCase().includes(filterSearch)) return false;
 
       return true;
     });
 
     const sorted = filtered.reverse();
-    document.getElementById('tx-count').innerText = `${sorted.length} exibidos`;
+    document.getElementById('tx-count').innerText = `${sorted.length} registros`;
 
     if (sorted.length === 0) {
-      list.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding:20px; font-size:0.8rem;">Nenhum lançamento encontrado para os filtros selecionados.</div>`;
+      list.innerHTML = `<div style="text-align:center; color:var(--text-dim); padding:16px; font-size:0.75rem;">Nenhum registro encontrado.</div>`;
       return;
     }
 
@@ -1399,9 +1383,9 @@
       if (t.mod === 'pix') badge = `<span class="badge-pix">PIX</span>`;
       if (t.mod === 'santander') badge = `<span class="badge-santander">Santander</span>`;
       if (t.mod === 'nubank') badge = `<span class="badge-nubank">Nubank</span>`;
-      if (t.mod === 'mercadopago') badge = `<span class="badge-mercadopago">Mercado Pago</span>`;
-      if (t.mod === 'transferencia') badge = `<span class="badge-transf">MOVER</span>`;
-      if (t.mod.startsWith('receita')) badge = `<span style="background:rgba(16,185,129,0.2); color:var(--green); padding:2px 6px; border-radius:4px; font-size:0.68rem;">RECEITA</span>`;
+      if (t.mod === 'mercadopago') badge = `<span class="badge-mercadopago">Merc. Pago</span>`;
+      if (t.mod === 'transferencia') badge = `<span class="badge-transf">TRANSFERÊNCIA</span>`;
+      if (t.mod.startsWith('receita')) badge = `<span style="background:rgba(16,185,129,0.1); color:var(--green); padding:2px 6px; border-radius:4px; font-size:0.65rem; font-weight:600;">RECEITA</span>`;
 
       const catBadge = `<span class="badge-cat">${categoryLabels[t.cat] || t.cat}</span>`;
       const isPos = t.mod.startsWith('receita');
@@ -1416,7 +1400,7 @@
             ${new Date(t.data + 'T00:00:00').toLocaleDateString('pt-BR')} • ${badge} • ${catBadge}
           </div>
         </div>
-        <div style="display:flex; align-items:center; gap:8px;">
+        <div>
           <span class="tx-amount ${isTransf ? 'neutral' : (isPos ? 'pos' : 'neg')}">${isTransf ? '' : (isPos ? '+' : '-')} ${formatBRL(t.valor)}</span>
         </div>
       `;
@@ -1425,6 +1409,7 @@
   }
 
   function initCharts() {
+    // 1. Modalidades
     const ctx1 = document.getElementById('chartDespesas').getContext('2d');
     chartInstance = new Chart(ctx1, {
       type: 'doughnut',
@@ -1432,73 +1417,81 @@
         labels: ['PIX', 'Débito', 'Santander', 'Nubank', 'Mercado Pago'],
         datasets: [{
           data: [0, 0, 0, 0, 0],
-          backgroundColor: ['#00bdae', '#3b82f6', '#ec0000', '#8a05be', '#00aae4'],
-          borderColor: '#151d30',
-          borderWidth: 3
+          backgroundColor: ['#06b6d4', '#3b82f6', '#ef4444', '#a855f7', '#0ea5e9'],
+          borderColor: '#111726',
+          borderWidth: 2,
+          hoverOffset: 4
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 10 } } } }
+        cutout: '76%',
+        plugins: { legend: { display: false } }
       }
     });
 
+    // 2. Categorias (Doughnut Limpo com Paleta Sóbria)
     const ctxCat = document.getElementById('chartCategorias').getContext('2d');
     chartCategoriasInstance = new Chart(ctxCat, {
-      type: 'pie',
+      type: 'doughnut',
       data: {
         labels: [],
         datasets: [{
           data: [],
           backgroundColor: [
-            '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ef4444', 
-            '#ec4899', '#06b6d4', '#64748b', '#a855f7', '#eab308', 
-            '#14b8a6', '#f43f5e', '#84cc16'
+            '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', 
+            '#06b6d4', '#64748b', '#eab308', '#14b8a6', '#f43f5e'
           ],
-          borderColor: '#151d30',
+          borderColor: '#111726',
           borderWidth: 2
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: { legend: { position: 'right', labels: { color: '#94a3b8', font: { size: 9 }, boxWidth: 10 } } }
+        cutout: '68%',
+        plugins: { 
+          legend: { 
+            position: 'right', 
+            labels: { color: '#94a3b8', font: { size: 10, family: 'Inter' }, boxWidth: 8, padding: 8 } 
+          } 
+        }
       }
     });
 
+    // 3. Fluxo Diário (Barras com cantos suaves)
     const ctx2 = document.getElementById('chartEvolucao').getContext('2d');
     chartEvolucaoInstance = new Chart(ctx2, {
       type: 'bar',
       data: {
         labels: [],
         datasets: [{
-          label: 'Gastos por Dia (R$)',
           data: [],
-          backgroundColor: '#3b82f6',
-          borderRadius: 6
+          backgroundColor: 'rgba(59, 130, 246, 0.85)',
+          borderRadius: 4
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         scales: {
-          x: { ticks: { color: '#94a3b8', font: { size: 9 } }, grid: { display: false } },
-          y: { ticks: { color: '#94a3b8', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.05)' } }
+          x: { ticks: { color: '#64748b', font: { size: 9 } }, grid: { display: false } },
+          y: { ticks: { color: '#64748b', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.03)' } }
         },
         plugins: { legend: { display: false } }
       }
     });
 
+    // 4. Top Gastos (Barras Horizontais Minimalistas)
     const ctx3 = document.getElementById('chartTopGastos').getContext('2d');
     chartTopGastosInstance = new Chart(ctx3, {
       type: 'bar',
       data: {
         labels: [],
         datasets: [{
-          label: 'Valor (R$)',
           data: [],
-          backgroundColor: ['#ef4444', '#f59e0b', '#3b82f6', '#8b5cf6', '#10b981'],
+          backgroundColor: '#3b82f6',
           borderRadius: 4
         }]
       },
@@ -1507,8 +1500,8 @@
         responsive: true,
         maintainAspectRatio: false,
         scales: {
-          x: { ticks: { color: '#94a3b8', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.05)' } },
-          y: { ticks: { color: '#f8fafc', font: { size: 9 } }, grid: { display: false } }
+          x: { ticks: { color: '#64748b', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.03)' } },
+          y: { ticks: { color: '#94a3b8', font: { size: 9 } }, grid: { display: false } }
         },
         plugins: { legend: { display: false } }
       }
@@ -1530,17 +1523,14 @@
 
     if (chartEvolucaoInstance) {
       const sortedDays = Object.keys(dailyMap).sort((a, b) => parseInt(a) - parseInt(b));
-      chartEvolucaoInstance.data.labels = sortedDays.map(d => `Dia ${d}`);
+      chartEvolucaoInstance.data.labels = sortedDays.map(d => `${d}`);
       chartEvolucaoInstance.data.datasets[0].data = sortedDays.map(d => dailyMap[d]);
       chartEvolucaoInstance.update();
     }
 
     if (chartTopGastosInstance) {
       const sortedTop = [...topExpensesList].sort((a, b) => b.valor - a.valor).slice(0, 5);
-      chartTopGastosInstance.data.labels = sortedTop.map(item => {
-        const catName = categoryLabels[item.cat] || item.cat;
-        return `${item.desc.substring(0, 14)} (${catName})`;
-      });
+      chartTopGastosInstance.data.labels = sortedTop.map(item => item.desc.substring(0, 16));
       chartTopGastosInstance.data.datasets[0].data = sortedTop.map(item => item.valor);
       chartTopGastosInstance.update();
     }
