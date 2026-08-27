@@ -41,7 +41,6 @@
     
     .container { width: 100%; max-width: 1440px; margin: 0 auto; padding: 12px; }
 
-    /* Top Bar */
     header { 
       background: var(--card-bg); 
       border: 1px solid var(--border); 
@@ -64,22 +63,21 @@
     .pet-chip { display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 4px 10px; border-radius: 20px; font-size: 0.72rem; color: var(--text-muted); }
     .pet-avatar { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; }
 
-    /* Seletor de Período & Filtro de Dias */
     .period-selector { 
       background: var(--card-bg); 
       border: 1px solid var(--border); 
       border-radius: 12px; 
       padding: 12px 16px; 
       margin-bottom: 12px; 
-      display: flex;
-      flex-direction: column;
+      display: flex; 
+      flex-direction: column; 
       gap: 10px;
     }
     .period-top-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      flex-wrap: wrap; 
       gap: 10px;
     }
     .period-controls { display: flex; align-items: center; gap: 12px; }
@@ -102,7 +100,19 @@
     .custom-range-box label { font-size: 0.68rem; color: var(--text-dim); text-transform: uppercase; font-weight: 600; }
     .custom-range-box input { padding: 7px 10px; font-size: 0.8rem; }
 
-    /* Grid Bento */
+    .faturas-filter-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      margin-top: 4px;
+    }
+    .faturas-filter-bar label { display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--text-muted); text-transform: none; font-size: 0.75rem; }
+
     .view-panel { display: none; }
     .view-panel.active { display: flex; flex-direction: column; gap: 10px; }
 
@@ -123,21 +133,37 @@
     .kpi-mini span { display: flex; align-items: center; gap: 6px; font-size: 0.72rem; color: var(--text-muted); }
     .kpi-mini strong { font-size: 1.05rem; font-weight: 700; display: block; margin-top: 4px; }
 
-    /* Cartão de Limite */
-    .card-limit-box { background: rgba(255,255,255,0.015); border: 1px solid var(--border); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 6px; }
+    .card-limit-box { 
+      background: rgba(255,255,255,0.015); 
+      border: 1px solid var(--border); 
+      border-radius: 8px; 
+      padding: 12px; 
+      display: flex; 
+      flex-direction: column; 
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .card-limit-box:hover { background: var(--card-hover); }
+    .card-limit-box.card-active-filter {
+      background: rgba(59, 130, 246, 0.08);
+      border-color: var(--primary) !important;
+      box-shadow: 0 0 0 1px var(--primary);
+    }
     .card-limit-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: 600; }
     .progress-bar-bg { width: 100%; height: 6px; background: rgba(255,255,255,0.06); border-radius: 99px; overflow: hidden; }
     .progress-bar-fill { height: 100%; border-radius: 99px; transition: width 0.4s ease; }
     .limit-info-row { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-dim); }
 
-    /* Tabela Resumo Mensal */
     .table-responsive { overflow-x: auto; width: 100%; }
     .summary-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.8rem; }
     .summary-table th { background: rgba(255,255,255,0.03); color: var(--text-muted); padding: 10px 12px; font-weight: 600; font-size: 0.72rem; text-transform: uppercase; border-bottom: 1px solid var(--border); }
     .summary-table td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); font-variant-numeric: tabular-nums; }
     .summary-table tr:hover { background: var(--card-hover); }
 
-    /* Formulários */
+    .status-badge { padding: 3px 8px; border-radius: 6px; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+    .status-badge.pago { background: rgba(16, 185, 129, 0.15); color: var(--green); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .status-badge.aberto { background: rgba(245, 158, 11, 0.15); color: var(--orange); border: 1px solid rgba(245, 158, 11, 0.3); }
+
     .form-group { display: flex; flex-direction: column; gap: 6px; }
     label { font-size: 0.72rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
     input, select { background: #070a11; border: 1px solid var(--border); color: var(--text); padding: 11px 14px; border-radius: 8px; font-size: 0.85rem; outline: none; transition: border-color 0.2s; }
@@ -145,13 +171,11 @@
     .btn-main { background: var(--primary); color: white; border: none; padding: 13px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.88rem; transition: opacity 0.2s; }
     .btn-main:hover { opacity: 0.92; }
 
-    /* Lançamento em Lote */
     .batch-row { display: grid; grid-template-columns: 2fr 1.1fr 1.3fr 1.3fr 75px 75px 34px; gap: 6px; align-items: center; margin-bottom: 8px; }
     .batch-row input, .batch-row select { padding: 8px 6px; font-size: 0.78rem; }
     .btn-remove-row { background: rgba(244, 63, 94, 0.1); color: var(--red); border: 1px solid rgba(244, 63, 94, 0.2); border-radius: 6px; height: 34px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     .btn-add-row { background: var(--primary-dim); color: var(--primary); border: 1px dashed var(--primary); padding: 10px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.82rem; }
 
-    /* Badges & Itens */
     .badge-pix { background: rgba(6, 182, 212, 0.1); color: var(--pix); padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: 600; }
     .badge-debito { background: rgba(59, 130, 246, 0.1); color: var(--primary); padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: 600; }
     .badge-santander { background: rgba(239, 68, 68, 0.15); color: #fca5a5; padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: 600; }
@@ -160,7 +184,6 @@
     .badge-transf { background: rgba(139, 92, 246, 0.15); color: #c4b5fd; padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: 600; }
     .badge-cat { background: rgba(255,255,255,0.05); color: var(--text-muted); padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; }
 
-    /* Extrato Item */
     .tx-item-wrapper { display: flex; align-items: center; gap: 10px; }
     .tx-checkbox { width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary); }
     .tx-item { flex: 1; display: flex; justify-content: space-between; align-items: center; padding: 11px 12px; background: rgba(255,255,255,0.015); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.15s; }
@@ -181,20 +204,17 @@
     .goal-card { background: rgba(255,255,255,0.015); border: 1px solid var(--border); border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
     .goal-card-header { display: flex; justify-content: space-between; align-items: center; }
 
-    /* Modal */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(5px); z-index: 200; justify-content: center; align-items: flex-end; }
     .modal-overlay.open { display: flex; }
     .modal-content { background: var(--card-bg); width: 100%; max-width: 520px; border-radius: 16px 16px 0 0; padding: 24px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 14px; }
     .modal-row { display: flex; justify-content: space-between; font-size: 0.82rem; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
     .modal-row span { color: var(--text-dim); }
 
-    /* Navigation */
     .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #0c111d; border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 8px 0 calc(env(safe-area-inset-bottom, 0px) + 8px); z-index: 100; }
     .nav-btn { background: none; border: none; color: var(--text-dim); display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.62rem; cursor: pointer; width: 14%; transition: color 0.15s; }
     .nav-btn i { font-size: 1.25rem; }
     .nav-btn.active { color: var(--primary); font-weight: 600; }
 
-    /* Desktop View */
     @media (min-width: 900px) {
       body { padding-bottom: 24px; }
       .container { padding: 20px; }
@@ -288,7 +308,6 @@
 
 <div class="container">
   
-  <!-- Navegação -->
   <nav class="bottom-nav">
     <button class="nav-btn active" onclick="switchTab('home', this)">
       <i class="ph ph-squares-four"></i>
@@ -320,7 +339,6 @@
     </button>
   </nav>
 
-  <!-- Header -->
   <header>
     <div class="header-top">
       <div class="header-title">
@@ -346,7 +364,6 @@
     </div>
   </header>
 
-  <!-- SELETOR DE PERÍODO & DIAS PERSONALIZADOS -->
   <div class="period-selector">
     <div class="period-top-row">
       <div class="period-controls">
@@ -371,7 +388,6 @@
       </div>
     </div>
 
-    <!-- Barra de Filtro de Dias (Data Inicial / Final) -->
     <div class="custom-range-box" id="custom-range-container">
       <div>
         <label>Data Inicial</label>
@@ -385,12 +401,20 @@
         Filtrar Dias
       </button>
     </div>
+
+    <div class="faturas-filter-bar">
+      <label>
+        <input type="checkbox" id="chk-ignore-open-invoices" class="tx-checkbox" onchange="toggleIgnoreOpenInvoices(this.checked)">
+        <span>Desconsiderar faturas em aberto no consolidado (Somar apenas faturas pagas)</span>
+      </label>
+      <button onclick="abrirModalStatusFaturas()" style="background:none; border:none; color:var(--primary); font-size:0.72rem; cursor:pointer; font-weight:600;">
+        ⚙️ Gerenciar Faturas Pagas
+      </button>
+    </div>
   </div>
 
-  <!-- VIEW 1: PAINEL GERAL (BENTO GRID) -->
   <div id="view-home" class="view-panel active">
     
-    <!-- Quadro de Resumo de Todos os Meses -->
     <div class="card card-span-4" id="card-resumo-todos-meses" style="display:none;">
       <div class="card-header">
         <span>Resumo Mensal Consolidado</span>
@@ -416,13 +440,13 @@
     <div class="card patrimonio-card">
       <span class="kpi-title">Patrimônio Líquido</span>
       <div class="kpi-val" id="kpi-patrimonio-total">R$ 0,00</div>
-      <p class="kpi-sub">Conta + Guardado + Reserva + B3 + Caixinhas</p>
+      <p class="kpi-sub" id="kpi-patrimonio-sub">Conta + Guardado + Reserva + B3 + Caixinhas</p>
     </div>
 
     <div class="card faturas-total-card">
-      <span class="kpi-title" id="kpi-fatura-label">Faturas do Ciclo</span>
+      <span class="kpi-title" id="kpi-fatura-label">Faturas em Aberto</span>
       <div class="kpi-val" id="kpi-total-faturas">R$ 0,00</div>
-      <p class="kpi-sub">Santander + Nubank + Mercado Pago</p>
+      <p class="kpi-sub" id="kpi-fatura-venc-info">Vencimento: --/--/----</p>
     </div>
 
     <div class="card">
@@ -453,23 +477,26 @@
       </div>
     </div>
 
-    <!-- CARDS EXCLUSIVOS DE CADA CARTÃO -->
     <div class="card card-span-4" style="background: rgba(255,255,255,0.01);">
       <div class="card-header">
-        <span>Monitoramento Individual dos Cartões</span>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span>Filtro de Cartões no Painel</span>
+          <button id="btn-clear-card-filter" onclick="selecionarCartaoPainel('todos')" style="display:none; background:rgba(255,255,255,0.06); border:1px solid var(--border); color:#fff; font-size:0.7rem; padding:2px 8px; border-radius:4px; cursor:pointer;">
+            ✕ Ver Todos os Cartões
+          </button>
+        </div>
         <span style="font-size: 0.7rem; color: var(--text-dim);" id="fatura-ciclo-label">Ciclo</span>
       </div>
 
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px;">
-        <!-- Card Santander -->
-        <div class="card-limit-box" style="border-left: 3px solid var(--santander); cursor:pointer;" onclick="filtrarPorGrafico('santander', 'modalidade')">
+        <div class="card-limit-box" id="card-box-santander" style="border-left: 3px solid var(--santander); cursor:pointer;" onclick="selecionarCartaoPainel('santander')">
           <div class="card-limit-header">
             <span style="color: #fca5a5; font-weight:700;"><i class="ph ph-credit-card"></i> Santander (Vence 25)</span>
             <span id="limit-santander-pct" style="color: var(--text-dim); font-size:0.75rem;">0%</span>
           </div>
           <div class="progress-bar-bg"><div id="bar-santander" class="progress-bar-fill" style="background: var(--santander); width: 0%;"></div></div>
           <div class="limit-info-row" style="margin-top:4px;">
-            <span>Fatura do Mês: <strong id="val-santander" style="color:#fff;">R$ 0,00</strong></span>
+            <span>Fatura Aberta: <strong id="val-santander" style="color:#fff;">R$ 0,00</strong></span>
             <span>Total Comprometido: <strong id="comp-santander" style="color:#fca5a5;">R$ 0,00</strong></span>
           </div>
           <div class="limit-info-row">
@@ -478,15 +505,14 @@
           </div>
         </div>
 
-        <!-- Card Nubank -->
-        <div class="card-limit-box" style="border-left: 3px solid var(--nubank); cursor:pointer;" onclick="filtrarPorGrafico('nubank', 'modalidade')">
+        <div class="card-limit-box" id="card-box-nubank" style="border-left: 3px solid var(--nubank); cursor:pointer;" onclick="selecionarCartaoPainel('nubank')">
           <div class="card-limit-header">
             <span style="color: #d8b4fe; font-weight:700;"><i class="ph ph-credit-card"></i> Nubank (Vence 25)</span>
             <span id="limit-nubank-pct" style="color: var(--text-dim); font-size:0.75rem;">0%</span>
           </div>
           <div class="progress-bar-bg"><div id="bar-nubank" class="progress-bar-fill" style="background: var(--nubank); width: 0%;"></div></div>
           <div class="limit-info-row" style="margin-top:4px;">
-            <span>Fatura do Mês: <strong id="val-nubank" style="color:#fff;">R$ 0,00</strong></span>
+            <span>Fatura Aberta: <strong id="val-nubank" style="color:#fff;">R$ 0,00</strong></span>
             <span>Total Comprometido: <strong id="comp-nubank" style="color:#d8b4fe;">R$ 0,00</strong></span>
           </div>
           <div class="limit-info-row">
@@ -495,15 +521,14 @@
           </div>
         </div>
 
-        <!-- Card Mercado Pago -->
-        <div class="card-limit-box" style="border-left: 3px solid var(--mercadopago); cursor:pointer;" onclick="filtrarPorGrafico('mercadopago', 'modalidade')">
+        <div class="card-limit-box" id="card-box-mercadopago" style="border-left: 3px solid var(--mercadopago); cursor:pointer;" onclick="selecionarCartaoPainel('mercadopago')">
           <div class="card-limit-header">
             <span style="color: #7dd3fc; font-weight:700;"><i class="ph ph-credit-card"></i> Mercado Pago (Vence 20)</span>
             <span id="limit-mp-pct" style="color: var(--text-dim); font-size:0.75rem;">0%</span>
           </div>
           <div class="progress-bar-bg"><div id="bar-mp" class="progress-bar-fill" style="background: var(--mercadopago); width: 0%;"></div></div>
           <div class="limit-info-row" style="margin-top:4px;">
-            <span>Fatura do Mês: <strong id="val-mp" style="color:#fff;">R$ 0,00</strong></span>
+            <span>Fatura Aberta: <strong id="val-mp" style="color:#fff;">R$ 0,00</strong></span>
             <span>Total Comprometido: <strong id="comp-mp" style="color:#7dd3fc;">R$ 0,00</strong></span>
           </div>
           <div class="limit-info-row">
@@ -514,18 +539,17 @@
       </div>
     </div>
 
-    <!-- Saídas à Vista e Top Gastos -->
     <div class="card card-span-2">
       <div class="card-header">
         <span>Saídas à Vista</span>
         <span style="font-size:0.68rem; color:var(--text-dim); text-transform:none;">(Clique no gráfico p/ filtrar)</span>
       </div>
       <div class="kpi-mini-grid" style="margin-top: 6px;">
-        <div class="kpi-mini" style="cursor:pointer;" onclick="filtrarPorGrafico('pix', 'modalidade')">
+        <div class="kpi-mini" style="cursor:pointer;" onclick="selecionarCartaoPainel('pix')">
           <span><i class="ph ph-arrows-down-up"></i> PIX</span>
           <strong id="kpi-pix-mes" style="color: var(--pix);">R$ 0,00</strong>
         </div>
-        <div class="kpi-mini" style="cursor:pointer;" onclick="filtrarPorGrafico('debito', 'modalidade')">
+        <div class="kpi-mini" style="cursor:pointer;" onclick="selecionarCartaoPainel('debito')">
           <span><i class="ph ph-credit-card"></i> Débito</span>
           <strong id="kpi-debito-mes" style="color: #93c5fd;">R$ 0,00</strong>
         </div>
@@ -545,21 +569,19 @@
       </div>
     </div>
 
-    <!-- Histórico Comparativo Mensal (Receitas x Gastos) -->
     <div class="card card-span-2">
       <div class="card-header">
-        <span>Comparativo Mensal (Recebido vs. Gastos)</span>
-        <span style="font-size:0.68rem; color:var(--text-dim); text-transform:none;">(Clique no mês p/ filtrar)</span>
+        <span id="chart-mensal-title">Gastos por Mês (Passado e Futuro)</span>
+        <span style="font-size:0.68rem; color:var(--text-dim); text-transform:none;" id="chart-mensal-sub">Todos os Cartões</span>
       </div>
       <div style="position: relative; height: 220px;">
         <canvas id="chartMensalComparativo"></canvas>
       </div>
     </div>
 
-    <!-- Despesas por Categoria -->
     <div class="card card-span-2">
       <div class="card-header">
-        <span>Despesas por Categoria</span>
+        <span id="chart-cat-title">Despesas por Categoria</span>
         <span style="font-size:0.68rem; color:var(--text-dim); text-transform:none;">(Clique na fatia p/ filtrar)</span>
       </div>
       <div style="position: relative; height: 220px;">
@@ -567,9 +589,10 @@
       </div>
     </div>
 
-    <!-- Fluxo Diário -->
     <div class="card card-span-4">
-      <div class="card-header"><span>Volume e Fluxo Diário</span></div>
+      <div class="card-header">
+        <span id="chart-fluxo-title">Volume e Fluxo Diário</span>
+      </div>
       <div style="position: relative; height: 200px;">
         <canvas id="chartEvolucao"></canvas>
       </div>
@@ -577,7 +600,6 @@
 
   </div>
 
-  <!-- VIEW 2: LANÇAR GASTO INDIVIDUAL -->
   <div id="view-lancar" class="view-panel">
     <div class="card">
       <div class="card-header"><span>Novo Lançamento</span></div>
@@ -693,7 +715,6 @@
     </div>
   </div>
 
-  <!-- VIEW 3: TRANSFERÊNCIA -->
   <div id="view-transfer" class="view-panel">
     <div class="card">
       <div class="card-header"><span>Movimentação entre Contas e Caixinhas</span></div>
@@ -728,7 +749,6 @@
     </div>
   </div>
 
-  <!-- VIEW 4: LANÇAMENTO EM LOTE -->
   <div id="view-batch" class="view-panel">
     <div class="card">
       <div class="card-header">
@@ -755,7 +775,6 @@
     </div>
   </div>
 
-  <!-- VIEW 5: BOLSA B3 (AÇÕES & FIIs) -->
   <div id="view-invest" class="view-panel">
     <div class="card">
       <div class="card-header">
@@ -809,7 +828,6 @@
     </div>
   </div>
 
-  <!-- VIEW 6: CAIXINHAS & OBJETIVOS -->
   <div id="view-goals" class="view-panel">
     <div class="card">
       <div class="card-header">
@@ -842,7 +860,6 @@
     </div>
   </div>
 
-  <!-- VIEW 7: EXTRATO -->
   <div id="view-extrato" class="view-panel">
     <div class="card">
       <div class="card-header">
@@ -852,7 +869,6 @@
         </div>
       </div>
 
-      <!-- Barra de Ações em Massa -->
       <div class="batch-actions-bar" id="batch-actions-bar">
         <div style="display:flex; align-items:center; gap:8px;">
           <input type="checkbox" id="chk-select-all" class="tx-checkbox" onchange="toggleSelectAll(this.checked)">
@@ -908,7 +924,6 @@
 
 </div>
 
-<!-- Modal Detalhes -->
 <div id="itemModal" class="modal-overlay" onclick="closeModal(event)">
   <div class="modal-content" onclick="event.stopPropagation()">
     <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -927,6 +942,22 @@
 
     <button id="modal-btn-del" class="btn-main" style="background:var(--red); padding:10px; font-size:0.8rem;">
       <i class="ph ph-trash"></i> Excluir Lançamento
+    </button>
+  </div>
+</div>
+
+<div id="faturasModal" class="modal-overlay" onclick="closeFaturasModal(event)">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="font-size:1rem; font-weight:700;">Gerenciar Pagamento de Faturas</h3>
+      <button onclick="fecharFaturasModalDireto()" style="background:none; border:none; color:var(--text-dim); font-size:1.2rem; cursor:pointer;">✕</button>
+    </div>
+    <p style="font-size:0.75rem; color:var(--text-dim);">Marque as faturas que já foram pagas para controlar seu saldo consolidado.</p>
+
+    <div id="faturas-status-list" style="display:flex; flex-direction:column; gap:8px; max-height:320px; overflow-y:auto;"></div>
+
+    <button class="btn-main" onclick="fecharFaturasModalDireto()" style="margin-top:8px;">
+      Concluir
     </button>
   </div>
 </div>
@@ -955,9 +986,12 @@
 
   let now = new Date();
   let state = {
-    periodMode: 'month', // 'month', 'custom', 'all'
+    periodMode: 'month',
     selectedMonth: now.getMonth(),
     selectedYear: now.getFullYear(),
+    activeCardFilter: 'todos',
+    ignoreOpenInvoices: JSON.parse(localStorage.getItem('fin_v11_ignore_open')) || false,
+    faturasPagas: JSON.parse(localStorage.getItem('fin_v11_paid_invoices')) || {},
     selectedTxIds: new Set(),
     transacoes: JSON.parse(localStorage.getItem('fin_v11_tx')) || [],
     limites: JSON.parse(localStorage.getItem('fin_v11_limits')) || {
@@ -1015,11 +1049,11 @@
     document.getElementById('tx-data').value = todayStr;
     document.getElementById('batch-global-date').value = todayStr;
     
-    // Configura 1º dia do mês até hoje como padrão para o filtro de dias
     const firstDayStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2, '0')}-01`;
     document.getElementById('range-date-start').value = firstDayStr;
     document.getElementById('range-date-end').value = todayStr;
     document.getElementById('current-date').innerText = `Hoje: ${new Date().toLocaleDateString('pt-BR')}`;
+    document.getElementById('chk-ignore-open-invoices').checked = state.ignoreOpenInvoices;
     
     updatePeriodControlsUI();
     updateTransferSelectOptions();
@@ -1036,6 +1070,32 @@
       atualizarCotacoes();
     }
   });
+
+  function selecionarCartaoPainel(mod) {
+    state.activeCardFilter = mod;
+    
+    document.querySelectorAll('.card-limit-box').forEach(b => b.classList.remove('card-active-filter'));
+    const btnClear = document.getElementById('btn-clear-card-filter');
+
+    if (mod !== 'todos') {
+      const activeBox = document.getElementById(`card-box-${mod}`);
+      if (activeBox) activeBox.classList.add('card-active-filter');
+      btnClear.style.display = 'inline-block';
+    } else {
+      btnClear.style.display = 'none';
+    }
+
+    renderAll();
+  }
+
+  function toggleIgnoreOpenInvoices(checked) {
+    state.ignoreOpenInvoices = checked;
+    localStorage.setItem('fin_v11_ignore_open', JSON.stringify(checked));
+    if (useCloud) {
+      db.collection("apto708_config").doc("preferencias").set({ ignoreOpenInvoices: checked }, { merge: true });
+    }
+    renderAll();
+  }
 
   function setPeriodMode(mode) {
     state.periodMode = mode;
@@ -1109,6 +1169,14 @@
         document.getElementById('lim-santander-input').value = state.limites.santander || 0;
         document.getElementById('lim-nubank-input').value = state.limites.nubank || 0;
         document.getElementById('lim-mp-input').value = state.limites.mercadopago || 0;
+        renderAll();
+      }
+    });
+
+    db.collection("apto708_config").doc("faturas_status").onSnapshot((doc) => {
+      if (doc.exists) {
+        state.faturasPagas = doc.data().pagas || {};
+        localStorage.setItem('fin_v11_paid_invoices', JSON.stringify(state.faturasPagas));
         renderAll();
       }
     });
@@ -1233,7 +1301,6 @@
     selDestino.selectedIndex = 1;
   }
 
-  // Transferências entre Contas e Caixinhas
   document.getElementById('form-transfer').addEventListener('submit', async (e) => {
     e.preventDefault();
     const origem = document.getElementById('transf-origem').value;
@@ -1302,7 +1369,6 @@
     switchTab('home', document.querySelectorAll('.nav-btn')[0]);
   });
 
-  // Lote com Suporte a Parcelamento
   function addBatchRow() {
     const container = document.getElementById('batch-rows-container');
     const rowId = Date.now() + Math.random().toString(36).substr(2, 4);
@@ -1438,7 +1504,6 @@
     switchTab('home', document.querySelectorAll('.nav-btn')[0]);
   });
 
-  // Limites
   document.getElementById('form-limits').addEventListener('submit', async (e) => {
     e.preventDefault();
     const newLimits = {
@@ -1457,7 +1522,6 @@
     alert('Limites atualizados com sucesso!');
   });
 
-  // Ações e FIIs
   document.getElementById('form-stock').addEventListener('submit', async (e) => {
     e.preventDefault();
     const tipo = document.getElementById('stock-tipo').value;
@@ -1511,7 +1575,6 @@
     }
   }
 
-  // Caixinhas
   document.getElementById('form-goal').addEventListener('submit', async (e) => {
     e.preventDefault();
     const nome = document.getElementById('goal-nome').value.trim();
@@ -1555,23 +1618,76 @@
     }
   }
 
-  function filtrarPorGrafico(valorFiltro, tipoFiltro) {
-    switchTab('extrato', document.querySelectorAll('.nav-btn')[6]);
+  function abrirModalStatusFaturas() {
+    const container = document.getElementById('faturas-status-list');
+    container.innerHTML = '';
     
-    if (tipoFiltro === 'categoria') {
-      document.getElementById('filter-categoria').value = valorFiltro;
-    } else if (tipoFiltro === 'modalidade') {
-      document.getElementById('filter-modalidade').value = valorFiltro;
-    } else if (tipoFiltro === 'mes') {
-      state.periodMode = 'month';
-      state.selectedMonth = valorFiltro.mes;
-      state.selectedYear = valorFiltro.ano;
-      updatePeriodControlsUI();
-      document.getElementById('filter-periodo').value = 'periodo_atual';
+    const faturasMap = {};
+    const nomesCartoes = { 'santander': 'Santander', 'nubank': 'Nubank', 'mercadopago': 'Mercado Pago' };
+
+    state.transacoes.forEach(t => {
+      if (t.mod === 'santander' || t.mod === 'nubank' || t.mod === 'mercadopago') {
+        const d = new Date(t.data + 'T00:00:00');
+        let fMes = d.getMonth();
+        let fAno = d.getFullYear();
+        if (d.getDate() > 18) {
+          fMes++;
+          if (fMes > 11) { fMes = 0; fAno++; }
+        }
+        const key = `${t.mod}_${fAno}-${String(fMes+1).padStart(2, '0')}`;
+        if (!faturasMap[key]) {
+          faturasMap[key] = { mod: t.mod, ano: fAno, mes: fMes, total: 0, key };
+        }
+        faturasMap[key].total += t.valor;
+      }
+    });
+
+    const chaves = Object.keys(faturasMap).sort().reverse();
+
+    if (chaves.length === 0) {
+      container.innerHTML = `<div style="text-align:center; color:var(--text-dim); padding:12px; font-size:0.8rem;">Nenhuma fatura encontrada.</div>`;
+    } else {
+      chaves.forEach(k => {
+        const item = faturasMap[k];
+        const isPaga = !!state.faturasPagas[k];
+        const div = document.createElement('div');
+        div.style.display = 'flex';
+        div.style.justifyContent = 'space-between';
+        div.style.alignItems = 'center';
+        div.style.padding = '10px 12px';
+        div.style.background = 'rgba(255,255,255,0.02)';
+        div.style.border = '1px solid var(--border)';
+        div.style.borderRadius = '8px';
+
+        div.innerHTML = `
+          <div>
+            <strong style="font-size:0.82rem; color:#fff;">${nomesCartoes[item.mod]} • ${nomesMeses[item.mes]}/${item.ano}</strong>
+            <div style="font-size:0.75rem; color:var(--text-dim);">Total: ${formatBRL(item.total)}</div>
+          </div>
+          <button class="status-badge ${isPaga ? 'pago' : 'aberto'}" onclick="toggleStatusFatura('${k}')">
+            ${isPaga ? '✔️ Paga' : '⏳ Em Aberto'}
+          </button>
+        `;
+        container.appendChild(div);
+      });
     }
 
-    renderExtrato();
+    document.getElementById('faturasModal').classList.add('open');
   }
+
+  async function toggleStatusFatura(key) {
+    state.faturasPagas[key] = !state.faturasPagas[key];
+    localStorage.setItem('fin_v11_paid_invoices', JSON.stringify(state.faturasPagas));
+
+    if (useCloud) {
+      await db.collection("apto708_config").doc("faturas_status").set({ pagas: state.faturasPagas });
+    }
+    abrirModalStatusFaturas();
+    renderAll();
+  }
+
+  function closeFaturasModal(e) { if (e.target.id === 'faturasModal') fecharFaturasModalDireto(); }
+  function fecharFaturasModalDireto() { document.getElementById('faturasModal').classList.remove('open'); }
 
   function toggleSelectTx(id, checked) {
     if (checked) state.selectedTxIds.add(String(id));
@@ -1633,7 +1749,7 @@
     updateBatchActionBar();
   }
 
-  // RENDERIZAÇÃO E MATEMÁTICA CORRIGIDA COM FILTRO DE DIAS
+  // RENDERIZAÇÃO E MATEMÁTICA CORRIGIDA COM CARDS REATIVOS AO CARTÃO SELECIONADO
   function renderAll() {
     const mode = state.periodMode;
     const isAll = (mode === 'all');
@@ -1642,24 +1758,36 @@
     const selAno = state.selectedYear;
     const dtStart = document.getElementById('range-date-start').value;
     const dtEnd = document.getElementById('range-date-end').value;
+    const ignoreOpen = state.ignoreOpenInvoices;
+    const activeCard = state.activeCardFilter; // 'todos', 'santander', 'nubank', 'mercadopago', 'pix', 'debito'
     const nomesMesesCurto = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
     
     if (isAll) {
       document.getElementById('fatura-ciclo-label').innerText = 'Acumulado Geral';
-      document.getElementById('kpi-fatura-label').innerText = 'Faturas Acumuladas';
     } else if (isCustom) {
       document.getElementById('fatura-ciclo-label').innerText = 'Dias Selecionados';
-      document.getElementById('kpi-fatura-label').innerText = 'Faturas no Período';
     } else {
       document.getElementById('fatura-ciclo-label').innerText = `Ref: ${nomesMesesCurto[selMes]}/${selAno}`;
-      document.getElementById('kpi-fatura-label').innerText = 'Faturas do Ciclo';
     }
     
+    const nomesCartoesFormatados = {
+      'todos': 'Todos os Cartões e Saídas',
+      'santander': 'Santander',
+      'nubank': 'Nubank',
+      'mercadopago': 'Mercado Pago',
+      'pix': 'PIX',
+      'debito': 'Débito'
+    };
+    document.getElementById('chart-mensal-sub').innerText = nomesCartoesFormatados[activeCard] || 'Todos';
+    document.getElementById('chart-cat-title').innerText = `Categorias • ${nomesCartoesFormatados[activeCard]}`;
+    document.getElementById('chart-fluxo-title').innerText = `Volume e Fluxo Diário • ${nomesCartoesFormatados[activeCard]}`;
+
     document.getElementById('card-resumo-todos-meses').style.display = isAll ? 'flex' : 'none';
 
     let saldoConta = 0, guardado = 0, reserva = 0;
     
-    let faturaSantanderPeriodo = 0, faturaNubankPeriodo = 0, faturaMPPeriodo = 0;
+    // Faturas Abertas do ciclo selecionado por cartão
+    let faturaSantanderAberta = 0, faturaNubankAberta = 0, faturaMPAberta = 0;
     let compSantanderTotal = 0, compNubankTotal = 0, compMPTotal = 0;
 
     let totalPixPeriodo = 0, totalDebitoPeriodo = 0, totalReceitasPeriodo = 0, totalGastosGeraisPeriodo = 0;
@@ -1708,14 +1836,20 @@
           if (fMes > 11) { fMes = 0; fAno++; }
         }
         const keyFatura = `${fAno}-${String(fMes + 1).padStart(2, '0')}`;
+        const faturaIdKey = `${t.mod}_${keyFatura}`;
+        const isFaturaPaga = !!state.faturasPagas[faturaIdKey];
+
         if (!monthlySummaryMap[keyFatura]) {
           monthlySummaryMap[keyFatura] = { ano: fAno, mes: fMes, receita: 0, aVista: 0, credito: 0, totalGasto: 0 };
         }
-        monthlySummaryMap[keyFatura].credito += t.valor;
-        monthlySummaryMap[keyFatura].totalGasto += t.valor;
 
-        // Limite Comprometido Vigente (Meses presentes e futuros)
-        if (fAno > hojeAno || (fAno === hojeAno && fMes >= hojeMes)) {
+        if (!ignoreOpen || isFaturaPaga) {
+          monthlySummaryMap[keyFatura].credito += t.valor;
+          monthlySummaryMap[keyFatura].totalGasto += t.valor;
+        }
+
+        // Limite Comprometido Vigente
+        if (!isFaturaPaga && (fAno > hojeAno || (fAno === hojeAno && fMes >= hojeMes))) {
           if (t.mod === 'santander') compSantanderTotal += t.valor;
           if (t.mod === 'nubank') compNubankTotal += t.valor;
           if (t.mod === 'mercadopago') compMPTotal += t.valor;
@@ -1732,6 +1866,8 @@
         isPeriodMatch = (tMes === selMes && tAno === selAno);
       }
 
+      const matchesCardFilter = (activeCard === 'todos' || t.mod === activeCard);
+
       if (t.mod.startsWith('receita')) {
         if (isPeriodMatch) totalReceitasPeriodo += t.valor;
       } else if (t.mod === 'pix' || t.mod === 'debito') {
@@ -1739,9 +1875,12 @@
           if (t.mod === 'pix') totalPixPeriodo += t.valor;
           if (t.mod === 'debito') totalDebitoPeriodo += t.valor;
           totalGastosGeraisPeriodo += t.valor;
-          dailyMap[dia] = (dailyMap[dia] || 0) + t.valor;
-          catMap[t.cat] = (catMap[t.cat] || 0) + t.valor;
-          topExpensesList.push({ desc: t.desc, valor: t.valor, cat: t.cat });
+
+          if (matchesCardFilter) {
+            dailyMap[dia] = (dailyMap[dia] || 0) + t.valor;
+            catMap[t.cat] = (catMap[t.cat] || 0) + t.valor;
+            topExpensesList.push({ desc: t.desc, valor: t.valor, cat: t.cat });
+          }
         }
       } else if (t.mod === 'santander' || t.mod === 'nubank' || t.mod === 'mercadopago') {
         let fMes = tMes;
@@ -1751,6 +1890,9 @@
           if (fMes > 11) { fMes = 0; fAno++; }
         }
         
+        const faturaIdKey = `${t.mod}_${fAno}-${String(fMes+1).padStart(2, '0')}`;
+        const isFaturaPaga = !!state.faturasPagas[faturaIdKey];
+
         let isFaturaMatch = false;
         if (isAll) {
           isFaturaMatch = true;
@@ -1761,44 +1903,23 @@
         }
 
         if (isFaturaMatch) {
-          if (t.mod === 'santander') faturaSantanderPeriodo += t.valor;
-          if (t.mod === 'nubank') faturaNubankPeriodo += t.valor;
-          if (t.mod === 'mercadopago') faturaMPPeriodo += t.valor;
+          // Filtra SEMPRE apenas valores em aberto para a fatura do ciclo
+          if (!isFaturaPaga) {
+            if (t.mod === 'santander') faturaSantanderAberta += t.valor;
+            if (t.mod === 'nubank') faturaNubankAberta += t.valor;
+            if (t.mod === 'mercadopago') faturaMPAberta += t.valor;
+          }
+          
           totalGastosGeraisPeriodo += t.valor;
-          dailyMap[dia] = (dailyMap[dia] || 0) + t.valor;
-          catMap[t.cat] = (catMap[t.cat] || 0) + t.valor;
-          topExpensesList.push({ desc: t.desc, valor: t.valor, cat: t.cat });
+
+          if (matchesCardFilter) {
+            dailyMap[dia] = (dailyMap[dia] || 0) + t.valor;
+            catMap[t.cat] = (catMap[t.cat] || 0) + t.valor;
+            topExpensesList.push({ desc: t.desc, valor: t.valor, cat: t.cat });
+          }
         }
       }
     });
-
-    // Tabela Resumo
-    if (isAll) {
-      const tbody = document.getElementById('resumo-meses-tbody');
-      tbody.innerHTML = '';
-      const sortedKeys = Object.keys(monthlySummaryMap).sort().reverse();
-
-      if (sortedKeys.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-dim);">Nenhum lançamento no histórico.</td></tr>`;
-      } else {
-        sortedKeys.forEach(k => {
-          const item = monthlySummaryMap[k];
-          const saldoLiq = item.receita - item.totalGasto;
-          const tr = document.createElement('tr');
-          tr.style.cursor = 'pointer';
-          tr.onclick = () => filtrarPorGrafico({ mes: item.mes, ano: item.ano }, 'mes');
-          tr.innerHTML = `
-            <td><strong>${nomesMesesCurto[item.mes]}/${item.ano}</strong></td>
-            <td style="color:var(--green); font-weight:600;">${formatBRL(item.receita)}</td>
-            <td style="color:#93c5fd;">${formatBRL(item.aVista)}</td>
-            <td style="color:#fca5a5;">${formatBRL(item.credito)}</td>
-            <td style="color:var(--text); font-weight:700;">${formatBRL(item.totalGasto)}</td>
-            <td style="color:${saldoLiq >= 0 ? 'var(--green)' : 'var(--red)'}; font-weight:700;">${saldoLiq >= 0 ? '+' : ''}${formatBRL(saldoLiq)}</td>
-          `;
-          tbody.appendChild(tr);
-        });
-      }
-    }
 
     // Total de Ativos (B3)
     let totalInvestAplicado = 0;
@@ -1808,15 +1929,50 @@
       totalInvestAtual += s.qtd * (s.cotacao || s.pm);
     });
 
-    // Total Caixinhas
     let totalCaixinhas = 0;
     state.caixinhas.forEach(c => { totalCaixinhas += c.saldo; });
 
     const patrimonioTotal = saldoConta + guardado + reserva + totalInvestAtual + totalCaixinhas;
-    const totalFaturasConsolidado = faturaSantanderPeriodo + faturaNubankPeriodo + faturaMPPeriodo;
+
+    // CÁLCULO REATIVO DO CARD DE FATURA DO TOPO CONFORME O CARTÃO ATIVO
+    let valorCardFatura = 0;
+    let labelCardFatura = 'Faturas em Aberto';
+    let infoVencimentoFatura = 'Santander (25) • Nubank (25) • MP (20)';
+
+    const mesFormatadoFatura = nomesMesesCurto[selMes];
+    const anoFormatadoFatura = selAno;
+
+    if (activeCard === 'santander') {
+      valorCardFatura = faturaSantanderAberta;
+      labelCardFatura = 'Fatura Aberta • Santander';
+      infoVencimentoFatura = `Vencimento: 25/${String(selMes+1).padStart(2,'0')}/${selAno}`;
+    } else if (activeCard === 'nubank') {
+      valorCardFatura = faturaNubankAberta;
+      labelCardFatura = 'Fatura Aberta • Nubank';
+      infoVencimentoFatura = `Vencimento: 25/${String(selMes+1).padStart(2,'0')}/${selAno}`;
+    } else if (activeCard === 'mercadopago') {
+      valorCardFatura = faturaMPAberta;
+      labelCardFatura = 'Fatura Aberta • Mercado Pago';
+      infoVencimentoFatura = `Vencimento: 20/${String(selMes+1).padStart(2,'0')}/${selAno}`;
+    } else if (activeCard === 'pix') {
+      valorCardFatura = totalPixPeriodo;
+      labelCardFatura = 'Total Saídas PIX';
+      infoVencimentoFatura = 'Débito imediato em conta';
+    } else if (activeCard === 'debito') {
+      valorCardFatura = totalDebitoPeriodo;
+      labelCardFatura = 'Total Cartão Débito';
+      infoVencimentoFatura = 'Débito imediato em conta';
+    } else {
+      valorCardFatura = faturaSantanderAberta + faturaNubankAberta + faturaMPAberta;
+      labelCardFatura = isAll ? 'Faturas Abertas (Todas)' : 'Faturas em Aberto (Ciclo)';
+      infoVencimentoFatura = 'Santander (25) • Nubank (25) • MP (20)';
+    }
 
     document.getElementById('kpi-patrimonio-total').innerText = formatBRL(patrimonioTotal);
-    document.getElementById('kpi-total-faturas').innerText = formatBRL(totalFaturasConsolidado);
+    document.getElementById('kpi-fatura-label').innerText = labelCardFatura;
+    document.getElementById('kpi-total-faturas').innerText = formatBRL(valorCardFatura);
+    document.getElementById('kpi-fatura-venc-info').innerText = infoVencimentoFatura;
+
     document.getElementById('kpi-saldo-conta').innerText = formatBRL(saldoConta);
     document.getElementById('kpi-guardado').innerText = formatBRL(guardado);
     document.getElementById('kpi-pix-mes').innerText = formatBRL(totalPixPeriodo);
@@ -1827,10 +1983,10 @@
     document.getElementById('kpi-total-caixinhas').innerText = formatBRL(totalCaixinhas);
     document.getElementById('kpi-goals-summary').innerText = `Total: ${formatBRL(totalCaixinhas)}`;
 
-    // Limites e Monitoramento de Cartões Individuais
+    // Monitoramento dos Cartões Individuais (Fatura Aberta vs Limite)
     const limSan = state.limites.santander || 1;
     const pctSan = Math.min(100, (compSantanderTotal / limSan) * 100).toFixed(0);
-    document.getElementById('val-santander').innerText = formatBRL(faturaSantanderPeriodo);
+    document.getElementById('val-santander').innerText = formatBRL(faturaSantanderAberta);
     document.getElementById('comp-santander').innerText = formatBRL(compSantanderTotal);
     document.getElementById('total-lim-santander').innerText = formatBRL(limSan);
     document.getElementById('disp-santander').innerText = formatBRL(Math.max(0, limSan - compSantanderTotal));
@@ -1839,7 +1995,7 @@
 
     const limNu = state.limites.nubank || 1;
     const pctNu = Math.min(100, (compNubankTotal / limNu) * 100).toFixed(0);
-    document.getElementById('val-nubank').innerText = formatBRL(faturaNubankPeriodo);
+    document.getElementById('val-nubank').innerText = formatBRL(faturaNubankAberta);
     document.getElementById('comp-nubank').innerText = formatBRL(compNubankTotal);
     document.getElementById('total-lim-nubank').innerText = formatBRL(limNu);
     document.getElementById('disp-nubank').innerText = formatBRL(Math.max(0, limNu - compNubankTotal));
@@ -1848,7 +2004,7 @@
 
     const limMP = state.limites.mercadopago || 1;
     const pctMP = Math.min(100, (compMPTotal / limMP) * 100).toFixed(0);
-    document.getElementById('val-mp').innerText = formatBRL(faturaMPPeriodo);
+    document.getElementById('val-mp').innerText = formatBRL(faturaMPAberta);
     document.getElementById('comp-mp').innerText = formatBRL(compMPTotal);
     document.getElementById('total-lim-mp').innerText = formatBRL(limMP);
     document.getElementById('disp-mp').innerText = formatBRL(Math.max(0, limMP - compMPTotal));
@@ -1858,7 +2014,7 @@
     renderExtrato();
     renderStocks();
     renderGoals();
-    updateCharts(totalPixPeriodo, totalDebitoPeriodo, faturaSantanderPeriodo, faturaNubankPeriodo, faturaMPPeriodo, dailyMap, catMap, topExpensesList);
+    updateCharts(totalPixPeriodo, totalDebitoPeriodo, faturaSantanderAberta, faturaNubankAberta, faturaMPAberta, dailyMap, catMap, topExpensesList);
   }
 
   function renderStocks() {
@@ -2057,9 +2213,16 @@
     if (t.mod === 'santander' || t.mod === 'nubank' || t.mod === 'mercadopago') {
       const venc = t.mod === 'mercadopago' ? '20' : '25';
       let mesFat = d.getMonth() + 1;
-      if (dia > 18) mesFat++;
+      let anoFat = d.getFullYear();
+      if (dia > 18) {
+        mesFat++;
+        if (mesFat > 12) { mesFat = 1; anoFat++; }
+      }
+      const fatKey = `${t.mod}_${anoFat}-${String(mesFat).padStart(2, '0')}`;
+      const isPaga = !!state.faturasPagas[fatKey];
+      
       document.getElementById('modal-impacto').innerText = `Consome Limite do Cartão`;
-      document.getElementById('modal-fatura').innerText = `Fecha 18 | Vence ${venc} (Mês ${mesFat})`;
+      document.getElementById('modal-fatura').innerText = `Fecha 18 | Vence ${venc} (${nomesMeses[mesFat-1]}/${anoFat}) [${isPaga ? 'PAGA' : 'EM ABERTO'}]`;
     } else {
       document.getElementById('modal-impacto').innerText = isTransf ? 'Movimentação entre Caixas' : (isPos ? 'Entrada no Saldo' : 'Débito em Caixa');
       document.getElementById('modal-fatura').innerText = 'À vista';
@@ -2089,6 +2252,7 @@
           let label = context.dataset.label || context.label || '';
           if (label) label += ': ';
           if (context.parsed.y !== undefined) label += formatBRL(context.parsed.y);
+          else if (context.parsed.x !== undefined) label += formatBRL(context.parsed.x);
           else if (context.parsed !== undefined) label += formatBRL(context.parsed);
           return label;
         }
@@ -2117,7 +2281,7 @@
           if (elements.length > 0) {
             const index = elements[0].index;
             const mapMod = ['pix', 'debito', 'santander', 'nubank', 'mercadopago'];
-            filtrarPorGrafico(mapMod[index], 'modalidade');
+            selecionarCartaoPainel(mapMod[index]);
           }
         }
       }
@@ -2153,7 +2317,11 @@
           if (elements.length > 0) {
             const index = elements[0].index;
             const catKey = chartCategoriasInstance.rawCategories ? chartCategoriasInstance.rawCategories[index] : null;
-            if (catKey) filtrarPorGrafico(catKey, 'categoria');
+            if (catKey) {
+              switchTab('extrato', document.querySelectorAll('.nav-btn')[6]);
+              document.getElementById('filter-categoria').value = catKey;
+              renderExtrato();
+            }
           }
         }
       }
@@ -2166,15 +2334,15 @@
         labels: [],
         datasets: [
           {
-            label: 'Receitas',
+            label: 'Gastos / Faturas',
             data: [],
-            backgroundColor: 'rgba(16, 185, 129, 0.85)',
+            backgroundColor: 'rgba(244, 63, 94, 0.85)',
             borderRadius: 4
           },
           {
-            label: 'Gastos',
+            label: 'Receitas',
             data: [],
-            backgroundColor: 'rgba(244, 63, 94, 0.85)',
+            backgroundColor: 'rgba(16, 185, 129, 0.85)',
             borderRadius: 4
           }
         ]
@@ -2201,7 +2369,13 @@
           if (elements.length > 0) {
             const index = elements[0].index;
             const itemMes = chartMensalComparativoInstance.rawMonths ? chartMensalComparativoInstance.rawMonths[index] : null;
-            if (itemMes) filtrarPorGrafico(itemMes, 'mes');
+            if (itemMes) {
+              state.periodMode = 'month';
+              state.selectedMonth = itemMes.mes;
+              state.selectedYear = itemMes.ano;
+              updatePeriodControlsUI();
+              renderAll();
+            }
           }
         }
       }
@@ -2232,7 +2406,6 @@
       }
     });
 
-    // 5. Top Gastos (Com Tooltip Corrigido para Barras Horizontais no eixo X)
     const ctx3 = document.getElementById('chartTopGastos').getContext('2d');
     chartTopGastosInstance = new Chart(ctx3, {
       type: 'bar',
@@ -2304,11 +2477,13 @@
       const dataReceitas = [];
       const dataGastos = [];
       const rawMonths = [];
+      const activeCard = state.activeCardFilter;
 
-      for (let i = 5; i >= 0; i--) {
-        let m = state.selectedMonth - i;
+      for (let i = -6; i <= 5; i++) {
+        let m = state.selectedMonth + i;
         let y = state.selectedYear;
         while (m < 0) { m += 12; y--; }
+        while (m > 11) { m -= 12; y++; }
 
         labelsMeses.push(`${nomesMesesCurto[m]}/${String(y).slice(-2)}`);
         rawMonths.push({ mes: m, ano: y });
@@ -2322,10 +2497,12 @@
           const tY = d.getFullYear();
           const dia = d.getDate();
 
+          const matchesCard = (activeCard === 'todos' || t.mod === activeCard);
+
           if (t.mod.startsWith('receita')) {
-            if (tM === m && tY === y) recMes += t.valor;
+            if (activeCard === 'todos' && tM === m && tY === y) recMes += t.valor;
           } else if (t.mod === 'pix' || t.mod === 'debito') {
-            if (tM === m && tY === y) gastMes += t.valor;
+            if (matchesCard && tM === m && tY === y) gastMes += t.valor;
           } else if (t.mod === 'santander' || t.mod === 'nubank' || t.mod === 'mercadopago') {
             let fM = tM;
             let fY = tY;
@@ -2333,7 +2510,7 @@
               fM++;
               if (fM > 11) { fM = 0; fY++; }
             }
-            if (fM === m && fY === y) gastMes += t.valor;
+            if (matchesCard && fM === m && fY === y) gastMes += t.valor;
           }
         });
 
@@ -2343,8 +2520,8 @@
 
       chartMensalComparativoInstance.rawMonths = rawMonths;
       chartMensalComparativoInstance.data.labels = labelsMeses;
-      chartMensalComparativoInstance.data.datasets[0].data = dataReceitas;
-      chartMensalComparativoInstance.data.datasets[1].data = dataGastos;
+      chartMensalComparativoInstance.data.datasets[0].data = dataGastos;
+      chartMensalComparativoInstance.data.datasets[1].data = dataReceitas;
       chartMensalComparativoInstance.update();
     }
   }
