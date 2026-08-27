@@ -79,11 +79,6 @@
     .period-nav-btn:hover { background: var(--card-hover); }
     .period-title { font-size: 0.88rem; font-weight: 600; color: #93c5fd; display: flex; align-items: center; gap: 8px; }
 
-    /* Banner de Avisos */
-    .alert-banner { display: none; padding: 12px 16px; border-radius: 10px; font-size: 0.8rem; line-height: 1.4; margin-bottom: 12px; }
-    .alert-danger { background: rgba(244, 63, 94, 0.1); border: 1px solid var(--red); color: #fda4af; }
-    .alert-warning { background: rgba(245, 158, 11, 0.1); border: 1px solid var(--orange); color: #fde68a; }
-
     /* Grid Bento Coeso (Mobile First) */
     .view-panel { display: none; }
     .view-panel.active { display: flex; flex-direction: column; gap: 10px; }
@@ -150,6 +145,10 @@
 
     .stock-card { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(255,255,255,0.015); border: 1px solid var(--border); border-radius: 8px; }
 
+    /* Caixinhas de Objetivos */
+    .goal-card { background: rgba(255,255,255,0.015); border: 1px solid var(--border); border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+    .goal-card-header { display: flex; justify-content: space-between; align-items: center; }
+
     /* Modal */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(5px); z-index: 200; justify-content: center; align-items: flex-end; }
     .modal-overlay.open { display: flex; }
@@ -159,13 +158,11 @@
 
     /* Navigation */
     .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #0c111d; border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 8px 0 calc(env(safe-area-inset-bottom, 0px) + 8px); z-index: 100; }
-    .nav-btn { background: none; border: none; color: var(--text-dim); display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.62rem; cursor: pointer; width: 16%; transition: color 0.15s; }
+    .nav-btn { background: none; border: none; color: var(--text-dim); display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.62rem; cursor: pointer; width: 14%; transition: color 0.15s; }
     .nav-btn i { font-size: 1.25rem; }
     .nav-btn.active { color: var(--primary); font-weight: 600; }
 
-    /* ========================================================
-       DESKTOP - BENTO GRID COMPACTO E ENCOSTADO
-       ======================================================== */
+    /* Desktop View */
     @media (min-width: 900px) {
       body { padding-bottom: 24px; }
       .container { padding: 20px; }
@@ -187,7 +184,6 @@
       }
       .period-title { font-size: 1rem; }
 
-      /* Malha Contínua Encostada (Bento Grid) */
       #view-home.active {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -206,14 +202,13 @@
         height: 100%;
       }
 
-      /* Posicionamento dos Quadros */
       .card-span-2 { grid-column: span 2; }
       .card-span-4 { grid-column: span 4; }
 
-      /* Formulários Desktop */
       #view-lancar.active,
       #view-transfer.active,
       #view-invest.active,
+      #view-goals.active,
       #view-batch.active,
       #view-extrato.active {
         display: flex;
@@ -223,13 +218,13 @@
       #view-lancar .card,
       #view-transfer .card,
       #view-invest .card,
+      #view-goals .card,
       #view-batch .card,
       #view-extrato .card {
         width: 100%;
         max-width: 980px;
       }
 
-      /* Barra de Navegação Superior Integrada no PC */
       .bottom-nav {
         position: static;
         background: var(--card-bg);
@@ -263,7 +258,7 @@
 
 <div class="container">
   
-  <!-- Navegação Superior Desktop / Inferior Mobile -->
+  <!-- Navegação -->
   <nav class="bottom-nav">
     <button class="nav-btn active" onclick="switchTab('home', this)">
       <i class="ph ph-squares-four"></i>
@@ -283,7 +278,11 @@
     </button>
     <button class="nav-btn" onclick="switchTab('invest', this)">
       <i class="ph ph-chart-line-up"></i>
-      <span>Bolsa</span>
+      <span>Ativos B3</span>
+    </button>
+    <button class="nav-btn" onclick="switchTab('goals', this)">
+      <i class="ph ph-piggy-bank"></i>
+      <span>Caixinhas</span>
     </button>
     <button class="nav-btn" onclick="switchTab('extrato', this)">
       <i class="ph ph-receipt"></i>
@@ -327,16 +326,13 @@
     <button class="period-nav-btn" onclick="changeSelectedMonth(1)"><i class="ph ph-caret-right"></i></button>
   </div>
 
-  <div id="alert-banner" class="alert-banner"></div>
-
   <!-- VIEW 1: PAINEL GERAL (BENTO GRID) -->
   <div id="view-home" class="view-panel active">
     
-    <!-- Linha 1: Indicadores Principais -->
     <div class="card patrimonio-card">
       <span class="kpi-title">Patrimônio Líquido</span>
       <div class="kpi-val" id="kpi-patrimonio-total">R$ 0,00</div>
-      <p class="kpi-sub">Conta + Guardado + Reserva + B3</p>
+      <p class="kpi-sub">Conta + Guardado + Reserva + B3 + Caixinhas</p>
     </div>
 
     <div class="card faturas-total-card">
@@ -360,20 +356,20 @@
     </div>
 
     <div class="card">
-      <span class="kpi-title">Reservas & Bolsa</span>
+      <span class="kpi-title">Investimentos & Metas</span>
       <div class="kpi-mini-grid" style="margin-top: 6px;">
         <div class="kpi-mini">
-          <span><i class="ph ph-shield-check"></i> Segurança</span>
-          <strong id="kpi-reserva" style="color: var(--security);">R$ 0,00</strong>
+          <span><i class="ph ph-trend-up"></i> Bolsa (Ações+FII)</span>
+          <strong id="kpi-total-acoes" style="color: #c4b5fd;">R$ 0,00</strong>
         </div>
         <div class="kpi-mini">
-          <span><i class="ph ph-trend-up"></i> Ações B3</span>
-          <strong id="kpi-total-acoes" style="color: #c4b5fd;">R$ 0,00</strong>
+          <span><i class="ph ph-piggy-bank"></i> Caixinhas</span>
+          <strong id="kpi-total-caixinhas" style="color: var(--security);">R$ 0,00</strong>
         </div>
       </div>
     </div>
 
-    <!-- Linha 2: Faturas de Cartão e Saídas Rápidas -->
+    <!-- Faturas de Cartão -->
     <div class="card card-span-2">
       <div class="card-header">
         <span>Cartões de Crédito</span>
@@ -419,7 +415,7 @@
       </div>
     </div>
 
-    <!-- Pagamentos à Vista e Top Gastos -->
+    <!-- Saídas à Vista e Top Gastos -->
     <div class="card">
       <div class="card-header"><span>Saídas à Vista (Mês)</span></div>
       <div class="kpi-mini-grid" style="margin-top: 6px;">
@@ -444,7 +440,7 @@
       </div>
     </div>
 
-    <!-- Linha 3: Gráficos de Categorias e Evolução Temporal -->
+    <!-- Gráficos de Categorias e Evolução -->
     <div class="card card-span-2">
       <div class="card-header"><span>Despesas por Categoria</span></div>
       <div style="position: relative; height: 220px;">
@@ -472,11 +468,11 @@
         </div>
         <div class="filter-controls" style="margin-top: 8px;">
           <div class="form-group">
-            <label>Valor (R$)</label>
+            <label>Valor Total da Compra (R$)</label>
             <input type="number" step="0.01" id="tx-valor" placeholder="0,00" required>
           </div>
           <div class="form-group">
-            <label>Data</label>
+            <label>Data da Compra</label>
             <input type="date" id="tx-data" required>
           </div>
         </div>
@@ -516,18 +512,36 @@
           </select>
         </div>
 
-        <div class="form-group" id="group-parcelas" style="display:none; margin-top: 8px;">
-          <label>Parcelamento</label>
-          <select id="tx-parcelas">
-            <option value="1">1x (À vista)</option>
-            <option value="2">2x</option>
-            <option value="3">3x</option>
-            <option value="4">4x</option>
-            <option value="5">5x</option>
-            <option value="6">6x</option>
-            <option value="10">10x</option>
-            <option value="12">12x</option>
-          </select>
+        <!-- Grupo de Parcelas Avançado -->
+        <div id="group-parcelas" style="display:none; flex-direction:column; gap:8px; margin-top: 8px; background: rgba(255,255,255,0.02); border:1px solid var(--border); padding:12px; border-radius:8px;">
+          <label style="color:var(--primary);">Configuração de Parcelamento no Crédito</label>
+          <div class="filter-controls">
+            <div class="form-group">
+              <label>Total de Parcelas</label>
+              <select id="tx-parcelas-total" onchange="updateParcelaAtualOptions()">
+                <option value="1">1x (À vista na fatura)</option>
+                <option value="2">2x</option>
+                <option value="3">3x</option>
+                <option value="4">4x</option>
+                <option value="5">5x</option>
+                <option value="6">6x</option>
+                <option value="7">7x</option>
+                <option value="8">8x</option>
+                <option value="9">9x</option>
+                <option value="10">10x</option>
+                <option value="12">12x</option>
+                <option value="18">18x</option>
+                <option value="24">24x</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Parcela Atual</label>
+              <select id="tx-parcela-atual">
+                <option value="1">1ª parcela</option>
+              </select>
+            </div>
+          </div>
+          <span style="font-size:0.68rem; color:var(--text-dim);">* O sistema agendará automaticamente as parcelas restantes nas faturas seguintes.</span>
         </div>
 
         <button type="submit" class="btn-main" style="margin-top: 14px;">
@@ -621,37 +635,94 @@
     </div>
   </div>
 
-  <!-- VIEW 5: BOLSA B3 -->
+  <!-- VIEW 5: BOLSA B3 (AÇÕES & FIIs) -->
   <div id="view-invest" class="view-panel">
     <div class="card">
       <div class="card-header">
-        <span>Carteira B3</span>
+        <span>Carteira de Ações e FIIs (B3)</span>
         <button onclick="atualizarCotacoes()" style="background:none; border:none; color:var(--primary); cursor:pointer; font-size:0.8rem; display:flex; align-items:center; gap:4px;">
-          <i class="ph ph-arrows-clockwise" id="icon-refresh"></i> Atualizar
+          <i class="ph ph-arrows-clockwise" id="icon-refresh"></i> Atualizar Cotações
         </button>
       </div>
       
-      <div class="kpi-mini" style="background: rgba(139,92,246,0.06); border-color: rgba(139,92,246,0.2);">
-        <span style="color: #c4b5fd;">Total em Ações</span>
-        <strong id="kpi-total-acoes-view" style="color: #c4b5fd; font-size:1.3rem;">R$ 0,00</strong>
+      <div class="kpi-mini-grid">
+        <div class="kpi-mini" style="background: rgba(139,92,246,0.06); border-color: rgba(139,92,246,0.2);">
+          <span style="color: #c4b5fd;">Total Aplicado (PM)</span>
+          <strong id="kpi-invest-aplicado" style="color: #c4b5fd; font-size:1.15rem;">R$ 0,00</strong>
+        </div>
+        <div class="kpi-mini" style="background: rgba(59,130,246,0.06); border-color: rgba(59,130,246,0.2);">
+          <span style="color: #93c5fd;">Valor Atual de Mercado</span>
+          <strong id="kpi-invest-atual" style="color: #93c5fd; font-size:1.15rem;">R$ 0,00</strong>
+        </div>
       </div>
 
       <form id="form-stock" style="display:flex; flex-direction:column; gap:8px; margin-top: 10px;">
         <div class="filter-controls">
-          <input type="text" id="stock-ticker" placeholder="Ticker (PETR4)" style="text-transform:uppercase;" required>
-          <input type="number" id="stock-qtd" placeholder="Qtd" min="1" required>
+          <div class="form-group">
+            <label>Tipo de Ativo</label>
+            <select id="stock-tipo" required>
+              <option value="ACAO">Ação (B3)</option>
+              <option value="FII">Fundo Imobiliário (FII)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Ticker</label>
+            <input type="text" id="stock-ticker" placeholder="Ex: PETR4, MXRF11" style="text-transform:uppercase;" required>
+          </div>
         </div>
         <div class="filter-controls">
-          <input type="number" step="0.01" id="stock-pm" placeholder="Preço Médio (R$)" required>
-          <button type="submit" class="btn-main" style="padding: 9px; font-size:0.8rem;">Adicionar Ativo</button>
+          <div class="form-group">
+            <label>Quantidade de Cotas</label>
+            <input type="number" id="stock-qtd" placeholder="Qtd" min="1" required>
+          </div>
+          <div class="form-group">
+            <label>Preço Pago / PM (R$)</label>
+            <input type="number" step="0.01" id="stock-pm" placeholder="Preço Médio (R$)" required>
+          </div>
         </div>
+        <button type="submit" class="btn-main" style="padding: 10px; font-size:0.82rem; margin-top:4px;">
+          <i class="ph ph-plus-circle"></i> Adicionar à Carteira
+        </button>
       </form>
 
       <div id="stock-list" style="display: flex; flex-direction: column; gap: 6px; margin-top: 10px;"></div>
     </div>
   </div>
 
-  <!-- VIEW 6: EXTRATO -->
+  <!-- VIEW 6: CAIXINHAS & OBJETIVOS -->
+  <div id="view-goals" class="view-panel">
+    <div class="card">
+      <div class="card-header">
+        <span>Caixinhas & Metas Financeiras</span>
+        <span id="kpi-goals-summary" style="font-size:0.75rem; color:var(--security);">Total: R$ 0,00</span>
+      </div>
+      <p style="font-size:0.75rem; color:var(--text-dim);">Crie metas dedicadas (Reserva, Viagem, Reforma, Casamento) e acompanhe o progresso de cada uma.</p>
+
+      <form id="form-goal" style="display:flex; flex-direction:column; gap:8px; margin-top: 10px;">
+        <div class="filter-controls">
+          <div class="form-group">
+            <label>Nome do Objetivo</label>
+            <input type="text" id="goal-nome" placeholder="Ex: Viagem de Férias" required>
+          </div>
+          <div class="form-group">
+            <label>Meta Estipulada (R$)</label>
+            <input type="number" step="0.01" id="goal-target" placeholder="R$ 5.000,00" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Saldo Inicial (R$)</label>
+          <input type="number" step="0.01" id="goal-current" placeholder="0,00" value="0">
+        </div>
+        <button type="submit" class="btn-main" style="background:var(--security); padding: 10px; font-size:0.82rem;">
+          <i class="ph ph-plus"></i> Criar Nova Caixinha
+        </button>
+      </form>
+
+      <div id="goals-list" style="display:flex; flex-direction:column; gap:8px; margin-top: 10px;"></div>
+    </div>
+  </div>
+
+  <!-- VIEW 7: EXTRATO -->
   <div id="view-extrato" class="view-panel">
     <div class="card">
       <div class="card-header">
@@ -760,8 +831,12 @@
       mercadopago: 2500
     },
     carteira: JSON.parse(localStorage.getItem('fin_v11_stocks')) || [
-      { ticker: 'PETR4', qtd: 50, pm: 35.00, cotacao: 38.20 },
-      { ticker: 'ITUB4', qtd: 80, pm: 30.50, cotacao: 34.10 }
+      { tipo: 'ACAO', ticker: 'PETR4', qtd: 50, pm: 35.00, cotacao: 38.20 },
+      { tipo: 'FII', ticker: 'MXRF11', qtd: 100, pm: 10.20, cotacao: 10.45 }
+    ],
+    caixinhas: JSON.parse(localStorage.getItem('fin_v11_goals')) || [
+      { id: 1, nome: 'Reserva de Emergência', target: 10000, saldo: 3500 },
+      { id: 2, nome: 'Viagem de Fim de Ano', target: 4000, saldo: 1200 }
     ]
   };
 
@@ -863,6 +938,13 @@
         atualizarCotacoes();
       }
     });
+
+    db.collection("apto708_config").doc("caixinhas").onSnapshot((doc) => {
+      if (doc.exists && doc.data().itens) {
+        state.caixinhas = doc.data().itens;
+        renderAll();
+      }
+    });
   }
 
   function switchTab(tab, btn) {
@@ -878,6 +960,78 @@
     pGroup.style.display = (mod === 'santander' || mod === 'nubank' || mod === 'mercadopago') ? 'flex' : 'none';
   }
 
+  function updateParcelaAtualOptions() {
+    const total = parseInt(document.getElementById('tx-parcelas-total').value) || 1;
+    const selectAtual = document.getElementById('tx-parcela-atual');
+    selectAtual.innerHTML = '';
+    for (let i = 1; i <= total; i++) {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = `${i}ª parcela`;
+      selectAtual.appendChild(opt);
+    }
+  }
+
+  document.getElementById('form-tx').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const desc = document.getElementById('tx-desc').value;
+    const valor = parseFloat(document.getElementById('tx-valor').value);
+    const data = document.getElementById('tx-data').value;
+    const mod = document.getElementById('tx-modalidade').value;
+    const cat = document.getElementById('tx-categoria').value;
+    const isCartao = (mod === 'santander' || mod === 'nubank' || mod === 'mercadopago');
+
+    if (isCartao) {
+      const parcelasTotal = parseInt(document.getElementById('tx-parcelas-total').value) || 1;
+      const parcelaAtual = parseInt(document.getElementById('tx-parcela-atual').value) || 1;
+      const vParcela = valor / parcelasTotal;
+      const baseDate = new Date(data + 'T00:00:00');
+
+      // Gera os lançamentos a partir da parcela selecionada em diante
+      for (let p = parcelaAtual; p <= parcelasTotal; p++) {
+        const d = new Date(baseDate);
+        d.setMonth(d.getMonth() + (p - parcelaAtual));
+        const item = {
+          id: Date.now() + p,
+          desc: parcelasTotal > 1 ? `${desc} (${p}/${parcelasTotal})` : desc,
+          valor: vParcela,
+          data: getLocalDateStr(d),
+          mod,
+          cat,
+          parcelaInfo: `${p} de ${parcelasTotal}`,
+          timestamp: Date.now() + p
+        };
+        if (useCloud) await db.collection("apto708_transacoes").add(item);
+        else state.transacoes.push(item);
+      }
+    } else {
+      const item = {
+        id: Date.now(),
+        desc,
+        valor,
+        data,
+        mod,
+        cat,
+        parcelaInfo: 'À vista',
+        timestamp: Date.now()
+      };
+      if (useCloud) await db.collection("apto708_transacoes").add(item);
+      else state.transacoes.push(item);
+    }
+
+    if (!useCloud) {
+      localStorage.setItem('fin_v11_tx', JSON.stringify(state.transacoes));
+      renderAll();
+    }
+
+    document.getElementById('form-tx').reset();
+    document.getElementById('tx-data').value = getLocalDateStr();
+    checkParcelas();
+    updateParcelaAtualOptions();
+    switchTab('home', document.querySelectorAll('.nav-btn')[0]);
+  });
+
+  // Transferências
   document.getElementById('form-transfer').addEventListener('submit', async (e) => {
     e.preventDefault();
     const origem = document.getElementById('transf-origem').value;
@@ -919,6 +1073,7 @@
     switchTab('home', document.querySelectorAll('.nav-btn')[0]);
   });
 
+  // Lote
   function addBatchRow() {
     const container = document.getElementById('batch-rows-container');
     const rowId = Date.now() + Math.random().toString(36).substr(2, 4);
@@ -1021,6 +1176,7 @@
     switchTab('home', document.querySelectorAll('.nav-btn')[0]);
   });
 
+  // Limites
   document.getElementById('form-limits').addEventListener('submit', async (e) => {
     e.preventDefault();
     const newLimits = {
@@ -1039,112 +1195,15 @@
     alert('Limites atualizados!');
   });
 
-  document.getElementById('form-tx').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const desc = document.getElementById('tx-desc').value;
-    const valor = parseFloat(document.getElementById('tx-valor').value);
-    const data = document.getElementById('tx-data').value;
-    const mod = document.getElementById('tx-modalidade').value;
-    const cat = document.getElementById('tx-categoria').value;
-    const parcelas = parseInt(document.getElementById('tx-parcelas').value) || 1;
-    const isCartao = (mod === 'santander' || mod === 'nubank' || mod === 'mercadopago');
-
-    if (parcelas > 1 && isCartao) {
-      const vParcela = valor / parcelas;
-      const baseDate = new Date(data + 'T00:00:00');
-      for (let i = 0; i < parcelas; i++) {
-        const d = new Date(baseDate);
-        d.setMonth(d.getMonth() + i);
-        const item = {
-          id: Date.now() + i,
-          desc: `${desc} (${i+1}/${parcelas})`,
-          valor: vParcela,
-          data: getLocalDateStr(d),
-          mod,
-          cat,
-          parcelaInfo: `${i+1} de ${parcelas}`,
-          timestamp: Date.now() + i
-        };
-        if (useCloud) await db.collection("apto708_transacoes").add(item);
-        else state.transacoes.push(item);
-      }
-    } else {
-      const item = {
-        id: Date.now(),
-        desc,
-        valor,
-        data,
-        mod,
-        cat,
-        parcelaInfo: 'À vista',
-        timestamp: Date.now()
-      };
-      if (useCloud) await db.collection("apto708_transacoes").add(item);
-      else state.transacoes.push(item);
-    }
-
-    if (!useCloud) {
-      localStorage.setItem('fin_v11_tx', JSON.stringify(state.transacoes));
-      renderAll();
-    }
-
-    document.getElementById('form-tx').reset();
-    document.getElementById('tx-data').value = getLocalDateStr();
-    checkParcelas();
-    switchTab('home', document.querySelectorAll('.nav-btn')[0]);
-  });
-
-  function abrirDetalhes(id) {
-    const t = state.transacoes.find(item => item.id === id || item.idDoc === id);
-    if (!t) return;
-
-    const isPos = t.mod.startsWith('receita');
-    const isTransf = t.mod === 'transferencia';
-    const d = new Date(t.data + 'T00:00:00');
-    const dia = d.getDate();
-
-    document.getElementById('modal-desc').innerText = t.desc;
-    document.getElementById('modal-val').innerText = isTransf ? formatBRL(t.valor) : `${isPos ? '+' : '-'} ${formatBRL(t.valor)}`;
-    document.getElementById('modal-val').style.color = isTransf ? '#cbd5e1' : (isPos ? 'var(--green)' : '#fff');
-    document.getElementById('modal-cat').innerText = categoryLabels[t.cat] || t.cat;
-    document.getElementById('modal-data').innerText = d.toLocaleDateString('pt-BR');
-    document.getElementById('modal-mod').innerText = t.mod.toUpperCase();
-
-    if (t.mod === 'santander' || t.mod === 'nubank' || t.mod === 'mercadopago') {
-      const venc = t.mod === 'mercadopago' ? '20' : '25';
-      let mesFat = d.getMonth() + 1;
-      if (dia > 18) mesFat++;
-      document.getElementById('modal-impacto').innerText = `Consome Limite do Cartão`;
-      document.getElementById('modal-fatura').innerText = `Fecha 18 | Vence ${venc} (Mês ${mesFat})`;
-    } else {
-      document.getElementById('modal-impacto').innerText = isTransf ? 'Movimentação entre Caixas' : (isPos ? 'Entrada no Saldo' : 'Débito em Caixa');
-      document.getElementById('modal-fatura').innerText = 'À vista';
-    }
-
-    document.getElementById('modal-btn-del').onclick = async () => {
-      if (useCloud && t.idDoc) {
-        await db.collection("apto708_transacoes").doc(t.idDoc).delete();
-      } else {
-        state.transacoes = state.transacoes.filter(item => item.id !== id);
-        localStorage.setItem('fin_v11_tx', JSON.stringify(state.transacoes));
-        renderAll();
-      }
-      fecharModalDireto();
-    };
-
-    document.getElementById('itemModal').classList.add('open');
-  }
-
-  function closeModal(e) { if (e.target.id === 'itemModal') fecharModalDireto(); }
-  function fecharModalDireto() { document.getElementById('itemModal').classList.remove('open'); }
-
+  // Ações e FIIs
   document.getElementById('form-stock').addEventListener('submit', async (e) => {
     e.preventDefault();
+    const tipo = document.getElementById('stock-tipo').value;
     const ticker = document.getElementById('stock-ticker').value.toUpperCase().trim();
     const qtd = parseInt(document.getElementById('stock-qtd').value);
     const pm = parseFloat(document.getElementById('stock-pm').value);
 
-    state.carteira.push({ ticker, qtd, pm, cotacao: pm });
+    state.carteira.push({ tipo, ticker, qtd, pm, cotacao: pm });
     if (useCloud) await db.collection("apto708_config").doc("carteira").set({ itens: state.carteira });
     else {
       localStorage.setItem('fin_v11_stocks', JSON.stringify(state.carteira));
@@ -1190,6 +1249,49 @@
     }
   }
 
+  // Caixinhas
+  document.getElementById('form-goal').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const nome = document.getElementById('goal-nome').value.trim();
+    const target = parseFloat(document.getElementById('goal-target').value);
+    const saldo = parseFloat(document.getElementById('goal-current').value) || 0;
+
+    const novaCaixinha = { id: Date.now(), nome, target, saldo };
+    state.caixinhas.push(novaCaixinha);
+
+    if (useCloud) await db.collection("apto708_config").doc("caixinhas").set({ itens: state.caixinhas });
+    else {
+      localStorage.setItem('fin_v11_goals', JSON.stringify(state.caixinhas));
+      renderAll();
+    }
+    document.getElementById('form-goal').reset();
+  });
+
+  async function alterarSaldoCaixinha(index, delta) {
+    const vStr = prompt(`Informe o valor a ${delta > 0 ? 'adicionar' : 'retirar'}:`);
+    const valor = parseFloat(vStr);
+    if (!isNaN(valor) && valor > 0) {
+      state.caixinhas[index].saldo = Math.max(0, state.caixinhas[index].saldo + (delta * valor));
+      if (useCloud) await db.collection("apto708_config").doc("caixinhas").set({ itens: state.caixinhas });
+      else {
+        localStorage.setItem('fin_v11_goals', JSON.stringify(state.caixinhas));
+        renderAll();
+      }
+    }
+  }
+
+  async function excluirCaixinha(index) {
+    if (confirm("Excluir esta caixinha?")) {
+      state.caixinhas.splice(index, 1);
+      if (useCloud) await db.collection("apto708_config").doc("caixinhas").set({ itens: state.caixinhas });
+      else {
+        localStorage.setItem('fin_v11_goals', JSON.stringify(state.caixinhas));
+        renderAll();
+      }
+    }
+  }
+
+  // Renderização e Cálculos
   function renderAll() {
     const selMes = state.selectedMonth;
     const selAno = state.selectedYear;
@@ -1250,20 +1352,32 @@
       }
     });
 
-    let totalAcoes = 0;
-    state.carteira.forEach(s => { totalAcoes += s.qtd * (s.cotacao || s.pm); });
-    const patrimonioTotal = saldoConta + guardado + reserva + totalAcoes;
+    // Total de Ativos (B3)
+    let totalInvestAplicado = 0;
+    let totalInvestAtual = 0;
+    state.carteira.forEach(s => {
+      totalInvestAplicado += s.qtd * s.pm;
+      totalInvestAtual += s.qtd * (s.cotacao || s.pm);
+    });
+
+    // Total de Caixinhas
+    let totalCaixinhas = 0;
+    state.caixinhas.forEach(c => { totalCaixinhas += c.saldo; });
+
+    const patrimonioTotal = saldoConta + guardado + reserva + totalInvestAtual + totalCaixinhas;
     const totalFaturasConsolidado = faturaSantander + faturaNubank + faturaMP;
 
     document.getElementById('kpi-patrimonio-total').innerText = formatBRL(patrimonioTotal);
     document.getElementById('kpi-total-faturas').innerText = formatBRL(totalFaturasConsolidado);
     document.getElementById('kpi-saldo-conta').innerText = formatBRL(saldoConta);
     document.getElementById('kpi-guardado').innerText = formatBRL(guardado);
-    document.getElementById('kpi-reserva').innerText = formatBRL(reserva);
     document.getElementById('kpi-pix-mes').innerText = formatBRL(totalPixPeriodo);
     document.getElementById('kpi-debito-mes').innerText = formatBRL(totalDebitoPeriodo);
-    document.getElementById('kpi-total-acoes').innerText = formatBRL(totalAcoes);
-    document.getElementById('kpi-total-acoes-view').innerText = formatBRL(totalAcoes);
+    document.getElementById('kpi-total-acoes').innerText = formatBRL(totalInvestAtual);
+    document.getElementById('kpi-invest-aplicado').innerText = formatBRL(totalInvestAplicado);
+    document.getElementById('kpi-invest-atual').innerText = formatBRL(totalInvestAtual);
+    document.getElementById('kpi-total-caixinhas').innerText = formatBRL(totalCaixinhas);
+    document.getElementById('kpi-goals-summary').innerText = `Total: ${formatBRL(totalCaixinhas)}`;
 
     // Limites
     const limSan = state.limites.santander || 1;
@@ -1289,6 +1403,7 @@
 
     renderExtrato();
     renderStocks();
+    renderGoals();
     updateCharts(totalPixPeriodo, totalDebitoPeriodo, faturaSantander, faturaNubank, faturaMP, dailyMap, catMap, topExpensesList);
   }
 
@@ -1296,30 +1411,70 @@
     const list = document.getElementById('stock-list');
     list.innerHTML = '';
     if (state.carteira.length === 0) {
-      list.innerHTML = `<div style="text-align:center; color:var(--text-dim); font-size:0.75rem; padding:8px;">Nenhum ativo.</div>`;
+      list.innerHTML = `<div style="text-align:center; color:var(--text-dim); font-size:0.75rem; padding:8px;">Nenhum ativo cadastrado.</div>`;
       return;
     }
 
     state.carteira.forEach((s, idx) => {
-      const valorTotal = s.qtd * (s.cotacao || s.pm);
-      const lucro = (s.cotacao - s.pm) * s.qtd;
-      const rentabilidade = ((s.cotacao / s.pm - 1) * 100).toFixed(1);
+      const valorTotalAtual = s.qtd * (s.cotacao || s.pm);
+      const valorTotalPago = s.qtd * s.pm;
+      const lucro = valorTotalAtual - valorTotalPago;
+      const rentabilidade = (( (s.cotacao || s.pm) / s.pm - 1) * 100).toFixed(1);
       const isPos = lucro >= 0;
 
       const card = document.createElement('div');
       card.className = 'stock-card';
       card.innerHTML = `
         <div>
-          <div style="font-weight:700; font-size:0.85rem;">${s.ticker} <span style="font-size:0.7rem; color:var(--text-dim); font-weight:normal;">(${s.qtd} un)</span></div>
-          <div style="font-size:0.72rem; color:var(--text-dim);">PM: ${formatBRL(s.pm)} | Atual: <b style="color:#fff;">${formatBRL(s.cotacao)}</b></div>
+          <div style="font-weight:700; font-size:0.85rem; display:flex; align-items:center; gap:6px;">
+            <span style="background:${s.tipo === 'FII' ? 'rgba(14,165,233,0.15)' : 'rgba(139,92,246,0.15)'}; color:${s.tipo === 'FII' ? '#7dd3fc' : '#c4b5fd'}; padding:2px 6px; border-radius:4px; font-size:0.65rem;">${s.tipo || 'ACAO'}</span>
+            ${s.ticker} <span style="font-size:0.7rem; color:var(--text-dim); font-weight:normal;">(${s.qtd} un)</span>
+          </div>
+          <div style="font-size:0.72rem; color:var(--text-dim); margin-top:2px;">
+            Pago: <b>${formatBRL(s.pm)}</b> | Atual: <b style="color:#fff;">${formatBRL(s.cotacao || s.pm)}</b>
+          </div>
         </div>
         <div style="text-align:right;">
-          <div style="font-weight:700; font-size:0.85rem;">${formatBRL(valorTotal)}</div>
+          <div style="font-weight:700; font-size:0.85rem;">${formatBRL(valorTotalAtual)}</div>
           <div style="font-size:0.72rem; color:${isPos ? 'var(--green)' : 'var(--red)'}; font-weight:600;">
-            ${isPos ? '+' : ''}${rentabilidade}% (${formatBRL(lucro)})
+            ${isPos ? '+' : ''}${rentabilidade}% (${isPos ? '+' : ''}${formatBRL(lucro)})
           </div>
         </div>
         <button onclick="excluirStock(${idx})" style="background:none; border:none; color:var(--text-dim); margin-left:8px; cursor:pointer;">✕</button>
+      `;
+      list.appendChild(card);
+    });
+  }
+
+  function renderGoals() {
+    const list = document.getElementById('goals-list');
+    list.innerHTML = '';
+    if (state.caixinhas.length === 0) {
+      list.innerHTML = `<div style="text-align:center; color:var(--text-dim); font-size:0.75rem; padding:8px;">Nenhuma caixinha cadastrada.</div>`;
+      return;
+    }
+
+    state.caixinhas.forEach((g, idx) => {
+      const pct = Math.min(100, (g.saldo / g.target) * 100).toFixed(0);
+      const card = document.createElement('div');
+      card.className = 'goal-card';
+      card.innerHTML = `
+        <div class="goal-card-header">
+          <strong style="font-size:0.85rem; color:#fff;">${g.nome}</strong>
+          <span style="font-size:0.75rem; color:var(--security); font-weight:700;">${pct}%</span>
+        </div>
+        <div class="progress-bar-bg" style="height:8px;">
+          <div class="progress-bar-fill" style="background: var(--security); width: ${pct}%;"></div>
+        </div>
+        <div class="limit-info-row">
+          <span>Acumulado: <strong style="color:#fff;">${formatBRL(g.saldo)}</strong></span>
+          <span>Meta: <strong>${formatBRL(g.target)}</strong></span>
+        </div>
+        <div style="display:flex; gap:6px; margin-top:4px;">
+          <button onclick="alterarSaldoCaixinha(${idx}, 1)" style="flex:1; background:rgba(16,185,129,0.15); border:1px solid var(--green); color:var(--green); border-radius:6px; padding:6px; font-size:0.72rem; cursor:pointer; font-weight:600;">+ Aportar</button>
+          <button onclick="alterarSaldoCaixinha(${idx}, -1)" style="flex:1; background:rgba(239,68,68,0.15); border:1px solid var(--red); color:#fca5a5; border-radius:6px; padding:6px; font-size:0.72rem; cursor:pointer; font-weight:600;">- Resgatar</button>
+          <button onclick="excluirCaixinha(${idx})" style="background:none; border:1px solid var(--border); color:var(--text-dim); border-radius:6px; padding:6px 10px; cursor:pointer;">✕</button>
+        </div>
       `;
       list.appendChild(card);
     });
@@ -1408,7 +1563,63 @@
     });
   }
 
+  function abrirDetalhes(id) {
+    const t = state.transacoes.find(item => item.id === id || item.idDoc === id);
+    if (!t) return;
+
+    const isPos = t.mod.startsWith('receita');
+    const isTransf = t.mod === 'transferencia';
+    const d = new Date(t.data + 'T00:00:00');
+    const dia = d.getDate();
+
+    document.getElementById('modal-desc').innerText = t.desc;
+    document.getElementById('modal-val').innerText = isTransf ? formatBRL(t.valor) : `${isPos ? '+' : '-'} ${formatBRL(t.valor)}`;
+    document.getElementById('modal-val').style.color = isTransf ? '#cbd5e1' : (isPos ? 'var(--green)' : '#fff');
+    document.getElementById('modal-cat').innerText = categoryLabels[t.cat] || t.cat;
+    document.getElementById('modal-data').innerText = d.toLocaleDateString('pt-BR');
+    document.getElementById('modal-mod').innerText = t.mod.toUpperCase();
+
+    if (t.mod === 'santander' || t.mod === 'nubank' || t.mod === 'mercadopago') {
+      const venc = t.mod === 'mercadopago' ? '20' : '25';
+      let mesFat = d.getMonth() + 1;
+      if (dia > 18) mesFat++;
+      document.getElementById('modal-impacto').innerText = `Consome Limite do Cartão`;
+      document.getElementById('modal-fatura').innerText = `Fecha 18 | Vence ${venc} (Mês ${mesFat})`;
+    } else {
+      document.getElementById('modal-impacto').innerText = isTransf ? 'Movimentação entre Caixas' : (isPos ? 'Entrada no Saldo' : 'Débito em Caixa');
+      document.getElementById('modal-fatura').innerText = 'À vista';
+    }
+
+    document.getElementById('modal-btn-del').onclick = async () => {
+      if (useCloud && t.idDoc) {
+        await db.collection("apto708_transacoes").doc(t.idDoc).delete();
+      } else {
+        state.transacoes = state.transacoes.filter(item => item.id !== id);
+        localStorage.setItem('fin_v11_tx', JSON.stringify(state.transacoes));
+        renderAll();
+      }
+      fecharModalDireto();
+    };
+
+    document.getElementById('itemModal').classList.add('open');
+  }
+
+  function closeModal(e) { if (e.target.id === 'itemModal') fecharModalDireto(); }
+  function fecharModalDireto() { document.getElementById('itemModal').classList.remove('open'); }
+
   function initCharts() {
+    const commonTooltip = {
+      callbacks: {
+        label: function(context) {
+          let label = context.dataset.label || context.label || '';
+          if (label) label += ': ';
+          if (context.parsed.y !== undefined) label += formatBRL(context.parsed.y);
+          else if (context.parsed !== undefined) label += formatBRL(context.parsed);
+          return label;
+        }
+      }
+    };
+
     // 1. Modalidades
     const ctx1 = document.getElementById('chartDespesas').getContext('2d');
     chartInstance = new Chart(ctx1, {
@@ -1427,11 +1638,11 @@
         responsive: true,
         maintainAspectRatio: false,
         cutout: '76%',
-        plugins: { legend: { display: false } }
+        plugins: { legend: { display: false }, tooltip: commonTooltip }
       }
     });
 
-    // 2. Categorias (Doughnut Limpo com Paleta Sóbria)
+    // 2. Categorias
     const ctxCat = document.getElementById('chartCategorias').getContext('2d');
     chartCategoriasInstance = new Chart(ctxCat, {
       type: 'doughnut',
@@ -1455,12 +1666,13 @@
           legend: { 
             position: 'right', 
             labels: { color: '#94a3b8', font: { size: 10, family: 'Inter' }, boxWidth: 8, padding: 8 } 
-          } 
+          },
+          tooltip: commonTooltip
         }
       }
     });
 
-    // 3. Fluxo Diário (Barras com cantos suaves)
+    // 3. Fluxo Diário
     const ctx2 = document.getElementById('chartEvolucao').getContext('2d');
     chartEvolucaoInstance = new Chart(ctx2, {
       type: 'bar',
@@ -1477,13 +1689,16 @@
         maintainAspectRatio: false,
         scales: {
           x: { ticks: { color: '#64748b', font: { size: 9 } }, grid: { display: false } },
-          y: { ticks: { color: '#64748b', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.03)' } }
+          y: { 
+            ticks: { color: '#64748b', font: { size: 9 }, callback: (v) => 'R$ ' + v }, 
+            grid: { color: 'rgba(255,255,255,0.03)' } 
+          }
         },
-        plugins: { legend: { display: false } }
+        plugins: { legend: { display: false }, tooltip: commonTooltip }
       }
     });
 
-    // 4. Top Gastos (Barras Horizontais Minimalistas)
+    // 4. Top Gastos
     const ctx3 = document.getElementById('chartTopGastos').getContext('2d');
     chartTopGastosInstance = new Chart(ctx3, {
       type: 'bar',
@@ -1500,10 +1715,13 @@
         responsive: true,
         maintainAspectRatio: false,
         scales: {
-          x: { ticks: { color: '#64748b', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.03)' } },
+          x: { 
+            ticks: { color: '#64748b', font: { size: 9 }, callback: (v) => 'R$ ' + v }, 
+            grid: { color: 'rgba(255,255,255,0.03)' } 
+          },
           y: { ticks: { color: '#94a3b8', font: { size: 9 } }, grid: { display: false } }
         },
-        plugins: { legend: { display: false } }
+        plugins: { legend: { display: false }, tooltip: commonTooltip }
       }
     });
   }
