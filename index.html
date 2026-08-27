@@ -64,7 +64,7 @@
     .pet-chip { display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 4px 10px; border-radius: 20px; font-size: 0.72rem; color: var(--text-muted); }
     .pet-avatar { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; }
 
-    /* Seletor de Mês */
+    /* Seletor de Mês & Filtro Todos */
     .period-selector { 
       display: flex; 
       justify-content: space-between; 
@@ -74,10 +74,15 @@
       border-radius: 12px; 
       padding: 10px 16px; 
       margin-bottom: 12px; 
+      flex-wrap: wrap;
+      gap: 10px;
     }
+    .period-controls { display: flex; align-items: center; gap: 12px; }
     .period-nav-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: #fff; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
     .period-nav-btn:hover { background: var(--card-hover); }
     .period-title { font-size: 0.88rem; font-weight: 600; color: #93c5fd; display: flex; align-items: center; gap: 8px; }
+    .btn-toggle-all { background: rgba(59, 130, 246, 0.1); border: 1px solid var(--primary); color: #93c5fd; font-size: 0.75rem; font-weight: 600; padding: 6px 12px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+    .btn-toggle-all.active-all { background: var(--primary); color: white; }
 
     /* Grid Bento Coeso (Mobile First) */
     .view-panel { display: none; }
@@ -108,6 +113,13 @@
     .progress-bar-fill { height: 100%; border-radius: 99px; transition: width 0.4s ease; }
     .limit-info-row { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-dim); }
 
+    /* Tabela Resumo Mensal */
+    .table-responsive { overflow-x: auto; width: 100%; }
+    .summary-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.8rem; }
+    .summary-table th { background: rgba(255,255,255,0.03); color: var(--text-muted); padding: 10px 12px; font-weight: 600; font-size: 0.72rem; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+    .summary-table td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); font-variant-numeric: tabular-nums; }
+    .summary-table tr:hover { background: var(--card-hover); }
+
     /* Formulários */
     .form-group { display: flex; flex-direction: column; gap: 6px; }
     label { font-size: 0.72rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
@@ -131,7 +143,10 @@
     .badge-transf { background: rgba(139, 92, 246, 0.15); color: #c4b5fd; padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: 600; }
     .badge-cat { background: rgba(255,255,255,0.05); color: var(--text-muted); padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; }
 
-    .tx-item { display: flex; justify-content: space-between; align-items: center; padding: 11px 12px; background: rgba(255,255,255,0.015); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.15s; }
+    /* Extrato Item & Checkbox de Seleção */
+    .tx-item-wrapper { display: flex; align-items: center; gap: 10px; }
+    .tx-checkbox { width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary); }
+    .tx-item { flex: 1; display: flex; justify-content: space-between; align-items: center; padding: 11px 12px; background: rgba(255,255,255,0.015); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.15s; }
     .tx-item:hover { background: var(--card-hover); border-color: #334155; }
     .tx-desc { font-size: 0.82rem; font-weight: 600; }
     .tx-sub { font-size: 0.68rem; color: var(--text-dim); margin-top: 3px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
@@ -140,12 +155,12 @@
     .tx-amount.neg { color: var(--text); }
     .tx-amount.neutral { color: var(--text-muted); }
 
+    .batch-actions-bar { display: none; justify-content: space-between; align-items: center; background: rgba(244, 63, 94, 0.08); border: 1px solid rgba(244, 63, 94, 0.25); border-radius: 8px; padding: 10px 14px; margin-bottom: 8px; }
+
     .filter-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
     .filter-controls select, .filter-controls input { padding: 9px; font-size: 0.8rem; }
 
     .stock-card { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(255,255,255,0.015); border: 1px solid var(--border); border-radius: 8px; }
-
-    /* Caixinhas de Objetivos */
     .goal-card { background: rgba(255,255,255,0.015); border: 1px solid var(--border); border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
     .goal-card-header { display: flex; justify-content: space-between; align-items: center; }
 
@@ -179,10 +194,8 @@
       .period-selector { 
         border-radius: 10px; 
         margin-bottom: 12px;
-        justify-content: center;
-        gap: 24px;
+        justify-content: space-between;
       }
-      .period-title { font-size: 1rem; }
 
       #view-home.active {
         display: grid;
@@ -316,19 +329,49 @@
     </div>
   </header>
 
-  <!-- SELETOR DE MÊS -->
+  <!-- SELETOR DE MÊS COM OPÇÃO DE TODOS OS MESES -->
   <div class="period-selector">
-    <button class="period-nav-btn" onclick="changeSelectedMonth(-1)"><i class="ph ph-caret-left"></i></button>
-    <div class="period-title">
-      <i class="ph ph-calendar-blank"></i>
-      <span id="selected-month-label">Mês Corrente</span>
+    <div class="period-controls">
+      <button class="period-nav-btn" id="btn-prev-month" onclick="changeSelectedMonth(-1)"><i class="ph ph-caret-left"></i></button>
+      <div class="period-title">
+        <i class="ph ph-calendar-blank"></i>
+        <span id="selected-month-label">Mês Corrente</span>
+      </div>
+      <button class="period-nav-btn" id="btn-next-month" onclick="changeSelectedMonth(1)"><i class="ph ph-caret-right"></i></button>
     </div>
-    <button class="period-nav-btn" onclick="changeSelectedMonth(1)"><i class="ph ph-caret-right"></i></button>
+    
+    <button class="btn-toggle-all" id="btn-toggle-all-months" onclick="toggleViewAllMonths()">
+      <i class="ph ph-list-dashes"></i>
+      <span>Ver Todos os Meses</span>
+    </button>
   </div>
 
   <!-- VIEW 1: PAINEL GERAL (BENTO GRID) -->
   <div id="view-home" class="view-panel active">
     
+    <!-- Quadro de Resumo de Todos os Meses -->
+    <div class="card card-span-4" id="card-resumo-todos-meses" style="display:none;">
+      <div class="card-header">
+        <span>Resumo Mensal Consolidado</span>
+        <span style="font-size:0.75rem; color:var(--text-dim);">Todos os Meses</span>
+      </div>
+      <div class="table-responsive">
+        <table class="summary-table">
+          <thead>
+            <tr>
+              <th>Mês/Ano</th>
+              <th>Receitas</th>
+              <th>À Vista (PIX/Débito)</th>
+              <th>Faturas Crédito</th>
+              <th>Total Gastos</th>
+              <th>Saldo Líquido</th>
+            </tr>
+          </thead>
+          <tbody id="resumo-meses-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
     <div class="card patrimonio-card">
       <span class="kpi-title">Patrimônio Líquido</span>
       <div class="kpi-val" id="kpi-patrimonio-total">R$ 0,00</div>
@@ -336,7 +379,7 @@
     </div>
 
     <div class="card faturas-total-card">
-      <span class="kpi-title">Faturas do Ciclo</span>
+      <span class="kpi-title" id="kpi-fatura-label">Faturas do Ciclo</span>
       <div class="kpi-val" id="kpi-total-faturas">R$ 0,00</div>
       <p class="kpi-sub">Santander + Nubank + Mercado Pago</p>
     </div>
@@ -377,7 +420,7 @@
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 8px;">
-        <div class="card-limit-box" style="border-left: 2px solid var(--santander);">
+        <div class="card-limit-box" style="border-left: 2px solid var(--santander); cursor:pointer;" onclick="filtrarPorGrafico('santander', 'modalidade')">
           <div class="card-limit-header">
             <span style="color: #fca5a5;">Santander (Vence 25)</span>
             <span id="limit-santander-pct" style="color: var(--text-dim); font-size:0.75rem;">0%</span>
@@ -389,7 +432,7 @@
           </div>
         </div>
 
-        <div class="card-limit-box" style="border-left: 2px solid var(--nubank);">
+        <div class="card-limit-box" style="border-left: 2px solid var(--nubank); cursor:pointer;" onclick="filtrarPorGrafico('nubank', 'modalidade')">
           <div class="card-limit-header">
             <span style="color: #d8b4fe;">Nubank (Vence 25)</span>
             <span id="limit-nubank-pct" style="color: var(--text-dim); font-size:0.75rem;">0%</span>
@@ -401,7 +444,7 @@
           </div>
         </div>
 
-        <div class="card-limit-box" style="border-left: 2px solid var(--mercadopago);">
+        <div class="card-limit-box" style="border-left: 2px solid var(--mercadopago); cursor:pointer;" onclick="filtrarPorGrafico('mercadopago', 'modalidade')">
           <div class="card-limit-header">
             <span style="color: #7dd3fc;">Mercado Pago (Vence 20)</span>
             <span id="limit-mp-pct" style="color: var(--text-dim); font-size:0.75rem;">0%</span>
@@ -417,13 +460,16 @@
 
     <!-- Saídas à Vista e Top Gastos -->
     <div class="card">
-      <div class="card-header"><span>Saídas à Vista (Mês)</span></div>
+      <div class="card-header">
+        <span>Saídas à Vista</span>
+        <span style="font-size:0.68rem; color:var(--text-dim); text-transform:none;">(Clique no gráfico p/ filtrar)</span>
+      </div>
       <div class="kpi-mini-grid" style="margin-top: 6px;">
-        <div class="kpi-mini">
+        <div class="kpi-mini" style="cursor:pointer;" onclick="filtrarPorGrafico('pix', 'modalidade')">
           <span><i class="ph ph-arrows-down-up"></i> PIX</span>
           <strong id="kpi-pix-mes" style="color: var(--pix);">R$ 0,00</strong>
         </div>
-        <div class="kpi-mini">
+        <div class="kpi-mini" style="cursor:pointer;" onclick="filtrarPorGrafico('debito', 'modalidade')">
           <span><i class="ph ph-credit-card"></i> Débito</span>
           <strong id="kpi-debito-mes" style="color: #93c5fd;">R$ 0,00</strong>
         </div>
@@ -440,9 +486,12 @@
       </div>
     </div>
 
-    <!-- NOVO: Histórico Comparativo Mensal (Receitas x Gastos) -->
+    <!-- Histórico Comparativo Mensal (Receitas x Gastos) -->
     <div class="card card-span-2">
-      <div class="card-header"><span>Comparativo Mensal (Recebido vs. Gastos)</span></div>
+      <div class="card-header">
+        <span>Comparativo Mensal (Recebido vs. Gastos)</span>
+        <span style="font-size:0.68rem; color:var(--text-dim); text-transform:none;">(Clique no mês p/ filtrar)</span>
+      </div>
       <div style="position: relative; height: 220px;">
         <canvas id="chartMensalComparativo"></canvas>
       </div>
@@ -450,7 +499,10 @@
 
     <!-- Despesas por Categoria -->
     <div class="card card-span-2">
-      <div class="card-header"><span>Despesas por Categoria</span></div>
+      <div class="card-header">
+        <span>Despesas por Categoria</span>
+        <span style="font-size:0.68rem; color:var(--text-dim); text-transform:none;">(Clique na fatia p/ filtrar)</span>
+      </div>
       <div style="position: relative; height: 220px;">
         <canvas id="chartCategorias"></canvas>
       </div>
@@ -458,7 +510,7 @@
 
     <!-- Fluxo Diário -->
     <div class="card card-span-4">
-      <div class="card-header"><span>Volume e Fluxo Diário do Mês</span></div>
+      <div class="card-header"><span>Volume e Fluxo Diário</span></div>
       <div style="position: relative; height: 200px;">
         <canvas id="chartEvolucao"></canvas>
       </div>
@@ -521,7 +573,6 @@
           </select>
         </div>
 
-        <!-- Grupo de Parcelas Avançado -->
         <div id="group-parcelas" style="display:none; flex-direction:column; gap:8px; margin-top: 8px; background: rgba(255,255,255,0.02); border:1px solid var(--border); padding:12px; border-radius:8px;">
           <label style="color:var(--primary);">Configuração de Parcelamento no Crédito</label>
           <div class="filter-controls">
@@ -705,7 +756,7 @@
         <span>Caixinhas & Metas Financeiras</span>
         <span id="kpi-goals-summary" style="font-size:0.75rem; color:var(--security);">Total: R$ 0,00</span>
       </div>
-      <p style="font-size:0.75rem; color:var(--text-dim);">Crie metas dedicadas (Reserva, Viagem, Reforma, Casamento) e acompanhe o progresso de cada uma.</p>
+      <p style="font-size:0.75rem; color:var(--text-dim);">Crie metas dedicadas e acompanhe o progresso de cada uma.</p>
 
       <form id="form-goal" style="display:flex; flex-direction:column; gap:8px; margin-top: 10px;">
         <div class="filter-controls">
@@ -731,12 +782,25 @@
     </div>
   </div>
 
-  <!-- VIEW 7: EXTRATO -->
+  <!-- VIEW 7: EXTRATO (COM SELEÇÃO EM MASSA) -->
   <div id="view-extrato" class="view-panel">
     <div class="card">
       <div class="card-header">
         <span>Histórico de Lançamentos</span>
-        <span style="font-size:0.75rem; color:var(--text-dim);" id="tx-count">0 itens</span>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:0.75rem; color:var(--text-dim);" id="tx-count">0 itens</span>
+        </div>
+      </div>
+
+      <!-- Barra de Ações em Massa (Exclusão Múltipla) -->
+      <div class="batch-actions-bar" id="batch-actions-bar">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <input type="checkbox" id="chk-select-all" class="tx-checkbox" onchange="toggleSelectAll(this.checked)">
+          <span id="selected-count-label" style="font-size:0.8rem; font-weight:600; color:var(--red);">0 selecionados</span>
+        </div>
+        <button onclick="excluirSelecionados()" class="btn-main" style="background:var(--red); padding:6px 12px; font-size:0.75rem; width:auto;">
+          <i class="ph ph-trash"></i> Excluir Selecionados
+        </button>
       </div>
 
       <div class="filter-controls">
@@ -831,8 +895,10 @@
 
   let now = new Date();
   let state = {
+    viewAllMonths: false,
     selectedMonth: now.getMonth(),
     selectedYear: now.getFullYear(),
+    selectedTxIds: new Set(),
     transacoes: JSON.parse(localStorage.getItem('fin_v11_tx')) || [],
     limites: JSON.parse(localStorage.getItem('fin_v11_limits')) || {
       santander: 5000,
@@ -905,7 +971,31 @@
     }
   });
 
+  function toggleViewAllMonths() {
+    state.viewAllMonths = !state.viewAllMonths;
+    const btn = document.getElementById('btn-toggle-all-months');
+    const btnPrev = document.getElementById('btn-prev-month');
+    const btnNext = document.getElementById('btn-next-month');
+
+    if (state.viewAllMonths) {
+      btn.classList.add('active-all');
+      btn.innerHTML = `<i class="ph ph-calendar"></i> <span>Ver Mês Individual</span>`;
+      btnPrev.style.display = 'none';
+      btnNext.style.display = 'none';
+      document.getElementById('selected-month-label').innerText = 'Todos os Meses (Consolidado)';
+    } else {
+      btn.classList.remove('active-all');
+      btn.innerHTML = `<i class="ph ph-list-dashes"></i> <span>Ver Todos os Meses</span>`;
+      btnPrev.style.display = 'flex';
+      btnNext.style.display = 'flex';
+      updatePeriodLabel();
+    }
+
+    renderAll();
+  }
+
   function changeSelectedMonth(delta) {
+    if (state.viewAllMonths) return;
     state.selectedMonth += delta;
     if (state.selectedMonth > 11) {
       state.selectedMonth = 0;
@@ -961,7 +1051,7 @@
     document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     document.getElementById(`view-${tab}`).classList.add('active');
-    btn.classList.add('active');
+    if (btn) btn.classList.add('active');
   }
 
   function checkParcelas() {
@@ -1300,12 +1390,102 @@
     }
   }
 
+  // Função para filtrar e navegar direto para o Extrato pelo clique no Gráfico
+  function filtrarPorGrafico(valorFiltro, tipoFiltro) {
+    switchTab('extrato', document.querySelectorAll('.nav-btn')[6]);
+    
+    if (tipoFiltro === 'categoria') {
+      document.getElementById('filter-categoria').value = valorFiltro;
+    } else if (tipoFiltro === 'modalidade') {
+      document.getElementById('filter-modalidade').value = valorFiltro;
+    } else if (tipoFiltro === 'mes') {
+      state.viewAllMonths = false;
+      const btn = document.getElementById('btn-toggle-all-months');
+      btn.classList.remove('active-all');
+      btn.innerHTML = `<i class="ph ph-list-dashes"></i> <span>Ver Todos os Meses</span>`;
+      document.getElementById('btn-prev-month').style.display = 'flex';
+      document.getElementById('btn-next-month').style.display = 'flex';
+      
+      state.selectedMonth = valorFiltro.mes;
+      state.selectedYear = valorFiltro.ano;
+      updatePeriodLabel();
+      document.getElementById('filter-periodo').value = 'mes_selecionado';
+    }
+
+    renderExtrato();
+  }
+
+  // Funções de Seleção e Exclusão em Massa
+  function toggleSelectTx(id, checked) {
+    if (checked) state.selectedTxIds.add(String(id));
+    else state.selectedTxIds.delete(String(id));
+    updateBatchActionBar();
+  }
+
+  function toggleSelectAll(checked) {
+    const checkboxes = document.querySelectorAll('.tx-row-chk');
+    checkboxes.forEach(chk => {
+      chk.checked = checked;
+      const id = chk.getAttribute('data-id');
+      if (checked) state.selectedTxIds.add(String(id));
+      else state.selectedTxIds.delete(String(id));
+    });
+    updateBatchActionBar();
+  }
+
+  function updateBatchActionBar() {
+    const bar = document.getElementById('batch-actions-bar');
+    const countLabel = document.getElementById('selected-count-label');
+    const count = state.selectedTxIds.size;
+
+    if (count > 0) {
+      bar.style.display = 'flex';
+      countLabel.innerText = `${count} selecionado(s)`;
+    } else {
+      bar.style.display = 'none';
+      const selectAllChk = document.getElementById('chk-select-all');
+      if (selectAllChk) selectAllChk.checked = false;
+    }
+  }
+
+  async function excluirSelecionados() {
+    const total = state.selectedTxIds.size;
+    if (total === 0) return;
+
+    if (!confirm(`Deseja realmente excluir todos os ${total} lançamentos selecionados?`)) {
+      return;
+    }
+
+    if (useCloud) {
+      const batch = db.batch();
+      state.transacoes.forEach(t => {
+        const idStr = String(t.idDoc || t.id);
+        if (state.selectedTxIds.has(idStr) && t.idDoc) {
+          const docRef = db.collection("apto708_transacoes").doc(t.idDoc);
+          batch.delete(docRef);
+        }
+      });
+      await batch.commit();
+    } else {
+      state.transacoes = state.transacoes.filter(t => !state.selectedTxIds.has(String(t.idDoc || t.id)));
+      localStorage.setItem('fin_v11_tx', JSON.stringify(state.transacoes));
+      renderAll();
+    }
+
+    state.selectedTxIds.clear();
+    updateBatchActionBar();
+  }
+
   // Renderização e Cálculos
   function renderAll() {
+    const isAll = state.viewAllMonths;
     const selMes = state.selectedMonth;
     const selAno = state.selectedYear;
     const nomesMesesCurto = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
-    document.getElementById('fatura-ciclo-label').innerText = `Ref: ${nomesMesesCurto[selMes]}/${selAno}`;
+    
+    document.getElementById('fatura-ciclo-label').innerText = isAll ? 'Acumulado Geral' : `Ref: ${nomesMesesCurto[selMes]}/${selAno}`;
+    document.getElementById('kpi-fatura-label').innerText = isAll ? 'Faturas Acumuladas' : 'Faturas do Ciclo';
+    document.getElementById('card-resumo-todos-meses').style.display = isAll ? 'flex' : 'none';
 
     let saldoConta = 0, guardado = 0, reserva = 0;
     let faturaSantander = 0, faturaNubank = 0, faturaMP = 0;
@@ -1314,14 +1494,20 @@
     const dailyMap = {};
     const catMap = {};
     const topExpensesList = [];
+    const monthlySummaryMap = {};
 
     state.transacoes.forEach(t => {
       const d = new Date(t.data + 'T00:00:00');
       const tMes = d.getMonth();
       const tAno = d.getFullYear();
       const dia = d.getDate();
-      const isMesSelecionado = (tMes === selMes && tAno === selAno);
+      const keyMonth = `${tAno}-${String(tMes + 1).padStart(2, '0')}`;
 
+      if (!monthlySummaryMap[keyMonth]) {
+        monthlySummaryMap[keyMonth] = { ano: tAno, mes: tMes, receita: 0, aVista: 0, credito: 0, totalGasto: 0 };
+      }
+
+      // 1. Saldo Patrimonial
       if (t.mod === 'transferencia') {
         if (t.origem === 'conta') saldoConta -= t.valor;
         if (t.origem === 'guardado') guardado -= t.valor;
@@ -1331,10 +1517,33 @@
         if (t.destino === 'reserva') reserva += t.valor;
       } else if (t.mod.startsWith('receita')) {
         saldoConta += t.valor;
-        if (isMesSelecionado) totalReceitasPeriodo += t.valor;
+        monthlySummaryMap[keyMonth].receita += t.valor;
       } else if (t.mod === 'pix' || t.mod === 'debito') {
         saldoConta -= t.valor;
-        if (isMesSelecionado) {
+        monthlySummaryMap[keyMonth].aVista += t.valor;
+        monthlySummaryMap[keyMonth].totalGasto += t.valor;
+      } else if (t.mod === 'santander' || t.mod === 'nubank' || t.mod === 'mercadopago') {
+        let fMes = tMes;
+        let fAno = tAno;
+        if (dia > 18) {
+          fMes++;
+          if (fMes > 11) { fMes = 0; fAno++; }
+        }
+        const keyFatura = `${fAno}-${String(fMes + 1).padStart(2, '0')}`;
+        if (!monthlySummaryMap[keyFatura]) {
+          monthlySummaryMap[keyFatura] = { ano: fAno, mes: fMes, receita: 0, aVista: 0, credito: 0, totalGasto: 0 };
+        }
+        monthlySummaryMap[keyFatura].credito += t.valor;
+        monthlySummaryMap[keyFatura].totalGasto += t.valor;
+      }
+
+      // 2. Filtro do Período
+      const isPeriodMatch = isAll || (tMes === selMes && tAno === selAno);
+
+      if (t.mod.startsWith('receita')) {
+        if (isPeriodMatch) totalReceitasPeriodo += t.valor;
+      } else if (t.mod === 'pix' || t.mod === 'debito') {
+        if (isPeriodMatch) {
           if (t.mod === 'pix') totalPixPeriodo += t.valor;
           if (t.mod === 'debito') totalDebitoPeriodo += t.valor;
           totalGastosGeraisPeriodo += t.valor;
@@ -1349,7 +1558,8 @@
           fMes++;
           if (fMes > 11) { fMes = 0; fAno++; }
         }
-        if (fMes === selMes && fAno === selAno) {
+        const isFaturaMatch = isAll || (fMes === selMes && fAno === selAno);
+        if (isFaturaMatch) {
           if (t.mod === 'santander') faturaSantander += t.valor;
           if (t.mod === 'nubank') faturaNubank += t.valor;
           if (t.mod === 'mercadopago') faturaMP += t.valor;
@@ -1360,6 +1570,34 @@
         }
       }
     });
+
+    // Renderizar Tabela Resumo de Todos os Meses
+    if (isAll) {
+      const tbody = document.getElementById('resumo-meses-tbody');
+      tbody.innerHTML = '';
+      const sortedKeys = Object.keys(monthlySummaryMap).sort().reverse();
+
+      if (sortedKeys.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-dim);">Nenhum lançamento no histórico.</td></tr>`;
+      } else {
+        sortedKeys.forEach(k => {
+          const item = monthlySummaryMap[k];
+          const saldoLiq = item.receita - item.totalGasto;
+          const tr = document.createElement('tr');
+          tr.style.cursor = 'pointer';
+          tr.onclick = () => filtrarPorGrafico({ mes: item.mes, ano: item.ano }, 'mes');
+          tr.innerHTML = `
+            <td><strong>${nomesMesesCurto[item.mes]}/${item.ano}</strong></td>
+            <td style="color:var(--green); font-weight:600;">${formatBRL(item.receita)}</td>
+            <td style="color:#93c5fd;">${formatBRL(item.aVista)}</td>
+            <td style="color:#fca5a5;">${formatBRL(item.credito)}</td>
+            <td style="color:var(--text); font-weight:700;">${formatBRL(item.totalGasto)}</td>
+            <td style="color:${saldoLiq >= 0 ? 'var(--green)' : 'var(--red)'}; font-weight:700;">${saldoLiq >= 0 ? '+' : ''}${formatBRL(saldoLiq)}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+    }
 
     // Total de Ativos (B3)
     let totalInvestAplicado = 0;
@@ -1501,6 +1739,7 @@
     const hoje = new Date();
     const selMes = state.selectedMonth;
     const selAno = state.selectedYear;
+    const isAll = state.viewAllMonths;
 
     let filtered = [...state.transacoes].filter(t => {
       const d = new Date(t.data + 'T00:00:00');
@@ -1508,7 +1747,7 @@
       const tAno = d.getFullYear();
       const dia = d.getDate();
 
-      if (filterPeriodo === 'mes_selecionado') {
+      if (filterPeriodo === 'mes_selecionado' && !isAll) {
         if (t.mod === 'santander' || t.mod === 'nubank' || t.mod === 'mercadopago') {
           let fMes = tMes;
           let fAno = tAno;
@@ -1539,6 +1778,7 @@
 
     if (sorted.length === 0) {
       list.innerHTML = `<div style="text-align:center; color:var(--text-dim); padding:16px; font-size:0.75rem;">Nenhum registro encontrado.</div>`;
+      updateBatchActionBar();
       return;
     }
 
@@ -1554,26 +1794,33 @@
       const catBadge = `<span class="badge-cat">${categoryLabels[t.cat] || t.cat}</span>`;
       const isPos = t.mod.startsWith('receita');
       const isTransf = t.mod === 'transferencia';
-      const item = document.createElement('div');
-      item.className = 'tx-item';
-      item.onclick = () => abrirDetalhes(t.idDoc || t.id);
-      item.innerHTML = `
-        <div>
-          <div class="tx-desc">${t.desc}</div>
-          <div class="tx-sub">
-            ${new Date(t.data + 'T00:00:00').toLocaleDateString('pt-BR')} • ${badge} • ${catBadge}
+      const idKey = String(t.idDoc || t.id);
+      const isChecked = state.selectedTxIds.has(idKey);
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'tx-item-wrapper';
+      wrapper.innerHTML = `
+        <input type="checkbox" class="tx-checkbox tx-row-chk" data-id="${idKey}" ${isChecked ? 'checked' : ''} onchange="toggleSelectTx('${idKey}', this.checked)">
+        <div class="tx-item" onclick="abrirDetalhes('${idKey}')">
+          <div>
+            <div class="tx-desc">${t.desc}</div>
+            <div class="tx-sub">
+              ${new Date(t.data + 'T00:00:00').toLocaleDateString('pt-BR')} • ${badge} • ${catBadge}
+            </div>
+          </div>
+          <div>
+            <span class="tx-amount ${isTransf ? 'neutral' : (isPos ? 'pos' : 'neg')}">${isTransf ? '' : (isPos ? '+' : '-')} ${formatBRL(t.valor)}</span>
           </div>
         </div>
-        <div>
-          <span class="tx-amount ${isTransf ? 'neutral' : (isPos ? 'pos' : 'neg')}">${isTransf ? '' : (isPos ? '+' : '-')} ${formatBRL(t.valor)}</span>
-        </div>
       `;
-      list.appendChild(item);
+      list.appendChild(wrapper);
     });
+
+    updateBatchActionBar();
   }
 
   function abrirDetalhes(id) {
-    const t = state.transacoes.find(item => item.id === id || item.idDoc === id);
+    const t = state.transacoes.find(item => String(item.id) === String(id) || String(item.idDoc) === String(id));
     if (!t) return;
 
     const isPos = t.mod.startsWith('receita');
@@ -1603,7 +1850,7 @@
       if (useCloud && t.idDoc) {
         await db.collection("apto708_transacoes").doc(t.idDoc).delete();
       } else {
-        state.transacoes = state.transacoes.filter(item => item.id !== id);
+        state.transacoes = state.transacoes.filter(item => String(item.id) !== String(id) && String(item.idDoc) !== String(id));
         localStorage.setItem('fin_v11_tx', JSON.stringify(state.transacoes));
         renderAll();
       }
@@ -1629,7 +1876,7 @@
       }
     };
 
-    // 1. Modalidades
+    // 1. Modalidades (Com Clique para Filtro)
     const ctx1 = document.getElementById('chartDespesas').getContext('2d');
     chartInstance = new Chart(ctx1, {
       type: 'doughnut',
@@ -1640,18 +1887,25 @@
           backgroundColor: ['#06b6d4', '#3b82f6', '#ef4444', '#a855f7', '#0ea5e9'],
           borderColor: '#111726',
           borderWidth: 2,
-          hoverOffset: 4
+          hoverOffset: 6
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         cutout: '76%',
-        plugins: { legend: { display: false }, tooltip: commonTooltip }
+        plugins: { legend: { display: false }, tooltip: commonTooltip },
+        onClick: (evt, elements) => {
+          if (elements.length > 0) {
+            const index = elements[0].index;
+            const mapMod = ['pix', 'debito', 'santander', 'nubank', 'mercadopago'];
+            filtrarPorGrafico(mapMod[index], 'modalidade');
+          }
+        }
       }
     });
 
-    // 2. Categorias
+    // 2. Categorias (Com Clique para Filtro)
     const ctxCat = document.getElementById('chartCategorias').getContext('2d');
     chartCategoriasInstance = new Chart(ctxCat, {
       type: 'doughnut',
@@ -1677,11 +1931,18 @@
             labels: { color: '#94a3b8', font: { size: 10, family: 'Inter' }, boxWidth: 8, padding: 8 } 
           },
           tooltip: commonTooltip
+        },
+        onClick: (evt, elements) => {
+          if (elements.length > 0) {
+            const index = elements[0].index;
+            const catKey = chartCategoriasInstance.rawCategories ? chartCategoriasInstance.rawCategories[index] : null;
+            if (catKey) filtrarPorGrafico(catKey, 'categoria');
+          }
         }
       }
     });
 
-    // 3. Comparativo Mensal (Receitas x Gastos)
+    // 3. Comparativo Mensal (Com Clique para Filtro de Mês)
     const ctxMensal = document.getElementById('chartMensalComparativo').getContext('2d');
     chartMensalComparativoInstance = new Chart(ctxMensal, {
       type: 'bar',
@@ -1719,6 +1980,13 @@
             labels: { color: '#94a3b8', font: { size: 10, family: 'Inter' }, boxWidth: 10 } 
           },
           tooltip: commonTooltip 
+        },
+        onClick: (evt, elements) => {
+          if (elements.length > 0) {
+            const index = elements[0].index;
+            const itemMes = chartMensalComparativoInstance.rawMonths ? chartMensalComparativoInstance.rawMonths[index] : null;
+            if (itemMes) filtrarPorGrafico(itemMes, 'mes');
+          }
         }
       }
     });
@@ -1785,6 +2053,7 @@
 
     if (chartCategoriasInstance) {
       const cats = Object.keys(catMap).filter(c => c !== 'Receita' && c !== 'Patrimonio' && c !== 'Transferencia');
+      chartCategoriasInstance.rawCategories = cats;
       chartCategoriasInstance.data.labels = cats.map(c => categoryLabels[c] || c);
       chartCategoriasInstance.data.datasets[0].data = cats.map(c => catMap[c]);
       chartCategoriasInstance.update();
@@ -1804,12 +2073,12 @@
       chartTopGastosInstance.update();
     }
 
-    // Atualização do Histórico Comparativo Mensal (Últimos 6 meses até o mês selecionado)
     if (chartMensalComparativoInstance) {
       const nomesMesesCurto = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
       const labelsMeses = [];
       const dataReceitas = [];
       const dataGastos = [];
+      const rawMonths = [];
 
       for (let i = 5; i >= 0; i--) {
         let m = state.selectedMonth - i;
@@ -1817,6 +2086,7 @@
         while (m < 0) { m += 12; y--; }
 
         labelsMeses.push(`${nomesMesesCurto[m]}/${String(y).slice(-2)}`);
+        rawMonths.push({ mes: m, ano: y });
 
         let recMes = 0;
         let gastMes = 0;
@@ -1846,6 +2116,7 @@
         dataGastos.push(gastMes);
       }
 
+      chartMensalComparativoInstance.rawMonths = rawMonths;
       chartMensalComparativoInstance.data.labels = labelsMeses;
       chartMensalComparativoInstance.data.datasets[0].data = dataReceitas;
       chartMensalComparativoInstance.data.datasets[1].data = dataGastos;
